@@ -1,0 +1,19 @@
+{
+  "name": "@mapa-mexico/project-store",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Maps the authoring model onto relational rows and back. Pure: no driver, no connection.",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mapa-mexico/map-generator": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  }
+}
