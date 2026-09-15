@@ -16,6 +16,7 @@ export {
   removeStored,
   resolveInRoot,
   statStored,
+  writeFileAtomic,
   writeStreamed,
 } from './store.ts';
 export type { WriteResult } from './store.ts';

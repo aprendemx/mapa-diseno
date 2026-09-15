@@ -12,6 +12,10 @@ export default defineNuxtConfig({
     // nginx serves the published map from.
     mediaRoot: '../..',
     maxUploadBytes: String(2 * 1024 * 1024 * 1024),
+    // The template the published page is built from, and where it lands.
+    // In production `publishDir` is the directory nginx serves.
+    templatePath: '../../mapa-base.html',
+    publishDir: '../../publicado',
   },
 
   nitro: {

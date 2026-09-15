@@ -50,6 +50,22 @@ npm run sweep               # archivos sin fila (informe; --delete)
 npm run create-user
 ```
 
+## Guardar y publicar son cosas distintas
+
+Guardar escribe en la base y no toca el sitio. Publicar valida el catálogo
+completo —los 32 estados, ids únicos, estados existentes y **cada archivo
+referenciado presente en disco**— y recién entonces genera la página y la pone
+en su lugar con un `rename`, que es atómico.
+
+Si la validación falla no se tocó nada. El generador viejo validaba *después*
+de haber escrito el JSON, movido los archivos y borrado los huérfanos, así que
+un error dejaba el disco cambiado y el mapa publicado viejo.
+
+Cada publicación queda registrada con los datos exactos que puso en la página,
+así que volver atrás es republicar una versión anterior. Restaurar no modifica
+el catálogo: volver atrás el sitio no es lo mismo que deshacer las ediciones de
+alguien, y confundir las dos cosas pierde trabajo.
+
 Las pruebas de humo verifican contra un servidor levantado lo que las unitarias
 no pueden — cookies reales, subidas reales:
 
@@ -57,6 +73,7 @@ no pueden — cookies reales, subidas reales:
 ./scripts/smoke-auth.sh  <correo> <contraseña>
 ./scripts/smoke-crud.sh  <correo> <contraseña>
 ./scripts/smoke-files.sh <correo> <contraseña>
+./scripts/smoke-publish.sh <correo> <contraseña>
 ```
 
 ## Las pruebas de integración usan su propia base

@@ -13,6 +13,7 @@ import {
   removeStored,
   resolveInRoot,
   statStored,
+  writeFileAtomic,
   writeStreamed,
 } from '../src/index.ts';
 
@@ -143,5 +144,29 @@ describe('listStored', () => {
     } finally {
       await rm(empty, { recursive: true, force: true });
     }
+  });
+});
+
+describe('writeFileAtomic', () => {
+  test('writes the file', async () => {
+    const path = join(root, 'publicado', 'index.html');
+    await writeFileAtomic(path, '<html>uno</html>');
+    assert.equal(await readFile(path, 'utf8'), '<html>uno</html>');
+  });
+
+  test('replaces an existing file wholesale, leaving no temporary behind', async () => {
+    const path = join(root, 'publicado', 'index.html');
+    await writeFileAtomic(path, '<html>dos, bastante mas largo</html>');
+    assert.equal(await readFile(path, 'utf8'), '<html>dos, bastante mas largo</html>');
+
+    const leftovers = (await readdir(join(root, 'publicado')))
+      .filter((name) => name.includes('.new-'));
+    assert.deepEqual(leftovers, []);
+  });
+
+  test('creates the directory it needs', async () => {
+    const path = join(root, 'publicado', 'anidado', 'index.html');
+    await writeFileAtomic(path, 'x');
+    assert.equal(await readFile(path, 'utf8'), 'x');
   });
 });

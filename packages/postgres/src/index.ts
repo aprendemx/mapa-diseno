@@ -32,3 +32,10 @@ export {
   listReferencedPaths,
 } from './file-repository.ts';
 export type { StoredFileRecord } from './file-repository.ts';
+export {
+  recordPublication,
+  listPublications,
+  getPublication,
+  latestPublication,
+} from './publication-repository.ts';
+export type { PublicationSummary, PublicationRecord } from './publication-repository.ts';

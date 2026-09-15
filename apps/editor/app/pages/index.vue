@@ -85,6 +85,7 @@ async function sortAlphabetically() {
       <h1>Medios</h1>
       <div class="actions">
         <NuxtLink to="/apariencia" class="link">Apariencia</NuxtLink>
+        <NuxtLink to="/publicar" class="link">Publicar</NuxtLink>
         <button type="button" :disabled="busy" @click="sortAlphabetically">Ordenar A–Z</button>
         <button type="button" :disabled="busy" @click="createMedium">+ Nuevo medio</button>
       </div>

@@ -113,3 +113,25 @@ create table social_themes (
 );
 
 create index social_themes_medium_id_idx on social_themes (medium_id);
+
+-- Every publication, with the exact data it put on the page.
+--
+-- Storing the rendered model rather than the rendered HTML keeps each row
+-- small and lets a rollback re-render with the current template — which is
+-- what you want when the rollback exists because the template changed.
+create table publications (
+  id                uuid primary key default gen_random_uuid(),
+  published_at      timestamptz not null default now(),
+  published_by      uuid references users (id) on delete set null,
+  -- Denormalised on purpose: the history must still say who published when the
+  -- account is long gone.
+  published_by_name text not null,
+  map_data          jsonb not null,
+  media_count       integer not null,
+  note_count        integer not null,
+  witness_count     integer not null,
+  -- Set when this publication restored an earlier one.
+  restored_from     uuid references publications (id) on delete set null
+);
+
+create index publications_published_at_idx on publications (published_at desc);

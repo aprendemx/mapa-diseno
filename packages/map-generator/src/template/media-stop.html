@@ -1,0 +1,57 @@
+<script id="control-cierre-multimedia">
+(function () {
+  function estaOculto(el) {
+    if (!el || !el.isConnected) return true;
+    for (let nodo = el; nodo && nodo.nodeType === 1; nodo = nodo.parentElement) {
+      if (nodo.hidden || nodo.getAttribute('aria-hidden') === 'true') return true;
+      const estilo = window.getComputedStyle(nodo);
+      if (estilo.display === 'none' || estilo.visibility === 'hidden' || estilo.visibility === 'collapse') return true;
+    }
+    return false;
+  }
+
+  function detener(el) {
+    if (!el || typeof el.pause !== 'function') return;
+    try { el.pause(); } catch (_) {}
+    try { el.currentTime = 0; } catch (_) {}
+  }
+
+  function detenerOcultos() {
+    document.querySelectorAll('audio, video').forEach(function (el) {
+      if (estaOculto(el)) detener(el);
+    });
+  }
+
+  document.addEventListener('close', function (ev) {
+    if (ev.target && ev.target.matches && ev.target.matches('dialog')) {
+      ev.target.querySelectorAll('audio, video').forEach(detener);
+    }
+  }, true);
+
+  document.addEventListener('cancel', function (ev) {
+    if (ev.target && ev.target.matches && ev.target.matches('dialog')) {
+      ev.target.querySelectorAll('audio, video').forEach(detener);
+    }
+  }, true);
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) document.querySelectorAll('audio, video').forEach(detener);
+  });
+
+  const observar = function () {
+    if (!document.body) return;
+    const observer = new MutationObserver(function () {
+      window.requestAnimationFrame(detenerOcultos);
+    });
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['class', 'style', 'hidden', 'aria-hidden']
+    });
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', observar, {once:true});
+  else observar();
+})();
+</script>

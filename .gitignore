@@ -20,3 +20,4 @@ dist/
 
 # Cache de herramientas locales
 .atl/
+/publicado/

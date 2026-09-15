@@ -1,5 +1,5 @@
 import { createWriteStream } from 'node:fs';
-import { mkdir, rename, rm, stat, readdir, unlink } from 'node:fs/promises';
+import { mkdir, readdir, rename, rm, stat, unlink, writeFile } from 'node:fs/promises';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { randomBytes } from 'node:crypto';
@@ -75,6 +75,27 @@ export async function writeStreamed(
 
     await rename(temporary, destination);
     return { path: relativePath, bytes };
+  } catch (error) {
+    await rm(temporary, { force: true });
+    throw error;
+  }
+}
+
+/**
+ * Writes a file so that readers only ever see the old version or the new one.
+ *
+ * The published page is served by nginx while this runs. Writing in place would
+ * expose a window in which a visitor gets half a document — and that window is
+ * exactly when the page is most likely to be loaded, because someone just
+ * pressed publish and went to look.
+ */
+export async function writeFileAtomic(absolutePath: string, contents: string): Promise<void> {
+  await mkdir(dirname(absolutePath), { recursive: true });
+  const temporary = `${absolutePath}.new-${randomBytes(6).toString('hex')}`;
+
+  try {
+    await writeFile(temporary, contents, 'utf8');
+    await rename(temporary, absolutePath);
   } catch (error) {
     await rm(temporary, { force: true });
     throw error;
