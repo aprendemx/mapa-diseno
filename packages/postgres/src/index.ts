@@ -12,3 +12,15 @@ export {
   deleteExpiredSessions,
 } from './user-repository.ts';
 export type { UserRecord, SessionUser } from './user-repository.ts';
+export {
+  listStates,
+  listMedia,
+  getMedium,
+  createMedium,
+  updateMedium,
+  deleteMedium,
+  reorderMedia,
+  getAppearance,
+  updateAppearance,
+} from './media-repository.ts';
+export type { MediumSummary, MediumDetail, StateOption } from './media-repository.ts';

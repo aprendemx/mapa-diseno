@@ -44,7 +44,7 @@ const byWitness = <T extends { witness_position: number }>(rows: T[]): T[] =>
 
 // --- Appearance ------------------------------------------------------------
 
-function appearanceToRow(appearance: Appearance): AppearanceRow {
+export function appearanceToRow(appearance: Appearance): AppearanceRow {
   return {
     background_color: appearance.backgroundColor,
     title_color: appearance.titleColor,
@@ -64,7 +64,7 @@ function appearanceToRow(appearance: Appearance): AppearanceRow {
   };
 }
 
-function appearanceFromRow(row: AppearanceRow): Appearance {
+export function appearanceFromRow(row: AppearanceRow): Appearance {
   return {
     backgroundColor: row.background_color,
     titleColor: row.title_color,
