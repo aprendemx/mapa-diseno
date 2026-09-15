@@ -53,11 +53,22 @@ try {
   const stored = await readCatalog(pool)
   const generated = generateMapData(fromRows(stored))
 
+  const legacyPaths = stored.files.filter((row) => !/^contenidos\/[^/]+\/archivo-/.test(row.path))
+
   console.log(`\nCatálogo importado desde ${file}`)
   console.log(`  medios     ${generated.media.length}`)
   console.log(`  estados    ${generated.states.length} (${generated.states.filter((s) => s.active === '1').length} activos)`)
   console.log(`  notas      ${generated.campaigns.length}`)
   console.log(`  testigos   ${generated.contents.length}`)
+
+  // El documento legacy trae rutas derivadas del nombre del medio. Los
+  // archivos en disco ya usan el esquema por id, así que un import deja la
+  // base apuntando a rutas que no resuelven y publicar falla — con razón, pero
+  // sin decir que la causa fue este comando.
+  if (legacyPaths.length > 0) {
+    console.log(`\n  AVISO: ${legacyPaths.length} ruta(s) quedaron con el esquema legacy.`)
+    console.log('  Corré ahora:  npm run migrate-paths -- --apply')
+  }
   console.log()
 } finally {
   await pool.end()

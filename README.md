@@ -32,6 +32,10 @@ docker exec mapa-postgres-dev psql -U mapa -d postgres -c 'create database mapa_
 cd apps/editor
 cp .env.example .env
 npm run import-legacy -- --file ../../datos/proyecto.json
+# Obligatorio despues de importar: proyecto.json trae las rutas legacy, y los
+# archivos en disco ya usan el esquema por id. Sin esto, publicar falla con
+# 158 archivos "no encontrados" y tiene razon.
+npm run migrate-paths -- --apply
 npm run create-user -- --email vos@aprende.gob.mx --name "Tu nombre"
 npm run dev
 ```
@@ -45,6 +49,7 @@ npm run typecheck
 cd apps/editor
 npm run import-legacy       # migra datos/proyecto.json al catalogo
 npm run migrate-paths       # rutas legacy -> rutas por id (informe; --apply)
+                            # correr siempre despues de import-legacy
 npm run verify-catalog      # regenera el mapa desde la base y lo resume
 npm run sweep               # archivos sin fila (informe; --delete)
 npm run create-user
