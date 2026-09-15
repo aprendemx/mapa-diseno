@@ -1,0 +1,19 @@
+{
+  "name": "@mapa-mexico/file-storage",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Where media bytes live, and how they are written. Path rules are pure; IO is thin.",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mapa-mexico/project-store": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  }
+}

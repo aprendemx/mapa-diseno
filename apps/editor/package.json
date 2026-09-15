@@ -10,7 +10,8 @@
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "create-user": "node --env-file-if-exists=.env scripts/create-user.ts",
-    "import-legacy": "node --env-file-if-exists=.env scripts/import-legacy.ts"
+    "import-legacy": "node --env-file-if-exists=.env scripts/import-legacy.ts",
+    "migrate-paths": "node --env-file-if-exists=.env scripts/migrate-file-paths.ts"
   },
   "dependencies": {
     "@mapa-mexico/auth": "*",
@@ -20,7 +21,8 @@
     "nuxt": "^4.0.0",
     "pg": "^8.13.0",
     "vue": "^3.5.0",
-    "vue-router": "^4.4.0"
+    "vue-router": "^4.4.0",
+    "@mapa-mexico/file-storage": "*"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
