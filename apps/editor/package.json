@@ -1,0 +1,30 @@
+{
+  "name": "@mapa-mexico/editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "create-user": "node --env-file-if-exists=.env scripts/create-user.ts"
+  },
+  "dependencies": {
+    "@mapa-mexico/auth": "*",
+    "@mapa-mexico/map-generator": "*",
+    "@mapa-mexico/postgres": "*",
+    "@mapa-mexico/project-store": "*",
+    "nuxt": "^4.0.0",
+    "pg": "^8.13.0",
+    "vue": "^3.5.0",
+    "vue-router": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.11.0",
+    "typescript": "^5.7.0",
+    "vue-tsc": "^2.1.0"
+  }
+}

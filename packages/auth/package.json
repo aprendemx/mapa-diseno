@@ -1,0 +1,16 @@
+{
+  "name": "@mapa-mexico/auth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Password hashing and session tokens. Standard library only.",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.7.0"
+  }
+}

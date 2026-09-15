@@ -33,6 +33,8 @@ const DATABASE_URL =
 const isLocal = /@(127\.0\.0\.1|localhost|\[::1\])[:/]/.test(DATABASE_URL);
 
 let pool: pg.Pool | undefined;
+/** Why the suite could not run. Empty means it did. */
+let unavailable = 'DATABASE_URL is not a loopback address';
 let reachable = false;
 
 before(async () => {
@@ -41,7 +43,8 @@ before(async () => {
   try {
     await pool.query('select 1');
     reachable = true;
-  } catch {
+  } catch (error) {
+    unavailable = error instanceof Error ? error.message : String(error);
     await pool.end();
     pool = undefined;
   }
@@ -56,7 +59,7 @@ describe('the catalogue, through real SQL', () => {
   const imported = toRows(project);
 
   test('imports and reads back the whole catalogue', async (t) => {
-    if (!reachable || !pool) return t.skip('no local Postgres on DATABASE_URL');
+    if (!reachable || !pool) return t.skip(`database unavailable: ${unavailable}`);
 
     await pool.query('drop schema public cascade; create schema public;');
     await pool.query(schema);
@@ -71,14 +74,14 @@ describe('the catalogue, through real SQL', () => {
   });
 
   test('returns rows identical to the ones it was given', async (t) => {
-    if (!stored) return t.skip('no local Postgres on DATABASE_URL');
+    if (!stored) return t.skip(`database unavailable: ${unavailable}`);
     // Catches exactly what a stubbed driver would not: numeric coming back as
     // a string, a boolean as 't', an integer widened to something else.
     assert.deepStrictEqual(stored, imported);
   });
 
   test('still generates the published map after the round trip', async (t) => {
-    if (!stored) return t.skip('no local Postgres on DATABASE_URL');
+    if (!stored) return t.skip(`database unavailable: ${unavailable}`);
     assert.equal(
       JSON.stringify(generateMapData(fromRows(stored))),
       JSON.stringify(expected),
@@ -86,7 +89,7 @@ describe('the catalogue, through real SQL', () => {
   });
 
   test('a failed import leaves the catalogue untouched', async (t) => {
-    if (!reachable || !pool) return t.skip('no local Postgres on DATABASE_URL');
+    if (!reachable || !pool) return t.skip(`database unavailable: ${unavailable}`);
 
     const broken: CatalogRows = {
       ...imported,

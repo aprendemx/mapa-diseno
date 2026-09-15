@@ -13,12 +13,16 @@ create table users (
   created_at    timestamptz not null default now()
 );
 
+-- Keyed by the hash of the token, never by the token itself. Reading this
+-- table gives an attacker nothing they can present as a cookie.
 create table sessions (
-  id         uuid primary key default gen_random_uuid(),
+  token_hash text primary key,
   user_id    uuid not null references users (id) on delete cascade,
   expires_at timestamptz not null,
   created_at timestamptz not null default now()
 );
+
+create index sessions_expires_at_idx on sessions (expires_at);
 
 create index sessions_user_id_idx on sessions (user_id);
 
