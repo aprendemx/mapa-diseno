@@ -1,0 +1,4184 @@
+{
+  "appearance": {
+    "backgroundColor": "#2f302e",
+    "titleColor": "#e9e9dc",
+    "stateWithMediaColor": "#e9e9dc",
+    "stateDisabledColor": "#e9e9dc",
+    "stateHoverColor": "#43a56f",
+    "stateSelectedColor": "#08783f",
+    "coverageOriginColor": "#08783f",
+    "coverageAreaColor": "#c0978c",
+    "glowColor": "#595959",
+    "glowIntensity": 30,
+    "glowOpacity": 85,
+    "glowCoreSize": 2,
+    "glowSpread": 10,
+    "glowOutline": 0.4,
+    "accentColor": "#08783f"
+  },
+  "states": [
+    {
+      "id": "agu",
+      "name": "Aguascalientes",
+      "active": "0"
+    },
+    {
+      "id": "bcn",
+      "name": "Baja California",
+      "active": "0"
+    },
+    {
+      "id": "bcs",
+      "name": "Baja California Sur",
+      "active": "1"
+    },
+    {
+      "id": "cam",
+      "name": "Campeche",
+      "active": "0"
+    },
+    {
+      "id": "chp",
+      "name": "Chiapas",
+      "active": "1"
+    },
+    {
+      "id": "chh",
+      "name": "Chihuahua",
+      "active": "0"
+    },
+    {
+      "id": "coa",
+      "name": "Coahuila",
+      "active": "0"
+    },
+    {
+      "id": "col",
+      "name": "Colima",
+      "active": "1"
+    },
+    {
+      "id": "dur",
+      "name": "Durango",
+      "active": "0"
+    },
+    {
+      "id": "gua",
+      "name": "Guanajuato",
+      "active": "0"
+    },
+    {
+      "id": "gro",
+      "name": "Guerrero",
+      "active": "0"
+    },
+    {
+      "id": "hid",
+      "name": "Hidalgo",
+      "active": "0"
+    },
+    {
+      "id": "jal",
+      "name": "Jalisco",
+      "active": "0"
+    },
+    {
+      "id": "cmx",
+      "name": "Ciudad de México",
+      "active": "1"
+    },
+    {
+      "id": "mex",
+      "name": "Estado de México",
+      "active": "1"
+    },
+    {
+      "id": "mic",
+      "name": "Michoacán",
+      "active": "1"
+    },
+    {
+      "id": "mor",
+      "name": "Morelos",
+      "active": "1"
+    },
+    {
+      "id": "nay",
+      "name": "Nayarit",
+      "active": "1"
+    },
+    {
+      "id": "nle",
+      "name": "Nuevo León",
+      "active": "1"
+    },
+    {
+      "id": "oax",
+      "name": "Oaxaca",
+      "active": "1"
+    },
+    {
+      "id": "pue",
+      "name": "Puebla",
+      "active": "1"
+    },
+    {
+      "id": "que",
+      "name": "Querétaro",
+      "active": "0"
+    },
+    {
+      "id": "roo",
+      "name": "Quintana Roo",
+      "active": "1"
+    },
+    {
+      "id": "slp",
+      "name": "San Luis Potosí",
+      "active": "0"
+    },
+    {
+      "id": "sin",
+      "name": "Sinaloa",
+      "active": "1"
+    },
+    {
+      "id": "son",
+      "name": "Sonora",
+      "active": "1"
+    },
+    {
+      "id": "tab",
+      "name": "Tabasco",
+      "active": "1"
+    },
+    {
+      "id": "tam",
+      "name": "Tamaulipas",
+      "active": "1"
+    },
+    {
+      "id": "tla",
+      "name": "Tlaxcala",
+      "active": "1"
+    },
+    {
+      "id": "ver",
+      "name": "Veracruz",
+      "active": "1"
+    },
+    {
+      "id": "yuc",
+      "name": "Yucatán",
+      "active": "1"
+    },
+    {
+      "id": "zac",
+      "name": "Zacatecas",
+      "active": "1"
+    }
+  ],
+  "media": [
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Canal 53 de la Universidad Autónoma de [[Nuevo León]]",
+      "stateId": "nle",
+      "coverageStates": [],
+      "coverageText": "Cobertura: Nuevo León",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-once-ciudad-de-mexico",
+      "name": "Canal Once, [[Ciudad de México]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "agu",
+        "bcn",
+        "bcs",
+        "cam",
+        "chp",
+        "chh",
+        "coa",
+        "col",
+        "dur",
+        "gua",
+        "jal",
+        "mex",
+        "mic",
+        "mor",
+        "nle",
+        "oax",
+        "pue",
+        "que",
+        "roo",
+        "slp",
+        "sin",
+        "son",
+        "tab",
+        "tam",
+        "tla",
+        "ver",
+        "yuc",
+        "zac"
+      ],
+      "coverageText": "Audiencia: 56,558,399 mensual\nCobertura: Todos los estados de la República excepto Nayarit, Guerrero e Hidalgo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco",
+      "name": "Comisión de Radio y Televisión de [[Tabasco]]",
+      "stateId": "tab",
+      "coverageStates": [
+        "ver",
+        "chp",
+        "cam"
+      ],
+      "coverageText": "Audiencia: 2,400,000 potenciales\nCobertura: Tabasco, Veracruz, Chiapas y Campeche",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Coordinación de Radio, Cine y Televisión del Estado de [[Tlaxcala]]",
+      "stateId": "tla",
+      "coverageStates": [
+        "pue",
+        "mex",
+        "hid",
+        "ver"
+      ],
+      "coverageText": "Audiencia: 1,517,693 potenciales\nCobertura: Tlaxcala, Puebla, Estado de México, Hidalgo y Veracruz",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Corporación [[Oaxaqueña]] de Radio y Televisión",
+      "stateId": "oax",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 3,000,000\nCobertura: Oaxaca",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television",
+      "name": "Instituto [[Colimense]] de Radio y Televisión",
+      "stateId": "col",
+      "coverageStates": [
+        "mic",
+        "jal"
+      ],
+      "coverageText": "Audiencia: 730,000 potenciales\nCobertura: Colima, Michoacán y Jalisco",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "name": "Instituto Estatal de Radio y Televisión de [[Baja California Sur]]",
+      "stateId": "bcs",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 1,400,000 potenciales\nCobertura: Baja California Sur",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "instituto-morelense-de-radio-y-television",
+      "name": "Instituto [[Morelense]] de Radio y Televisión",
+      "stateId": "mor",
+      "coverageStates": [
+        "pue",
+        "mex",
+        "gro",
+        "oax"
+      ],
+      "coverageText": "Audiencia: 1900000\nCobertura: Morelos, Puebla, Estado de México, Guerrero y Oaxaca",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "radio-chapingo-estado-de-mexico",
+      "name": "Radio Chapingo, [[Estado de México]]",
+      "stateId": "mex",
+      "coverageStates": [
+        "cmx",
+        "pue",
+        "tla",
+        "hid"
+      ],
+      "coverageText": "Audiencia: 5,400,000\nCobertura: Estado de México, Ciudad de México, Puebla, Tlaxcala e Hidalgo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "radio-cultural-ayuntamiento-cancun",
+      "name": "Radio Cultural Ayuntamiento (Cancún)",
+      "stateId": "roo",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 100,000 estimadas\nCobertura: Quintana Roo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-de-sinaloa",
+      "name": "Radio de la Universidad Autónoma de [[Sinaloa]]",
+      "stateId": "sin",
+      "coverageStates": [
+        "dur"
+      ],
+      "coverageText": "Audiencia: 3,000,000\nCobertura: Sinaloa y Durango",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Radio de la Universidad Autónoma del Estado de [[Morelos]]",
+      "stateId": "mor",
+      "coverageStates": [
+        "gro",
+        "pue",
+        "mex"
+      ],
+      "coverageText": "Audiencia: 1,000,000 potenciales\nCobertura: Morelos, Guerrero, Puebla y Estado de México",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico",
+      "name": "Radio de la Universidad Autónoma Metropolitana, [[Ciudad de México]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "mex"
+      ],
+      "coverageText": "Audiencia: 22,000,000 estimadas\nCobertura: Ciudad de México y Estado de México",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "radio-educacion",
+      "name": "Radio Educación, [[Ciudad de México]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "mex",
+        "yuc",
+        "son",
+        "mic"
+      ],
+      "coverageText": "Audiencia: 80,108 mensuales\nCobertura: Ciudad de México, Estado de México, Yucatán, Sonora y Michoacán",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 14
+    },
+    {
+      "id": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "name": "Radio Instituto Politécnico Nacional, [[Ciudad de México]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "mex"
+      ],
+      "coverageText": "Audiencia: 788,000 promedio\nCobertura: Ciudad de México y Estado de México",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "radio-sonora",
+      "name": "Radio [[Sonora]]",
+      "stateId": "son",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 2,550,000 potenciales\nCobertura: Sonora",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 16
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "Radio y Televisión Universidad Juárez Autónoma de [[Tabasco]]",
+      "stateId": "tab",
+      "coverageStates": [
+        "chp"
+      ],
+      "coverageText": "Audiencia: 1,100,000 potenciales\nCobertura: Tabasco y Chiapas",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 17
+    },
+    {
+      "id": "radiotelevision-de-veracruz",
+      "name": "Radiotelevisión de [[Veracruz]]",
+      "stateId": "ver",
+      "coverageStates": [
+        "pue",
+        "oax",
+        "tla",
+        "hid"
+      ],
+      "coverageText": "Audiencia: 5,500,000\nCobertura: Veracruz, Puebla, Oaxaca, Tlaxcala e Hidalgo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 18
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Sistema [[Chiapaneco]] de Radio, Televisión y Cinematografía",
+      "stateId": "chp",
+      "coverageStates": [
+        "tab",
+        "oax"
+      ],
+      "coverageText": "Audiencia: 4,600,000 estimadas\nCobertura: Tabasco, Chiapas y Oaxaca",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 19
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Sistema de Información y Comunicación del Estado de [[Puebla]]",
+      "stateId": "pue",
+      "coverageStates": [
+        "tla",
+        "gro",
+        "hid",
+        "mex"
+      ],
+      "coverageText": "Audiencia: 3,000,000 estimadas\nCobertura: Puebla, Tlaxcala, Guerrero, Hidalgo y Estado de México",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 20
+    },
+    {
+      "id": "sistema-de-radio-y-television-de-nayarit",
+      "name": "Sistema de Radio y Televisión de [[Nayarit]]",
+      "stateId": "nay",
+      "coverageStates": [
+        "jal"
+      ],
+      "coverageText": "Audiencia: 840,000 estimadas\nCobertura: Nayarit y Jalisco",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 21
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Sistema Estatal de Radio y Televisión de [[Tamaulipas]]",
+      "stateId": "tam",
+      "coverageStates": [
+        "nle"
+      ],
+      "coverageText": "Audiencia: 3,256,375 potenciales\nCobertura: Tamaulipas y Nuevo León",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 22
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Sistema Mexiquense de Medios Públicos, [[Estado de México]]",
+      "stateId": "mex",
+      "coverageStates": [
+        "cmx",
+        "gro",
+        "mic",
+        "hid",
+        "mor",
+        "pue",
+        "tla",
+        "oax",
+        "que"
+      ],
+      "coverageText": "Audiencia: 26,000,000 estimadas\nCobertura: Estado de México, Ciudad de México, Guerrero, Michoacán, Hidalgo, Morelos, Puebla, Tlaxcala, Oaxaca y Querétaro",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 23
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television",
+      "name": "Sistema [[Michoacano]] de Radio y Televisión",
+      "stateId": "mic",
+      "coverageStates": [
+        "jal"
+      ],
+      "coverageText": "Audiencia: 4,700,000 potenciales\nCobertura: Jalisco y Michoacán",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 24
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Sistema [[Quintanarroense]] de Comunicación Social",
+      "stateId": "roo",
+      "coverageStates": [
+        "cam"
+      ],
+      "coverageText": "Audiencia: 1,857,985 TV + 1,116,549 radio potenciales\nCobertura: Quintana Roo y Campeche",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 25
+    },
+    {
+      "id": "sistema-sinaloense-de-radio-y-television",
+      "name": "Sistema [[Sinaloense]] de Radio y Televisión",
+      "stateId": "sin",
+      "coverageStates": [
+        "dur",
+        "chh"
+      ],
+      "coverageText": "Audiencia: 300,000–600,000 diarios o recurrentes\nCobertura: Sinaloa, Durango y Chihuahua",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 26
+    },
+    {
+      "id": "sistema-tele-yucatan",
+      "name": "Sistema Tele [[Yucatán]]",
+      "stateId": "yuc",
+      "coverageStates": [
+        "cam",
+        "roo"
+      ],
+      "coverageText": "Audiencia: 3,000,000 estimadas\nCobertura: Península de Yucatán",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 27
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television",
+      "name": "Sistema [[Zacatecano]] de Radio y Televisión",
+      "stateId": "zac",
+      "coverageStates": [
+        "agu",
+        "jal",
+        "slp"
+      ],
+      "coverageText": "Audiencia: 1,600,000 estimadas\nCobertura: Zacatecas, Aguascalientes, Jalisco y San Luis Potosí",
+      "socialEnabled": true,
+      "active": "1",
+      "order": 28
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "Televisión de la Benemérita Universidad Autónoma de [[Puebla]]",
+      "stateId": "pue",
+      "coverageStates": [
+        "tla"
+      ],
+      "coverageText": "Audiencia: 95,000\nCobertura: Puebla y Tlaxcala",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 29
+    }
+  ],
+  "coverage": [
+    {
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "order": 1,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "order": 2,
+      "active": "1"
+    },
+    {
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "order": 3,
+      "active": "1"
+    },
+    {
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "order": 4,
+      "active": "1"
+    },
+    {
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "order": 5,
+      "active": "1"
+    },
+    {
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "order": 6,
+      "active": "1"
+    },
+    {
+      "stateId": "bcs",
+      "mediumId": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "order": 7,
+      "active": "1"
+    },
+    {
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "order": 8,
+      "active": "1"
+    },
+    {
+      "stateId": "mex",
+      "mediumId": "radio-chapingo-estado-de-mexico",
+      "order": 9,
+      "active": "1"
+    },
+    {
+      "stateId": "roo",
+      "mediumId": "radio-cultural-ayuntamiento-cancun",
+      "order": 10,
+      "active": "1"
+    },
+    {
+      "stateId": "sin",
+      "mediumId": "radio-de-la-universidad-autonoma-de-sinaloa",
+      "order": 11,
+      "active": "1"
+    },
+    {
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "order": 12,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico",
+      "order": 13,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "order": 14,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "order": 15,
+      "active": "1"
+    },
+    {
+      "stateId": "son",
+      "mediumId": "radio-sonora",
+      "order": 16,
+      "active": "1"
+    },
+    {
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "order": 17,
+      "active": "1"
+    },
+    {
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "order": 18,
+      "active": "1"
+    },
+    {
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "order": 19,
+      "active": "1"
+    },
+    {
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "order": 20,
+      "active": "1"
+    },
+    {
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "order": 21,
+      "active": "1"
+    },
+    {
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "order": 22,
+      "active": "1"
+    },
+    {
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "order": 23,
+      "active": "1"
+    },
+    {
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "order": 24,
+      "active": "1"
+    },
+    {
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "order": 25,
+      "active": "1"
+    },
+    {
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "order": 26,
+      "active": "1"
+    },
+    {
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "order": 27,
+      "active": "1"
+    },
+    {
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "order": 28,
+      "active": "1"
+    },
+    {
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "order": 29,
+      "active": "1"
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-1",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-2",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Salud Digital: Controles parentales- TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-3",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-4",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-5",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-6",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-7",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-8",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "canal-once-ciudad-de-mexico-nota-1",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-once-ciudad-de-mexico-nota-2",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "name": "Higiene del Sueño - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-1",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Hospital Oncológico - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-2",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-3",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "La escuela es nuestra - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-4",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "IMSS Bienestar - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-5",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-6",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-7",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Salud Digital: privacidad y datos personales - Redes Sociales",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-8",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Hospital Oncológico - Redes Sociales",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-9",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "La Escuela es Nuestra - Redes Sociales",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-1",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Salud Digital - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-2",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-3",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-4",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-5",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-6",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-7",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-8",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-9",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-1",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Hospital Oncológico - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-2",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Hospital Oncológico - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-3",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Salud Casa por Casa Punta Chueca, Sonora - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-4",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-5",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Infraestructura educativa - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-6",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-7",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Quirófano Robótico Jiutepec - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-8",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Revalorización del Magisterio - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-1",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "Salud Digital: privacidad y datos personales y Controles parentales- Redes Sociales",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-2",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-3",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-4",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "instituto-estatal-de-radio-y-television-de-baja-california-sur-nota-1",
+      "stateId": "bcs",
+      "mediumId": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "name": "La escuela es nuestra - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "instituto-estatal-de-radio-y-television-de-baja-california-sur-nota-2",
+      "stateId": "bcs",
+      "mediumId": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "name": "Higiene del Sueño - Radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "instituto-morelense-de-radio-y-television-nota-1",
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "name": "Salud Digital: Controles parentales - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "instituto-morelense-de-radio-y-television-nota-2",
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "name": "Salud Digital: Controles parentales - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radio-chapingo-estado-de-mexico-nota-1",
+      "stateId": "mex",
+      "mediumId": "radio-chapingo-estado-de-mexico",
+      "name": "Salud Digital: privacidad y datos personales - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-cultural-ayuntamiento-cancun-nota-1",
+      "stateId": "roo",
+      "mediumId": "radio-cultural-ayuntamiento-cancun",
+      "name": "Ciberacoso - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-de-sinaloa-nota-1",
+      "stateId": "sin",
+      "mediumId": "radio-de-la-universidad-autonoma-de-sinaloa",
+      "name": "Higiene del Sueño - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos-nota-1",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Nota Quirófano Robótico Jiutepec- radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos-nota-2",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Nota Infraestructura Educativa - radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos-nota-3",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Salud Digital: privacidad y datos personales - radio",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos-nota-4",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Ciberacoso - Radio",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos-nota-5",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Grooming - Radio",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico-nota-1",
+      "stateId": "cmx",
+      "mediumId": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico",
+      "name": "Salud Digital: privacidad y datos personales - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-educacion-nota-1",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "name": "Infraestructura educativa - radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-educacion-nota-2",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "name": "Salud Digital: privacidad y datos personales - radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radio-educacion-nota-3",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "name": "Becas - Redes Sociales",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "radio-educacion-nota-4",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "name": "Salud Casa por Casa Punta Chueca, Sonora - Redes sociales",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "radio-instituto-politecnico-nacional-ciudad-de-mexico-nota-1",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "name": "Salud Digital: privacidad y datos personales - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-instituto-politecnico-nacional-ciudad-de-mexico-nota-2",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "name": "Salud Digital: controles parentales - Radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radio-instituto-politecnico-nacional-ciudad-de-mexico-nota-3",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "name": "Grooming - Radio",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "radio-instituto-politecnico-nacional-ciudad-de-mexico-nota-4",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "name": "Limitar tiempo de pantalla - Radio",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "radio-sonora-nota-1",
+      "stateId": "son",
+      "mediumId": "radio-sonora",
+      "name": "Salud Digital - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco-nota-1",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "Salud Digital: controles parentales - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco-nota-2",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-1",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-2",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Salud Digital: controles parentales - Radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-3",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Higiene del Sueño - Radio",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-4",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "La Escuela es nuestra - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-5",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Higiene del Sueño - Radio",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-6",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Salud Digital: privacidad y datos personales - Radio",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-7",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Infraestructura educativa - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-8",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "Hospital robótico Jiutepec - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-1",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Revalorización del Magisterio - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-2",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-3",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Salud Digital: Controles parentales- TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-4",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-5",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-6",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-7",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-1",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital: privacidad y datos personales y Controles parentales - TV, Radio y Redes Sociales",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-2",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-3",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-4",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-5",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-6",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-7",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital: controles parentales - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-8",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital: privacidad y datos personales y controles parentales - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-9",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-10",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-11",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-12",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-13",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud digital",
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-14",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 14
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-15",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-16",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud digital",
+      "active": "1",
+      "order": 16
+    },
+    {
+      "id": "sistema-de-radio-y-television-de-nayarit-nota-1",
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-de-radio-y-television-de-nayarit-nota-2",
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "name": "Salud Digital: controles parentales - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-1",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Salud Digital: privacidad y datos personales y Controles parentales- Redes Sociales",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-2",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Salud Digital: privacidad y datos personales - Radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-3",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Higiene del sueño - Radio",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-4",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Ciberacoso - Radio",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-5",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Limitar tiempo de pantalla - Radio",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-6",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Limitar tiempo de pantalla - Radio",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-1",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Nota Hospital Oncológico - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-2",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Infraestructura educativa - Redes Sociales",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-3",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Dossier Abuso de pantallas - Redes Sociales",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-4",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Salud Digital: privacidad y datos personales y Controles parentales- Redes Sociales",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-5",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Quirófano Robótico Jiutepec- Redes Sociales",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-6",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Varios temas - Redes sociales",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-7",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-8",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "La Escuela es Nuestra - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-9",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Hospital Oncológico - TV",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-10",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Infraestructura Educativa - TV",
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-11",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Salud Casa por casa - TV",
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-12",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico-nota-13",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-1",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-2",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "Salud Digital: controles parentales",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-3",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "Salud Casa por Casa Punta Chueca, Sonora - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-4",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "Hospital Oncológico - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-5",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "La Escuela es nuestra - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-1",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Salud Digital: privacidad y datos personales y Controles parentales- TV y Redes Sociales",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-2",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Infraestructura educativa - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-3",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Salud Digital: privacidad y datos personales",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-4",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-5",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-6",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social-nota-7",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Higiene del sueño - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "sistema-sinaloense-de-radio-y-television-nota-1",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "name": "Salud Digital: privacidad y datos personales - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-sinaloense-de-radio-y-television-nota-2",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "name": "La Escuela es nuestra - Radio",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-sinaloense-de-radio-y-television-nota-3",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "name": "Higiene del Sueño - Radio",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-tele-yucatan-nota-1",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "name": "Salud Casa por Casa Punta Chueca, Sonora - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-tele-yucatan-nota-2",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "name": "Salud Digital: Controles parentales - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-tele-yucatan-nota-3",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "name": "Salud Digital: privacidad y datos personales - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-tele-yucatan-nota-4",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "name": "Salud Digital: privacidad y datos personales",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-1",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "Salud Digital: privacidad y datos personales y Controles parentales- Redes Sociales",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-2",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "Salud Casa por Casa Punta Chueca, Sonora - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-3",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "La escuela es nuestra - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-4",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-5",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-6",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla-nota-1",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla-nota-2",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla-nota-3",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "Grooming - TV",
+      "active": "1",
+      "order": 3
+    }
+  ],
+  "contents": [
+    {
+      "id": "archivo-1787070380674-dfwsw",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/nota-videojuegos-y-familia-canal-55-uanl.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787099561486-pwfcm",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/comprimido-tv-uanl-mencion-noti-tarde-18-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787174501971-y0jx3",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/comprimido-mencion-noti-noche-18-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787626390007-kdi87",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/comprimido-limitar-tiempo-en-pantalla-familia-y-videojuegos-mencion-no.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787626390066-s2nf7",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-noti-noche-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787801228594-ayn9d",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-noti-tarde-tiempo-en-pantalla-ciberacoso-24-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1787801228634-c76i4",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-noti-tarde-tiempo-en-pantalla-ciberacoso-25-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1787801228668-j3hgz",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-noti-noche-tiempo-en-pantalla-ciberacoso-24-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1787887907225-6ltzj",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/comprimido-mencion-noti-noche-tiempo-en-pantalla-ciberacoso-26-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "archivo-1788461087922-q7bg7",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-noti-tarde-tiempo-en-pantalla-ciberacoso-27-ago-26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "archivo-1786728862625-a94f2",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "type": "video",
+      "file": "contenidos/cmx/canal-once-ciudad-de-mexico/testigo-capsula-infancias-a-las-6.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786755315315-mz92n",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "type": "video",
+      "file": "contenidos/cmx/canal-once-ciudad-de-mexico/comprimido-canal-once-higiene-del-sueno.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1788802626676-bmsu0",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "type": "video",
+      "file": "contenidos/cmx/canal-once-ciudad-de-mexico/testigo-control-parental.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1788802626797-2eoh9",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "type": "video",
+      "file": "contenidos/cmx/canal-once-ciudad-de-mexico/capsula-rita-cetina.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1786754626352-jcqfa",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/television-tabasquena-hospital-oncologico.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786754626389-cjpcx",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/television-tabasquena-infraestructura-educativa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786754626430-12jwf",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/television-tabasquena-rita-cetina.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787275149096-fogv7",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/comprimido-testigo-television-tabasquena-ago-20.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787626848028-1zsnd",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/limitar-tiempo-en-pantalla-ago24-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787801366224-rrowk",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/television-tabasquena.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "social-1788461440866-9o34a",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Salud digital - lunes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/1573099147794790/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "social-1788462690674-fj039",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Salud digital - martes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/1498554365411628/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "social-1788462690873-gw010",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Salud digital - jueves",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1EiVDsdHQr/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "social-1788462691063-ssnv1",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Salud digital - viernes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1DjQGQfJKD/v",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "social-1788462709301-yqde5",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Hospital Oncológico para la Mujer - lunes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/1099988339262598/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "social-1788462711055-j77pw",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Hospital Oncológico para la Mujer - martes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1DUUbHvDZ3/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "social-1788462711055-b3pnt",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Hospital Oncológico para la Mujer - martes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1DG2P8eS9G/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "social-1788462711055-e55rc",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Hospital Oncológico para la Mujer - jueves",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/14p1atCetbz/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 14
+    },
+    {
+      "id": "social-1788462711711-s3h1c",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "Hospital Oncológico para la Mujer - viernes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1CSjXBJG1n/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "social-1788462711874-dfvcz",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "La Escuela es Nuestra - lunes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1iu8KRrQtF/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 16
+    },
+    {
+      "id": "social-1788462712040-od7dg",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "La Escuela es Nuestra - martes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/19KTZovhK9/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 17
+    },
+    {
+      "id": "social-1788462712238-hthj8",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "La Escuela es Nuestra - miércoles",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/1112244064461377/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 18
+    },
+    {
+      "id": "social-1788462712415-pc1ez",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "La Escuela es Nuestra - jueves",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/18FYEG5Q4V/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 19
+    },
+    {
+      "id": "social-1788462712640-y7t5u",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "social",
+      "theme": "La Escuela es Nuestra - viernes",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/1396229049103774/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 20
+    },
+    {
+      "id": "archivo-1786818238287-8hd2g",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/testigos-spots-privacidad-de-datos-personales-redes.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787626286619-9w91b",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-limitar-tiempo-en-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787626286659-98fp1",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-familia-y-videojuegos-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1788377842217-ujqpn",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/vid-20260901-wa0009.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1788401121755-5x0b2",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-limitar-tiempo-de-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1788401121783-amsdi",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1788461038525-1um2z",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/grooming-coracyt.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1788662243919-vjc9i",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-limitar-tiempo-de-pantalla-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1788662243957-sqrot",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-grooming.mp4",
+      "description": "",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "archivo-1786725168718-epx2d",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/testigo-cortv-oaxaca-hospital-oncologico.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786725168795-qbs1j",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/testigo-cortv-oaxaca-hospital-oncologico-30seg.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787277654414-mxde5",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/comprimido-testigo-hospital-la-pastora.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787596530367-k3en5",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/comprimido-testigo-ft-becas-secundaria-chiapas.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787761644689-om0yg",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/capsula-infraestructura-educativa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787887953952-korvu",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/comprimido-capsula-beca-rita-cetina-tlatelolco-cortv-noticias.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1788377857260-ra3du",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/vid-20260901-wa0008.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1788663359981-i6nco",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/quirofano-robotico-imss-jiutepec-morelos-cortv-noticias.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1786751157915-sgpnz",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/instituto-colimense-de-radio-y-tv-familia-y-videojuegos-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786751157935-ghxn3",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/instituto-colimense-de-radio-y-tv-familia-y-videojuegos-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1788461188700-rhy6x",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/colima-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1788461188722-6u68q",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/colima-limitar-tiempo-de-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1788461188750-xtuik",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/colima-grooming.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1786721789995-4966q",
+      "stateId": "bcs",
+      "mediumId": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "type": "video",
+      "file": "contenidos/bcs/instituto-estatal-de-radio-y-television-de-baja-california-sur/bcs-iertv-infraestructura-educativa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787174796568-su3ak",
+      "stateId": "bcs",
+      "mediumId": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "type": "video",
+      "file": "contenidos/bcs/instituto-estatal-de-radio-y-television-de-baja-california-sur/comprimido-testigo-salud-digital-higiene-del-sueno.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786722195892-ukzc9",
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mor/instituto-morelense-de-radio-y-television/familia-y-videojuegos-nst-morelense.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787275129238-n6ptz",
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mor/instituto-morelense-de-radio-y-television/comprimido-morelos-controles-parentales.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787086916807-cumvi",
+      "stateId": "mex",
+      "mediumId": "radio-chapingo-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/radio-chapingo-estado-de-mexico/comprimido-radio-chapingo-ago18.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1788401321204-lru6o",
+      "stateId": "roo",
+      "mediumId": "radio-cultural-ayuntamiento-cancun",
+      "type": "video",
+      "file": "contenidos/roo/radio-cultural-ayuntamiento-cancun/radio-cultural-ayuntamiento-testigo-nota-ciber-acoso.mp4",
+      "description": "Ciberacoso - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786826356371-c8xxk",
+      "stateId": "sin",
+      "mediumId": "radio-de-la-universidad-autonoma-de-sinaloa",
+      "type": "video",
+      "file": "contenidos/sin/radio-de-la-universidad-autonoma-de-sinaloa/salud-digital.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786724907034-i9rq4",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "type": "video",
+      "file": "contenidos/mor/radio-de-la-universidad-autonoma-del-estado-de-morelos/radio-uaem-salud-digital.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786724907041-si8py",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "type": "audio",
+      "file": "contenidos/mor/radio-de-la-universidad-autonoma-del-estado-de-morelos/copia-de-testigo-imss-robotica-radio-uaem.mp3",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786724907048-i98qe",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "type": "audio",
+      "file": "contenidos/mor/radio-de-la-universidad-autonoma-del-estado-de-morelos/copia-de-testigo-radio-uaem-centro-de-estudios-bachillerato.mp3",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787887837247-ik9u6",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "type": "video",
+      "file": "contenidos/mor/radio-de-la-universidad-autonoma-del-estado-de-morelos/radio-uaem-grooming-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787888734561-wnyck",
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "type": "video",
+      "file": "contenidos/mor/radio-de-la-universidad-autonoma-del-estado-de-morelos/radio-uaem-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787174358279-ke1jz",
+      "stateId": "cmx",
+      "mediumId": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico/voces-de-la-uam-ago19.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786725146381-en86v",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-educacion-ciudad-de-mexico/infraestructura-educativa-radio-educacion-1060-am.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786725146384-rpf84",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-educacion-ciudad-de-mexico/salud-digital-radio-educacion-965-fm.mp3",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "social-1786813275087-m08jr",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "type": "social",
+      "theme": "Becas Rita Cetina",
+      "links": {
+        "instagram": "",
+        "facebook": "",
+        "x": "https://x.com/RadioEducacion/status/2088041748811468936",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "social-1786813277024-rfetr",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "type": "social",
+      "theme": "Salud Casa por Casa Punta Chueca, Sonora",
+      "links": {
+        "instagram": "",
+        "facebook": "",
+        "x": "https://x.com/i/status/2088034216562802837",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787188243320-2xy2c",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-instituto-politecnico-nacional-ciudad-de-mexico/radio-ipn-capsula-videojuegos-y-familia.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787188243325-jq044",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-instituto-politecnico-nacional-ciudad-de-mexico/radio-ipn-capsula-2-controles-parentales.mp3",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787627555053-dm22w",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-instituto-politecnico-nacional-ciudad-de-mexico/familia-y-videojuegos-grooming.mp3",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1788377737818-sfujp",
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-instituto-politecnico-nacional-ciudad-de-mexico/limitar-tiempo-de-pantalla.mp3",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1786751099685-th682",
+      "stateId": "son",
+      "mediumId": "radio-sonora",
+      "type": "audio",
+      "file": "contenidos/son/radio-sonora/testigos-radio-sonora.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787099775363-x8ydi",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/radio-y-television-universidad-juarez-autonoma-de-tabasco/controles-parentales-testigos-noticias-tv-ujat.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787713924819-wmbt2",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/radio-y-television-universidad-juarez-autonoma-de-tabasco/familia-y-videojuegos-datos-y-privacidad.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786759854038-7297k",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/testigos-becas-veracruz.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787106901813-8worx",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/comprimido-testigo-la-escuela-es-nuestra.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787106901835-ou4on",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/comprimido-testigo-salud-digital-alteraciones-del-sueno.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787106906117-ke2ch",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "audio",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/radio-controles-parentales.mp3",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787188092317-eqx3v",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "audio",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/rtv-radio-higiene-del-sueno-capsula.mp3",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787188092364-u4viu",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/comprimido-testigo-privacidad-y-datos-personales.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1787801392186-y0mfu",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/comprimido-infraestructura-educativa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1787888073124-bx53c",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/comprimido-testigo-hospital-robotico-jiutepec.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1786752069673-i0io2",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/copia-de-sistema-chiapaneco-revalorizacion-del-magisterio.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786998133474-lysvo",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/tv-beca-rita-cetina-chiapas.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786996004301-e0x0g",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/tv-controles-parentales.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787008605712-qaf3o",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/comprimido-tv-controles-parentales-noti-vespertino-17-ago.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787192762644-wo1i8",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/comprimido-testigo-corat-ago-19.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1788461167638-i8mvy",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/chiapas-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1788461167663-95pgx",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/limitar-tiempo-de-pantalla-nayarit-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1788461167688-2vs00",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/grooming-nayarit.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1786724154301-hju6r",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/reel-salud-digital.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786760969503-u0r8n",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/puebla-salud-digital-sicom-tv.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786724154340-gwgrf",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/familia-y-videojuegos.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1786818573287-st4zl",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/corte-informativo-videojuegos-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1786981569862-35iwb",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/comprimido-tv-sicom-salud-digital.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787070291705-1c3d0",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/corte-informativo.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1787096122830-u5esd",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/corte-informativo-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1787174429672-jtcoa",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/comprimido-bloque-1-videojuegos-y-familia.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1786724161029-kzciu",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "audio",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/las-redes-sociales.mp3",
+      "description": "",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "archivo-1786724161031-3ix2y",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "audio",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/plataformas-digitales.mp3",
+      "description": "",
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "social-1786813834134-yy98r",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Privacidad y datos personales",
+      "links": {
+        "instagram": "https://www.instagram.com/p/Db_yuWPFBDb/",
+        "facebook": "https://www.facebook.com/share/r/17hwfBq3ms/",
+        "x": "https://x.com/RadioSICOMPue/status/2088027811554394230?s=20",
+        "tiktok": "https://www.tiktok.com/@sicomradio/video/7673643810651475217",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "social-1786814090732-o7hy7",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Controles parentales",
+      "links": {
+        "instagram": "https://www.instagram.com/p/Db_1O8eHKvF/",
+        "facebook": "https://www.facebook.com/share/r/1C47W6FPC8/",
+        "x": "https://x.com/RadioSICOMPue/status/2088033177516257489",
+        "tiktok": "https://www.tiktok.com/@sicomradio/video/7673649407128030465",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "social-1786814091244-trk1i",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "social",
+      "theme": "Higiene del sueño",
+      "links": {
+        "instagram": "https://www.instagram.com/p/Db_3GlRFRnC/",
+        "facebook": "https://www.facebook.com/share/v/1Cw3RGoQPr/",
+        "x": "https://x.com/RadioSICOMPue/status/2088036883808833996?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "archivo-1787275178724-3hrg2",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/comprimido-bloque-3-1-sicom.mp4",
+      "description": "",
+      "active": "1",
+      "order": 14
+    },
+    {
+      "id": "archivo-1787595759968-058a8",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/puebla-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "archivo-1787595760004-2xhax",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/puebla-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 16
+    },
+    {
+      "id": "archivo-1787595760052-2x7r2",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/puebla-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 17
+    },
+    {
+      "id": "archivo-1787888034357-m7ll8",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/limitar-tiempo-en-pantalla-ago28.mp4",
+      "description": "",
+      "active": "1",
+      "order": 18
+    },
+    {
+      "id": "archivo-1787888034408-9dfv2",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/limitar-tiempo-en-pantalla-ago26-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 19
+    },
+    {
+      "id": "archivo-1787888034452-rthq7",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/limitar-tiempo-en-pantalla-ago26-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 20
+    },
+    {
+      "id": "archivo-1787888034501-op8h1",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ciberacoso-ago26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 21
+    },
+    {
+      "id": "archivo-1787888034544-pwvj0",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/limitar-tiempo-en-pantalla-ago27.mp4",
+      "description": "",
+      "active": "1",
+      "order": 22
+    },
+    {
+      "id": "archivo-1788401428486-7vfx9",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-10.mp4",
+      "description": "",
+      "active": "1",
+      "order": 23
+    },
+    {
+      "id": "archivo-1788401428523-68zm6",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-11.mp4",
+      "description": "",
+      "active": "1",
+      "order": 24
+    },
+    {
+      "id": "archivo-1788401428574-qfmjk",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-12.mp4",
+      "description": "",
+      "active": "1",
+      "order": 25
+    },
+    {
+      "id": "archivo-1788401428609-3uokr",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-13.mp4",
+      "description": "",
+      "active": "1",
+      "order": 26
+    },
+    {
+      "id": "archivo-1788401428652-no69k",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-ft-salud-digital-parte-4.mp4",
+      "description": "",
+      "active": "1",
+      "order": 27
+    },
+    {
+      "id": "archivo-1788401428684-ey6ia",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 28
+    },
+    {
+      "id": "archivo-1788661863674-smym2",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-13-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 29
+    },
+    {
+      "id": "archivo-1788661863710-2qsaj",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-12-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 30
+    },
+    {
+      "id": "archivo-1788661863738-wa0lm",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-11-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 31
+    },
+    {
+      "id": "archivo-1788661863770-lm5o3",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-4.mp4",
+      "description": "",
+      "active": "1",
+      "order": 32
+    },
+    {
+      "id": "archivo-1788661863794-l9z87",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-3-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 33
+    },
+    {
+      "id": "archivo-1787714110712-hryrj",
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "type": "video",
+      "file": "contenidos/nay/sistema-de-radio-y-television-de-nayarit/comprimido-privacidad-noticiero-nayarit.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787714110746-1c9yu",
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "type": "video",
+      "file": "contenidos/nay/sistema-de-radio-y-television-de-nayarit/comprimido-controles-parentales-noticiero-nayarit-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787714110778-0nlt5",
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "type": "video",
+      "file": "contenidos/nay/sistema-de-radio-y-television-de-nayarit/comprimido-controles-parentales-noticiero-nayarit-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787714110798-lwfxi",
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "type": "video",
+      "file": "contenidos/nay/sistema-de-radio-y-television-de-nayarit/comprimido-controles-parentales-noticiero-nayarit.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787080550205-snp5g",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "video",
+      "file": "contenidos/tam/sistema-estatal-de-radio-y-television-de-tamaulipas/tamaulipas-familia-y-videojuegos.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787096029107-go9qa",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "audio",
+      "file": "contenidos/tam/sistema-estatal-de-radio-y-television-de-tamaulipas/testigo-capsula-radio-tamps.mp3",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "social-1786814244080-z39pt",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "social",
+      "theme": "Familia y Videojuegos - Controles Parentales",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/Db39wvvpvKi/?igsh=MTBwYnJ5NnIweG1xYQ%3D%3D",
+        "facebook": "https://www.facebook.com/reel/1378717121121430/?referral_source=external_link&surface_type=tab&in_reels_tab_context=TRUE",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "social-1786814366790-7g3pc",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "social",
+      "theme": "Familia y Videojuegos - Datos personales",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/1561306818805875/?referral_source=external_link&surface_type=tab&in_reels_tab_context=TRUE",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787713774333-z8i5q",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "video",
+      "file": "contenidos/tam/sistema-estatal-de-radio-y-television-de-tamaulipas/ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787713774364-v4ui9",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "video",
+      "file": "contenidos/tam/sistema-estatal-de-radio-y-television-de-tamaulipas/limitar-tiempo-en-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1787887984299-f1cqc",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "video",
+      "file": "contenidos/tam/sistema-estatal-de-radio-y-television-de-tamaulipas/vid-20260827-wa0007.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1786751294347-duetj",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/hospital-oncologico-tvmx.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "social-1786815158845-huz41",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Infraestructura educativa",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1D4nebGff2/",
+        "x": "https://x.com/mxqnoticias/status/2088067313396289735?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "social-1786815159794-08fpw",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Efectos del abuso de pantallas (Dossier)",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/1H3in3jdmw/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "social-1786815160157-kvj9a",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Privacidad y datos personales",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcAArv3j5p1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+        "facebook": "",
+        "x": "",
+        "tiktok": "https://www.tiktok.com/@mexiquense_noticias/video/7673674189504580884?is_from_webapp=1&sender_device=pc",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "social-1786815160961-ipnla",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Controles parentales",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcAEP9bgqRu/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+        "facebook": "",
+        "x": "https://x.com/mxqnoticias/status/2088065818517234163?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "social-1786815159980-hl93x",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Quirófano robótico del IMSS-Bienestar, Jiutepec, Morelos",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1EtGQXCPy2/",
+        "x": "https://x.com/mxqnoticias/status/2088058337690615876?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "social-1788461930739-vz7xi",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Punta Chueca, Sonora - Salud casa por casa",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/1FFgEHvCp6/",
+        "x": "https://x.com/mxqnoticias/status/2088302377556123650?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "social-1788461930739-a11qj",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Becas Secundaria Chiapas",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/1DTHiHCb6c/",
+        "x": "https://x.com/mxqnoticias/status/2088377874910679166?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "social-1788461930739-7fih5",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Beca de Educación Básica Rita Cetina Chiapas",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/1DTHiHCb6c/",
+        "x": "https://x.com/mxqnoticias/status/2088377874910679166?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "social-1788461930739-si43o",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Grooming",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/19EzyCbrfE /",
+        "x": "https://x.com/mxqnoticias/status/2091661767189635567?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "social-1788461930739-xzn9i",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "La Escuela es Nuestra",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/14vRcaqsmk7/",
+        "x": "https://x.com/mxqnoticias/status/2088672064903270887?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "social-1788461930739-a75i0",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Revalorización del Magisterio",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/reel/4155159241295654/",
+        "x": "https://x.com/mxqnoticias/status/2088815508804288954?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "social-1788461930739-87vnd",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Riesgos en #RedesSociales y juegos en línea",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcAArv3j5p1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+        "facebook": "",
+        "x": "",
+        "tiktok": "https://www.tiktok.com/@mexiquense_noticias/video/7673674189504580884?is_from_webapp=1&sender_device=pc",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "social-1788461930739-8x4ac",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Hospital General de #Jiutepec, Morelos",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1EtGQXCPy2/",
+        "x": "https://x.com/mxqnoticias/status/2088058337690615876?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 14
+    },
+    {
+      "id": "social-1788461930739-1tnwx",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Hospital Oncológico para la Mujer “La Pastora”",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/v/1FJ9LyWmgX/",
+        "x": "https://x.com/mxqnoticias/status/2089079748622209362?s=20",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "social-1788461930739-lyxz9",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Privacidad y datos personales",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcAEP9bgqRu/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
+        "facebook": "https://www.facebook.com/share/r/1C6UAwdyUD/   https://x.com/mxqnoticias/status/2090173229595803735?s=20",
+        "x": "",
+        "tiktok": "https://www.tiktok.com/@mexiquense_noticias/video/7673674189504580884?is_from_webapp=1&sender_device=pc&web_id=7593058931614959160",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 16
+    },
+    {
+      "id": "social-1788461930739-b58cv",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 2: Controles parentales",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcAEP9bgqRu/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
+        "facebook": "https://www.facebook.com/share/r/14qStWiKmKc/",
+        "x": "https://x.com/mxqnoticias/status/2088065818517234163?s=20",
+        "tiktok": "https://www.tiktok.com/@mexiquense_noticias/video/7675845102165691664?is_from_webapp=1&sender_device=pc&web_id=7593058931614959160",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 17
+    },
+    {
+      "id": "social-1788461930739-yxq04",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Seguridad de las niñas, niños y adolescentes en el entorno digital",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcUk5sImutu/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
+        "facebook": "https://www.facebook.com/share/r/1JZDdkd2D4/",
+        "x": "https://x.com/mxqnoticias/status/2090952092382871644?s=20",
+        "tiktok": "https://www.tiktok.com/@mexiquense_noticias/video/7676618870530018581?is_from_webapp=1&sender_device=pc",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 18
+    },
+    {
+      "id": "social-1788461930739-pwi6m",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "social",
+      "theme": "Ciberacoso puede presentarse en redes sociales y juegos en línea",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/DcWgb-9ClXU/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
+        "facebook": "https://www.facebook.com/share/r/1CQgbmR7VQ/",
+        "x": "https://x.com/mxqnoticias/status/2091223884322455635?s=20",
+        "tiktok": "https://www.tiktok.com/@mexiquense_noticias/video/7676895313646472466?is_from_webapp=1&sender_device=pc",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 19
+    },
+    {
+      "id": "archivo-1788661925008-pd4e0",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-becas-secundaria-chiapas.mp4",
+      "description": "",
+      "active": "1",
+      "order": 20
+    },
+    {
+      "id": "archivo-1788661925047-tz43c",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-salud-casa-por-casa-punta-chueca-sonora-200826nm28-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 21
+    },
+    {
+      "id": "archivo-1788661925130-9mfd7",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-salud-digital-video-juegos-y-familia-parte-5.mp4",
+      "description": "",
+      "active": "1",
+      "order": 22
+    },
+    {
+      "id": "archivo-1788661925159-al8xl",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-salud-digital-video-juegos-y-familia-parte-3-240826nm28-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 23
+    },
+    {
+      "id": "archivo-1788661925194-gicpv",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-hospital-la-pastora-apoya-mujeres-con-cancer-en-cdmx-150726no.mp4",
+      "description": "",
+      "active": "1",
+      "order": 24
+    },
+    {
+      "id": "archivo-1788661925227-swjeh",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-caso-de-exito-la-escuela-es-nuestra-210826nm38.mp4",
+      "description": "",
+      "active": "1",
+      "order": 25
+    },
+    {
+      "id": "archivo-1788664413759-umswl",
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "type": "video",
+      "file": "contenidos/mex/sistema-mexiquense-de-medios-publicos-estado-de-mexico/copia-de-infraestructura-educativa-210826nng26.mp4",
+      "description": "",
+      "active": "1",
+      "order": 26
+    },
+    {
+      "id": "archivo-1786751376969-hte26",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/sistema-michoacano-controles-parentales.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787099917094-mh99p",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/18-agosto-testigo-controles-parentales-comprimido.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787595357806-4rlvy",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/comprimido-19-agosto-testigo-salud-casa-por-casa-sonora.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787595357835-5p0jk",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/comprimido-20-agosto-testigo-hosp-oncologico.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787595357863-e0k3u",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/compromido-20-agosto-testigo-19hrs.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787627365381-e2ij1",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/comprimido-20-agosto-testigo-hosp-oncologico-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1787627365419-m0ack",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/comprimido-19-agosto-testigo-salud-casa-por-casa-sonora-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1787627365456-yioo7",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/compromido-20-agosto-testigo-19hrs-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1786723549136-e7mwy",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/testigo-controles-parentales-sqcs.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787005236739-eowfu",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/comprimido-sqcs-testigo-privacidad-y-datos-personales.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787005236762-2iyyi",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/comprimido-testigo-infraestructura-educativa-sqcs.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "social-1786815745153-unh9u",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Controles parentales",
+      "links": {
+        "instagram": "",
+        "facebook": "https://fb.watch/IYlYCfHNs8/",
+        "x": "https://x.com/sqcsradioytv/status/2087573622219301373?s=46",
+        "tiktok": "",
+        "youtube": "https://youtube.com/shorts/ZJMP0tPKrzU?si=jz5PLZsFSjnXBLE5"
+      },
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "social-1786815699098-a6phm",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Privacidad y datos personales",
+      "links": {
+        "instagram": "https://www.instagram.com/reel/Db54lgZCc1-/?igsh=MWZxM21pYzBocHc2OA=",
+        "facebook": "https://fb.watch/IW_cMknBZH/",
+        "x": "https://x.com/sqcsradioytv/status/2087197248580988996?s=46",
+        "tiktok": "",
+        "youtube": "https://youtube.com/shorts/HXoNH3e83lE?feature=shared"
+      },
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787713502400-c4xuq",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/canal-4-1-sqcs-ciberacoso-comprimido.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1787801333292-g68gn",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/comprimido-sqcs-limitar-tiempo-de-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1787887935997-bo4hb",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/sqcs-grooming-27-agosto.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1788460448543-8itc2",
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "type": "video",
+      "file": "contenidos/roo/sistema-quintanarroense-de-comunicacion-social/higiene-del-sueno-28-agosto.mp4",
+      "description": "",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "archivo-1786818698616-utcv9",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "type": "audio",
+      "file": "contenidos/sin/sistema-sinaloense-de-radio-y-television/testigo-sisirt-datos-personales-y-proteccion-de-infancia.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1787627465552-zw1yp",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "type": "audio",
+      "file": "contenidos/sin/sistema-sinaloense-de-radio-y-television/sinaloa-radio-testigo-la-wacueuea-nuestra.mp3",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1787713859105-9f7fw",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/sin/sistema-sinaloense-de-radio-y-television/higiene-del-sueno.mpeg",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1786722255652-evcrx",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "type": "video",
+      "file": "contenidos/yuc/sistema-tele-yucatan/tele-yucatan-salud-casa-por-casa-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786818071269-vemv6",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "type": "video",
+      "file": "contenidos/yuc/sistema-tele-yucatan/yucatan-videojuegos-ok-buena-calidad.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786993780566-w505p",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "type": "video",
+      "file": "contenidos/yuc/sistema-tele-yucatan/tele-yucatan-ago17-videojuegos-y-familia.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1787009409620-5q6qf",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "type": "video",
+      "file": "contenidos/yuc/sistema-tele-yucatan/tele-yucatan-ago17-vespertino-videojuegos-y-familia.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1787083675939-64kkr",
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "type": "video",
+      "file": "contenidos/yuc/sistema-tele-yucatan/testigo-tele-yucatan-ago18.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1786761257542-2v3x9",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/zac/sistema-zacatecano-de-radio-y-television/zacatecas-becas-rita-cetina.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1786761257560-lxj0p",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/zac/sistema-zacatecano-de-radio-y-television/zacatecas-salud-casa-por-casa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1786761257582-ckbzg",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/zac/sistema-zacatecano-de-radio-y-television/zacatecas-infraestructura-educativa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "social-1786813641394-in99k",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Privacidad y datos personales",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/197jWQ2G6Y/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "social-1786813785832-mqjkg",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "social",
+      "theme": "SALUD DIGITAL - Videojuegos y familia, parte 1: Controles parentales",
+      "links": {
+        "instagram": "",
+        "facebook": "https://www.facebook.com/share/r/1BeAiRdDRh/",
+        "x": "",
+        "tiktok": "",
+        "youtube": ""
+      },
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1787626909183-jp3jn",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/zac/sistema-zacatecano-de-radio-y-television/zacatecas-comprimido-limitar-tiempo-de-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1788461121123-n0dlz",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/zac/sistema-zacatecano-de-radio-y-television/zacatecas-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1787714190506-npfuu",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/television-de-la-benemerita-universidad-autonoma-de-puebla/vie-buap.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1788461247037-85548",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/television-de-la-benemerita-universidad-autonoma-de-puebla/copia-de-25-de-agosto-ciberacoso.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1788461247070-q2abx",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/television-de-la-benemerita-universidad-autonoma-de-puebla/copia-de-26-de-agosto-grooming.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    }
+  ]
+}

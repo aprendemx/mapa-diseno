@@ -1,0 +1,19 @@
+{
+  "name": "@mapa-mexico/map-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Projects the authoring model onto the flat tables the published map consumes. Framework-free by design.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "extract-reference": "node scripts/extract-reference.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.0",
+    "typescript": "^5.7.0"
+  }
+}
