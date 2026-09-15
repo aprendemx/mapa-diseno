@@ -1,0 +1,27 @@
+# Postgres de desarrollo, solo local. La instancia de produccion vive en el
+# servidor con Traefik; esta existe para que las pruebas de integracion
+# corran contra un motor real en lugar de contra un doble.
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: mapa-postgres-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mapa
+      POSTGRES_USER: mapa
+      POSTGRES_PASSWORD: mapa_dev
+    ports:
+      # Expuesto al host porque el runner de pruebas corre fuera de Docker.
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mapa -d mapa"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_dev_data:

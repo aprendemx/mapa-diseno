@@ -44,9 +44,11 @@ create table appearance (
   glow_color             text not null,
   glow_intensity         integer not null,
   glow_opacity           integer not null,
-  glow_core_size         numeric not null,
-  glow_spread            numeric not null,
-  glow_outline           numeric not null,
+  -- double precision, not numeric: these are continuous display parameters,
+  -- not money, and the driver hands numeric back as a string.
+  glow_core_size         double precision not null,
+  glow_spread            double precision not null,
+  glow_outline           double precision not null,
   accent_color           text not null
 );
 
