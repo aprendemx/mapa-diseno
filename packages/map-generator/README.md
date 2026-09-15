@@ -35,23 +35,35 @@ correct; if they change, the definition changed.
 ## What the reference cannot prove
 
 The golden test only exercises the branches these 29 media happen to reach.
-Six branches of the legacy generator are never walked by this dataset:
+Six branches are never walked by this dataset, so a green golden run says
+nothing about them:
 
 | Branch | Coverage in reference |
 | --- | --- |
 | `active: false` on a medium | 0 of 29 |
-| Medium with no `stateId` (`sin-estado`) | 0 of 29 |
+| Medium with no `stateId` | 0 of 29 |
 | Social theme with all five links empty | 0 of 43 |
 | File of type `imagen` | 0 (audio and video only) |
 | Medium with empty `notes` | 0 of 29 |
 | `witnessOrder` out of sync with its ids | 0 of 29 |
 
-They are recorded as `test.todo` in `tests/reference.test.ts`. A green golden
-run says nothing about any of them, so each needs a hand-written case before
-the port can be called complete.
+`tests/branches.test.ts` covers each of them with hand-built input, and its
+expectations were read off `generar-mapa.ps1` rather than off the data. When
+one of those branches is in doubt, that file is the specification — not the
+fixtures, which are silent on all six.
+
+## Serialisation differs from PowerShell, on purpose
+
+`JSON.stringify` of this generator's output is 95 bytes shorter than what
+`ConvertTo-Json` wrote: PowerShell escapes non-ASCII as `\uXXXX` (19
+occurrences, all accented place names) and `JSON.stringify` emits UTF-8
+directly. The two parse to identical strings, so the map cannot tell them
+apart. Do not try to reproduce the escaping.
 
 ## Status
 
-Phase 0 is done: reference frozen, harness in place, blind spots named.
-`generateMapData` throws. The seven failing tests in `tests/golden.test.ts`
-are phase 1's definition of done.
+Phases 0 and 1 are done. `generateMapData` reproduces the published output,
+key order included. What it deliberately does not do is validate: state
+catalogue size, duplicate ids, unknown state references and missing files on
+disk are the publish pipeline's concern, since the last of those needs a
+filesystem and this package has none.

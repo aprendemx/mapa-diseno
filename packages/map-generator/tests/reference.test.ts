@@ -73,18 +73,8 @@ describe('reference fixtures', () => {
 });
 
 /**
- * Paths the reference data never walks.
- *
- * The golden test can only prove the branches this one dataset happens to
- * exercise. Everything below is a real branch in the legacy generator that
- * zero of the 29 media reach — so a green golden run says nothing about it.
- * Phase 1 owes each of these a hand-written case.
+ * The branches this dataset never walks are covered by `branches.test.ts`,
+ * with expectations read off `generar-mapa.ps1` rather than off the data.
+ * Keep them there: if a future reference ever exercises one of those paths,
+ * the two suites should agree, and disagreement is the signal worth having.
  */
-describe('branches the golden reference cannot prove', () => {
-  test.todo('a medium with active:false emits active "0" and leaves its state inactive');
-  test.todo('a medium with no stateId falls back to the sin-estado folder');
-  test.todo('a social theme with all five links empty is dropped from contents');
-  test.todo('a file of type imagen is emitted like video and audio');
-  test.todo('a medium with empty notes produces no campaigns');
-  test.todo('witnessOrder ignores unknown ids and appends the ones it omits');
-});
