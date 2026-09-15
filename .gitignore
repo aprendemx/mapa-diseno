@@ -1,0 +1,22 @@
+# Media canonica: 2.2 GB de video y audio. Se respalda aparte, nunca en git.
+/contenidos/
+
+# Artefactos generados por el pipeline legacy (HTML publicado, copia de
+# media y ZIP de entrega). Reproducibles a partir de datos/ + contenidos/.
+/entrega/
+
+# Dependencias y build
+node_modules/
+dist/
+.output/
+.nuxt/
+.nitro/
+*.tsbuildinfo
+
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Cache de herramientas locales
+.atl/
