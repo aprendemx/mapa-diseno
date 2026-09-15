@@ -50,6 +50,16 @@ npm run sweep               # archivos sin fila (informe; --delete)
 npm run create-user
 ```
 
+Para ver el mapa publicado en local, igual que lo sirve nginx en producción:
+
+```bash
+node deploy/servir-publicado.mjs        # http://localhost:8080
+```
+
+Hace falta porque la página referencia `contenidos/` relativo a sí misma: en
+producción nginx monta la multimedia dentro de su raíz, y abriendo el archivo
+directamente el mapa carga sin un solo video.
+
 ## Guardar y publicar son cosas distintas
 
 Guardar escribe en la base y no toca el sitio. Publicar valida el catálogo
