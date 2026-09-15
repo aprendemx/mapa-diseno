@@ -1,6 +1,6 @@
 export { readCatalog, replaceCatalog } from './catalog-repository.ts';
-export { placeholders } from './queryable.ts';
-export type { Queryable } from './queryable.ts';
+export { placeholders, withTransaction } from './queryable.ts';
+export type { Pooled, Queryable } from './queryable.ts';
 export {
   findUserByEmail,
   createUser,
@@ -24,3 +24,11 @@ export {
   updateAppearance,
 } from './media-repository.ts';
 export type { MediumSummary, MediumDetail, StateOption } from './media-repository.ts';
+export {
+  addFile,
+  updateFileDescription,
+  removeFile,
+  reorderWitnesses,
+  listReferencedPaths,
+} from './file-repository.ts';
+export type { StoredFileRecord } from './file-repository.ts';

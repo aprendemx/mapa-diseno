@@ -23,16 +23,26 @@ const schema = readFileSync(
   'utf8',
 );
 
+/**
+ * A database of its own, never the development one.
+ *
+ * This suite drops and recreates the public schema on every run. Pointed at
+ * the development database it silently destroys whatever was being worked on —
+ * which it did once, to a freshly migrated catalogue, and the damage looked
+ * exactly like a transaction bug.
+ */
 const DATABASE_URL =
-  process.env['DATABASE_URL'] ?? 'postgres://mapa:mapa_dev@127.0.0.1:5432/mapa';
+  process.env['TEST_DATABASE_URL'] ?? 'postgres://mapa:mapa_dev@127.0.0.1:5432/mapa_test';
 const isLocal = /@(127\.0\.0\.1|localhost|\[::1\])[:/]/.test(DATABASE_URL);
+/** Second guard: the name must say it is a test database. */
+const isTestDatabase = /_test(\?|$)/.test(DATABASE_URL);
 
 let pool: pg.Pool | undefined;
 /** Why the suite could not run. Empty means it did. */
-let unavailable = 'DATABASE_URL is not a loopback address';
+let unavailable = 'TEST_DATABASE_URL must be a loopback database whose name ends in _test';
 
 before(async () => {
-  if (!isLocal) return;
+  if (!isLocal || !isTestDatabase) return;
   const candidate = new pg.Pool({ connectionString: DATABASE_URL, max: 2 });
   try {
     await candidate.query('select 1');

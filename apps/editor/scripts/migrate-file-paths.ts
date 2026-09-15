@@ -71,14 +71,29 @@ try {
 
   // Nothing moves until every source is accounted for. A missing file is a
   // reason to stop and look, never to migrate around it.
+  //
+  // Except when it is already at its destination: a run interrupted between
+  // moving the bytes and committing the rows leaves exactly that state, and it
+  // must be resumable rather than a dead end.
   const missing: string[] = []
+  const alreadyMoved = new Set<string>()
+
   for (const file of planned) {
-    if (!(await statStored(mediaRoot, file.path))) missing.push(file.path)
+    if (await statStored(mediaRoot, file.path)) continue
+    if (await statStored(mediaRoot, file.target)) {
+      alreadyMoved.add(file.id)
+      continue
+    }
+    missing.push(file.path)
   }
+
   if (missing.length > 0) {
     console.error(`\nFaltan ${missing.length} archivo(s) en disco. No se movio nada:`)
     for (const path of missing.slice(0, 10)) console.error(`  ${path}`)
     exit(1)
+  }
+  if (alreadyMoved.size > 0) {
+    console.log(`${alreadyMoved.size} ya estaban en su destino; solo se actualiza la base.`)
   }
 
   const collisions = new Map<string, number>()
@@ -104,6 +119,7 @@ try {
   const moved: { from: string, to: string }[] = []
   try {
     for (const file of planned) {
+      if (alreadyMoved.has(file.id)) continue
       await moveStored(mediaRoot, file.path, file.target)
       moved.push({ from: file.path, to: file.target })
     }

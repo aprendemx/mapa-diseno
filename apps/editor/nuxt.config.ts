@@ -8,11 +8,18 @@ export default defineNuxtConfig({
     // Cookies are marked Secure unless this says otherwise, so a
     // misconfiguration fails closed rather than sending them in the clear.
     insecureCookies: '',
+    // Where `contenidos/` lives. In production this is the same directory
+    // nginx serves the published map from.
+    mediaRoot: '../..',
+    maxUploadBytes: String(2 * 1024 * 1024 * 1024),
   },
 
   nitro: {
     // The published map is static and served by nginx; this app only edits it.
     preset: 'node-server',
+    // Serves media for previews inside the editor. These are the same bytes
+    // nginx already serves publicly, so nothing new is exposed by it.
+    publicAssets: [{ dir: '../../contenidos', baseURL: '/contenidos', maxAge: 0 }],
   },
 
   typescript: { strict: true, typeCheck: false },

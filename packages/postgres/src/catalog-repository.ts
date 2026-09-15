@@ -8,7 +8,7 @@ import type {
   StateRow,
 } from '@mapa-mexico/project-store';
 
-import { placeholders, type Queryable } from './queryable.ts';
+import { placeholders, withTransaction, type Pooled, type Queryable } from './queryable.ts';
 
 const APPEARANCE_COLUMNS = [
   'background_color', 'title_color', 'state_with_media_color', 'state_disabled_color',
@@ -94,19 +94,18 @@ export async function readCatalog(db: Queryable): Promise<CatalogRows> {
  * restore a backup. Ordinary editing writes single rows; nothing in day-to-day
  * use should ever call this.
  */
-export async function replaceCatalog(db: Queryable, rows: CatalogRows): Promise<void> {
-  await db.query('begin');
-  try {
+export async function replaceCatalog(db: Pooled, rows: CatalogRows): Promise<void> {
+  await withTransaction(db, async (tx) => {
     // media cascades to coverage, files and themes.
-    await db.query('delete from media');
+    await tx.query('delete from media');
 
-    await db.query(
+    await tx.query(
       `insert into states (id, name, position) values ${placeholders(rows.states.length, 3)}
        on conflict (id) do update set name = excluded.name, position = excluded.position`,
       rows.states.flatMap((state) => [state.id, state.name, state.position]),
     );
 
-    await db.query(
+    await tx.query(
       `insert into appearance (singleton, ${APPEARANCE_COLUMNS.join(', ')})
        values (true, ${APPEARANCE_COLUMNS.map((_, i) => `$${i + 1}`).join(', ')})
        on conflict (singleton) do update set
@@ -114,14 +113,9 @@ export async function replaceCatalog(db: Queryable, rows: CatalogRows): Promise<
       pick(rows.appearance, APPEARANCE_COLUMNS),
     );
 
-    await insertMany(db, 'media', MEDIUM_COLUMNS, rows.media);
-    await insertMany(db, 'media_coverage_states', ['medium_id', 'state_id', 'position'], rows.coverageStates);
-    await insertMany(db, 'media_files', FILE_COLUMNS, rows.files);
-    await insertMany(db, 'social_themes', THEME_COLUMNS, rows.socialThemes);
-
-    await db.query('commit');
-  } catch (error) {
-    await db.query('rollback');
-    throw error;
-  }
+    await insertMany(tx, 'media', MEDIUM_COLUMNS, rows.media);
+    await insertMany(tx, 'media_coverage_states', ['medium_id', 'state_id', 'position'], rows.coverageStates);
+    await insertMany(tx, 'media_files', FILE_COLUMNS, rows.files);
+    await insertMany(tx, 'social_themes', THEME_COLUMNS, rows.socialThemes);
+  });
 }

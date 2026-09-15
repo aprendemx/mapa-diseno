@@ -11,7 +11,8 @@
     "typecheck": "nuxt typecheck",
     "create-user": "node --env-file-if-exists=.env scripts/create-user.ts",
     "import-legacy": "node --env-file-if-exists=.env scripts/import-legacy.ts",
-    "migrate-paths": "node --env-file-if-exists=.env scripts/migrate-file-paths.ts"
+    "migrate-paths": "node --env-file-if-exists=.env scripts/migrate-file-paths.ts",
+    "sweep": "node --env-file-if-exists=.env scripts/sweep-orphans.ts"
   },
   "dependencies": {
     "@mapa-mexico/auth": "*",

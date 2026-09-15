@@ -2,7 +2,7 @@ import type { Appearance } from '@mapa-mexico/map-generator';
 import { appearanceFromRow, appearanceToRow, uniqueSlug } from '@mapa-mexico/project-store';
 import type { AppearanceRow, MediumInput, SocialNetwork } from '@mapa-mexico/project-store';
 
-import type { Queryable } from './queryable.ts';
+import { withTransaction, type Pooled, type Queryable } from './queryable.ts';
 
 const NETWORKS: readonly SocialNetwork[] = ['instagram', 'facebook', 'x', 'tiktok', 'youtube'];
 
@@ -125,14 +125,13 @@ export async function getMedium(db: Queryable, id: string): Promise<MediumDetail
  * Every campaign the map publishes is keyed `<mediumId>-nota-N`, so a moving
  * id would silently renumber published references.
  */
-export async function createMedium(db: Queryable, input: MediumInput): Promise<string> {
+export async function createMedium(db: Pooled, input: MediumInput): Promise<string> {
   const existing = await db.query('select id from media');
   const taken = new Set((existing.rows as { id: string }[]).map((row) => row.id));
   const id = uniqueSlug(input.name, taken);
 
-  await db.query('begin');
-  try {
-    await db.query(
+  return withTransaction(db, async (tx) => {
+    await tx.query(
       `insert into media (id, name, active, state_id, notes, coverage_text, social_enabled, position)
        values ($1, $2, $3, $4, $5, $6, $7,
                (select coalesce(max(position), 0) + 1 from media))`,
@@ -146,24 +145,19 @@ export async function createMedium(db: Queryable, input: MediumInput): Promise<s
         input.socialEnabled,
       ],
     );
-    await writeCoverage(db, id, input.coverageStates);
-    await writeThemes(db, id, input.socialThemes);
-    await db.query('commit');
+    await writeCoverage(tx, id, input.coverageStates);
+    await writeThemes(tx, id, input.socialThemes);
     return id;
-  } catch (error) {
-    await db.query('rollback');
-    throw error;
-  }
+  });
 }
 
 export async function updateMedium(
-  db: Queryable,
+  db: Pooled,
   id: string,
   input: MediumInput,
 ): Promise<boolean> {
-  await db.query('begin');
-  try {
-    const updated = await db.query(
+  return withTransaction(db, async (tx) => {
+    const updated = await tx.query(
       `update media set name = $2, active = $3, state_id = $4, notes = $5,
               coverage_text = $6, social_enabled = $7, updated_at = now()
         where id = $1 returning id`,
@@ -177,19 +171,12 @@ export async function updateMedium(
         input.socialEnabled,
       ],
     );
-    if (updated.rows.length === 0) {
-      await db.query('rollback');
-      return false;
-    }
+    if (updated.rows.length === 0) return false;
 
-    await writeCoverage(db, id, input.coverageStates);
-    await writeThemes(db, id, input.socialThemes);
-    await db.query('commit');
+    await writeCoverage(tx, id, input.coverageStates);
+    await writeThemes(tx, id, input.socialThemes);
     return true;
-  } catch (error) {
-    await db.query('rollback');
-    throw error;
-  }
+  });
 }
 
 export async function deleteMedium(db: Queryable, id: string): Promise<boolean> {
@@ -200,21 +187,16 @@ export async function deleteMedium(db: Queryable, id: string): Promise<boolean> 
 }
 
 /** Reorders the list. Positions are rewritten from 1 so no gaps accumulate. */
-export async function reorderMedia(db: Queryable, orderedIds: string[]): Promise<void> {
-  await db.query('begin');
-  try {
-    await db.query(
+export async function reorderMedia(db: Pooled, orderedIds: string[]): Promise<void> {
+  await withTransaction(db, async (tx) => {
+    await tx.query(
       `update media set position = data.position
          from (select unnest($1::text[]) as id, generate_subscripts($1::text[], 1) as position)
               as data
         where media.id = data.id`,
       [orderedIds],
     );
-    await db.query('commit');
-  } catch (error) {
-    await db.query('rollback');
-    throw error;
-  }
+  });
 }
 
 async function writeCoverage(db: Queryable, mediumId: string, stateIds: string[]): Promise<void> {
