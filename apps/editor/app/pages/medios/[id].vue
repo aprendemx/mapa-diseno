@@ -1,32 +1,29 @@
 <script setup lang="ts">
 import type { MediumDetail, StateOption } from '@mapa-mexico/postgres'
-import type { Problem, SocialNetwork } from '@mapa-mexico/project-store'
+import type { Problem } from '@mapa-mexico/project-store'
 
 const route = useRoute()
 const id = route.params['id'] as string
 
-const NETWORKS: { key: SocialNetwork, label: string }[] = [
-  { key: 'instagram', label: 'Instagram' },
-  { key: 'facebook', label: 'Facebook' },
-  { key: 'x', label: 'X (Twitter)' },
-  { key: 'tiktok', label: 'TikTok' },
-  { key: 'youtube', label: 'YouTube' },
-]
-
-const { data } = await useFetch<{ medium: MediumDetail }>(`/api/media/${id}`)
+const { data, refresh } = await useFetch<{ medium: MediumDetail }>(`/api/media/${id}`)
 const { data: catalogue } = await useFetch<{ states: StateOption[] }>('/api/states')
 
 const states = computed(() => catalogue.value?.states ?? [])
 const form = reactive(structuredClone(toRaw(data.value!.medium)))
 
 const problems = ref<Problem[]>([])
+const notice = ref('')
 const saving = ref(false)
 const saved = ref(false)
 
 const problemFor = (field: string) => problems.value.find((p) => p.field === field)?.message
-
-/** The map turns `[[…]]` into an emphasised place name inside the title. */
 const noteCount = computed(() => form.notes.split(/\r?\n/).filter((line) => line.trim()).length)
+
+/** Pulls server state back in after an operation that writes on its own. */
+async function reload() {
+  await refresh()
+  Object.assign(form, structuredClone(toRaw(data.value!.medium)))
+}
 
 function toggleCoverage(stateId: string, on: boolean) {
   const without = form.coverageStates.filter((s) => s !== stateId)
@@ -36,20 +33,40 @@ function toggleCoverage(stateId: string, on: boolean) {
 function addTheme() {
   form.socialThemes.push({
     title: '',
+    position: Number.MAX_SAFE_INTEGER,
     links: { instagram: '', facebook: '', x: '', tiktok: '', youtube: '' },
   })
+  notice.value = 'El tema nuevo se coloca al final de los testigos al guardar.'
+}
+
+async function reorder(ids: string[]) {
+  await $fetch(`/api/media/${id}/witness-order`, { method: 'PUT', body: { ids } })
+  await reload()
+}
+
+async function removeFile(fileId: string) {
+  if (!confirm('¿Quitar este archivo del medio?\n\nEl archivo NO se borra del disco.')) return
+  await $fetch(`/api/media/${id}/files/${fileId}`, { method: 'DELETE' })
+  await reload()
+  notice.value = 'Archivo quitado del medio. Los bytes siguen en disco hasta el barrido.'
+}
+
+async function describeFile(fileId: string, description: string) {
+  await $fetch(`/api/media/${id}/files/${fileId}`, { method: 'PATCH', body: { description } })
 }
 
 async function save() {
   problems.value = []
+  notice.value = ''
   saved.value = false
   saving.value = true
   try {
     await $fetch(`/api/media/${id}`, { method: 'PUT', body: form })
+    await reload()
     saved.value = true
   } catch (cause) {
-    const data = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
-    problems.value = data?.problems ?? [
+    const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
+    problems.value = payload?.problems ?? [
       { field: '', message: 'No se pudo guardar. Intentá de nuevo.' },
     ]
   } finally {
@@ -83,9 +100,7 @@ async function save() {
           <input v-model="form.active" type="checkbox">
           Visible en el mapa
         </label>
-        <p class="hint">
-          Un medio oculto conserva sus datos y sus archivos; solo deja de aparecer.
-        </p>
+        <p class="hint">Un medio oculto conserva sus datos y sus archivos; solo deja de aparecer.</p>
       </fieldset>
 
       <fieldset>
@@ -96,10 +111,7 @@ async function save() {
       </fieldset>
 
       <fieldset>
-        <legend>
-          Cobertura
-          <span class="count">{{ form.coverageStates.length }}</span>
-        </legend>
+        <legend>Cobertura <span class="count">{{ form.coverageStates.length }}</span></legend>
 
         <label for="coverage-text">Texto desplegable</label>
         <textarea id="coverage-text" v-model="form.coverageText" rows="2" />
@@ -123,51 +135,45 @@ async function save() {
       </fieldset>
 
       <fieldset>
-        <legend>Redes sociales</legend>
+        <legend>
+          Testigos
+          <span class="count">{{ form.files.length + form.socialThemes.length }}</span>
+        </legend>
+
+        <FileUploader
+          :medium-id="id"
+          @uploaded="reload"
+          @error="(message) => (problems = [{ field: '', message }])"
+        />
 
         <label class="check">
           <input v-model="form.socialEnabled" type="checkbox">
-          Publicar temas de redes en el mapa
+          Publicar los temas de redes en el mapa
         </label>
-        <p class="hint">
-          Con esto apagado los temas se conservan acá, pero no se publican.
+        <p class="hint">Con esto apagado los temas se conservan acá, pero no se publican.</p>
+
+        <WitnessList
+          :files="form.files"
+          :themes="form.socialThemes"
+          :social-enabled="form.socialEnabled"
+          @reorder="reorder"
+          @remove-file="removeFile"
+          @describe-file="describeFile"
+          @remove-theme="(index) => form.socialThemes.splice(index, 1)"
+        />
+
+        <button type="button" class="add" @click="addTheme">+ Agregar tema de redes</button>
+
+        <p v-for="problem in problems.filter((p) => p.field.startsWith('socialThemes'))"
+           :key="problem.field" class="problem">
+          {{ problem.message }}
         </p>
-
-        <div v-for="(theme, index) in form.socialThemes" :key="index" class="theme">
-          <div class="theme-head">
-            <input v-model="theme.title" type="text" :placeholder="`Tema ${index + 1}`">
-            <button type="button" @click="form.socialThemes.splice(index, 1)">Quitar</button>
-          </div>
-          <div class="links">
-            <label v-for="network in NETWORKS" :key="network.key">
-              <span>{{ network.label }}</span>
-              <input v-model="theme.links[network.key]" type="url" placeholder="https://…">
-              <em v-if="problemFor(`socialThemes.${index}.links.${network.key}`)" class="problem">
-                {{ problemFor(`socialThemes.${index}.links.${network.key}`) }}
-              </em>
-            </label>
-          </div>
-        </div>
-
-        <button type="button" @click="addTheme">+ Agregar tema</button>
-      </fieldset>
-
-      <fieldset>
-        <legend>Archivos <span class="count">{{ form.files.length }}</span></legend>
-        <p v-if="form.files.length === 0" class="hint">Todavía no hay archivos.</p>
-        <ul v-else class="files">
-          <li v-for="file in form.files" :key="file.id">
-            <span class="kind">{{ file.kind }}</span>
-            <span class="path">{{ file.path.split('/').pop() }}</span>
-            <span v-if="file.description" class="muted">{{ file.description }}</span>
-          </li>
-        </ul>
-        <p class="hint">Subir y reordenar archivos llega en el siguiente tramo.</p>
       </fieldset>
 
       <div class="foot">
         <button type="submit" :disabled="saving">{{ saving ? 'Guardando…' : 'Guardar' }}</button>
         <span v-if="saved" class="ok" role="status">Guardado.</span>
+        <span v-if="notice" class="notice" role="status">{{ notice }}</span>
         <span v-if="problemFor('')" class="problem">{{ problemFor('') }}</span>
       </div>
     </form>
@@ -180,13 +186,9 @@ async function save() {
 .back:hover { color: var(--accent); }
 
 fieldset {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--surface);
-  padding: 1rem 1.15rem 1.25rem;
-  margin: 0 0 1rem;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
+  padding: 1rem 1.15rem 1.25rem; margin: 0 0 1rem;
 }
-
 legend { font-weight: 700; padding: 0 0.4rem; }
 .count {
   margin-left: 0.4rem; font-weight: 600; font-size: 0.8rem;
@@ -206,8 +208,9 @@ textarea { resize: vertical; }
 .hint { margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--muted); }
 .hint code { background: #eeeee7; padding: 0 0.25rem; border-radius: 3px; }
 
-.problem { margin: 0.35rem 0 0; font-size: 0.82rem; color: var(--danger); font-style: normal; }
+.problem { margin: 0.35rem 0 0; font-size: 0.82rem; color: var(--danger); }
 .ok { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+.notice { color: var(--muted); font-size: 0.85rem; }
 
 .states {
   list-style: none; margin: 0.75rem 0 0; padding: 0;
@@ -217,20 +220,6 @@ textarea { resize: vertical; }
 .states label.disabled { opacity: 0.45; }
 .states input { width: auto; }
 
-.theme { border: 1px solid var(--line); border-radius: 6px; padding: 0.75rem; margin: 0.85rem 0; }
-.theme-head { display: flex; gap: 0.5rem; }
-.links { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.5rem 0.9rem; margin-top: 0.6rem; }
-.links label { margin: 0; }
-.links span { display: block; margin-bottom: 0.2rem; }
-
-.files { list-style: none; padding: 0; margin: 0.5rem 0 0; display: grid; gap: 0.3rem; }
-.files li { display: flex; gap: 0.6rem; align-items: baseline; font-size: 0.9rem; }
-.kind {
-  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700;
-  color: var(--muted); background: #eeeee7; border-radius: 4px; padding: 0.1rem 0.4rem;
-}
-.path { font-family: ui-monospace, monospace; font-size: 0.85rem; }
-.muted { color: var(--muted); }
-
-.foot { display: flex; align-items: center; gap: 1rem; }
+.add { margin-top: 0.85rem; }
+.foot { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 </style>

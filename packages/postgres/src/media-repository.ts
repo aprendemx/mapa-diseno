@@ -18,10 +18,16 @@ export interface MediumSummary {
   noteCount: number;
 }
 
-export interface MediumDetail extends MediumInput {
+export interface MediumDetail extends Omit<MediumInput, 'socialThemes'> {
   id: string;
   position: number;
   files: { id: string; kind: string; path: string; description: string; position: number }[];
+  /**
+   * Themes carry their position too, because files and themes share one
+   * ordering space: the editor has to merge the two lists to show the order
+   * the map will actually publish.
+   */
+  socialThemes: (MediumInput['socialThemes'][number] & { position: number })[];
 }
 
 export interface StateOption {
@@ -81,7 +87,7 @@ export async function getMedium(db: Queryable, id: string): Promise<MediumDetail
     [id],
   );
   const themes = await db.query(
-    `select id, title, instagram, facebook, x, tiktok, youtube
+    `select id, title, instagram, facebook, x, tiktok, youtube, witness_position
        from social_themes where medium_id = $1 order by witness_position`,
     [id],
   );
@@ -101,11 +107,12 @@ export async function getMedium(db: Queryable, id: string): Promise<MediumDetail
     socialEnabled: row['social_enabled'] as boolean,
     position: row['position'] as number,
     coverageStates: (coverage.rows as { state_id: string }[]).map((r) => r.state_id),
-    socialThemes: (themes.rows as Record<string, string>[]).map((theme) => ({
-      id: theme['id']!,
-      title: theme['title']!,
+    socialThemes: (themes.rows as Record<string, unknown>[]).map((theme) => ({
+      id: theme['id'] as string,
+      title: theme['title'] as string,
+      position: theme['witness_position'] as number,
       links: Object.fromEntries(
-        NETWORKS.map((network) => [network, theme[network] ?? '']),
+        NETWORKS.map((network) => [network, (theme[network] as string | undefined) ?? '']),
       ) as Record<SocialNetwork, string>,
     })),
     files: (files.rows as Record<string, unknown>[]).map((file) => ({
