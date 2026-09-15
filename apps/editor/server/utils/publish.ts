@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-import { generateMapData, renderMap } from '@mapa-mexico/map-generator'
+import { MEDIA_STOP_SCRIPT, generateMapData, renderMap } from '@mapa-mexico/map-generator'
 import type { MapData } from '@mapa-mexico/map-generator'
 import { checkPublishable, fromRows } from '@mapa-mexico/project-store'
 import type { Problem } from '@mapa-mexico/project-store'
@@ -21,16 +21,17 @@ export interface PublishSuccess {
   bytes: number
 }
 
-const MEDIA_STOP = new URL(
-  '../../../../packages/map-generator/src/template/media-stop.html',
-  import.meta.url,
-)
-
+/**
+ * The template is read at publish time, so a corrected `mapa-base.html` takes
+ * effect on the next publish without rebuilding the app. The media stop script
+ * travels inside the bundle: a path into `src/` resolves in development and
+ * not in a container.
+ */
 async function readTemplates() {
   const { templatePath } = useRuntimeConfig()
   return {
     template: await readFile(resolve(templatePath), 'utf8'),
-    mediaStop: await readFile(MEDIA_STOP, 'utf8'),
+    mediaStop: MEDIA_STOP_SCRIPT,
   }
 }
 

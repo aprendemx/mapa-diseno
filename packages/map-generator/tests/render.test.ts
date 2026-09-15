@@ -4,7 +4,13 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { MEDIA_STOP_ID, TemplateError, generateMapData, renderMap } from '../src/index.ts';
+import {
+  MEDIA_STOP_ID,
+  MEDIA_STOP_SCRIPT,
+  TemplateError,
+  generateMapData,
+  renderMap,
+} from '../src/index.ts';
 import type { MapData } from '../src/index.ts';
 import { project, expectedMapData } from './fixtures.ts';
 
@@ -12,10 +18,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..', '..');
 
 const template = readFileSync(join(root, 'mapa-base.html'), 'utf8');
-const mediaStop = readFileSync(
-  join(here, '..', 'src', 'template', 'media-stop.html'),
-  'utf8',
-);
+const mediaStop = MEDIA_STOP_SCRIPT;
 const published = readFileSync(join(root, 'entrega', 'ABRIR MAPA.html'), 'utf8');
 
 const DATA_BLOCK =

@@ -34,17 +34,34 @@ api -X POST "$BASE/api/publish" | grep -q '"publication"' || fail "no publico"
 echo "3. la pagina publicada tiene los datos y el control de multimedia"
 grep -q 'const PROJECT_DATA=' "$OUT" || fail "falta PROJECT_DATA"
 [ "$(grep -c 'id="control-cierre-multimedia"' "$OUT")" = "1" ] || fail "el control no esta una sola vez"
-python3 - "$OUT" <<'PY'
+# Se compara contra el catalogo vivo, no contra numeros fijos: cualquier otra
+# prueba de humo que edite datos invalidaria una foto, y lo que importa aqui no
+# es cuantos medios hay sino que lo publicado sea exactamente lo que hay.
+ESPERADO=$(api "$BASE/api/media" | python3 -c '
+import json, sys
+m = json.load(sys.stdin)["media"]
+print(json.dumps({
+    "media": len(m),
+    "notas": sum(x["noteCount"] for x in m),
+    "testigos": sum(x["fileCount"] + x["themeCount"] for x in m),
+}))')
+
+python3 - "$OUT" "$ESPERADO" <<'CHECK'
 import json, re, sys
 html = open(sys.argv[1], encoding='utf-8').read()
 block = re.search(r'/\*__DATOS_GENERADOS_INICIO__\*/(.*?)/\*__DATOS_GENERADOS_FIN__\*/', html, re.S).group(1)
 data = json.loads(re.search(r'const PROJECT_DATA=(\{.*\});', block, re.S).group(1))
-assert len(data['media']) == 29, data['media']
-assert len(data['campaigns']) == 144
-assert len(data['contents']) == 201
-assert sum(1 for s in data['states'] if s['active'] == '1') == 20
-PY
-[ $? -eq 0 ] || fail "el contenido publicado no coincide"
+esperado = json.loads(sys.argv[2])
+
+assert len(data['states']) == 32, len(data['states'])
+assert len(data['media']) == esperado['media'], (len(data['media']), esperado['media'])
+assert len(data['campaigns']) == esperado['notas'], (len(data['campaigns']), esperado['notas'])
+# Los testigos publicados son un subconjunto: los temas de un medio con las
+# redes apagadas, y los que no tienen ningun link, no llegan al mapa.
+assert len(data['contents']) <= esperado['testigos'], (len(data['contents']), esperado['testigos'])
+assert len(data['contents']) > 0
+CHECK
+[ $? -eq 0 ] || fail "el contenido publicado no coincide con el catalogo"
 
 echo "4. quedo registrado en el historial"
 api "$BASE/api/publications" | grep -q '"mediaCount": *29' || fail "no quedo en el historial"

@@ -1,4 +1,16 @@
-<script id="control-cierre-multimedia">
+/**
+ * Pauses and rewinds any audio or video that ends up hidden — a dialog
+ * closing, a tab switch, an element being hidden by script.
+ *
+ * Embedded as a module rather than read from disk at publish time. A
+ * bundled server has no `src/` directory to read from, and a path that
+ * resolves in development and not in production is a deployment failure
+ * that only appears once everything else already works.
+ *
+ * Verbatim from the page the PowerShell pipeline published. It is verified
+ * byte for byte by the render golden test, so don't reformat it.
+ */
+export const MEDIA_STOP_SCRIPT = `<script id="control-cierre-multimedia">
 (function () {
   function estaOculto(el) {
     if (!el || !el.isConnected) return true;
@@ -54,4 +66,4 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', observar, {once:true});
   else observar();
 })();
-</script>
+</script>`;

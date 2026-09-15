@@ -21,3 +21,6 @@ dist/
 # Cache de herramientas locales
 .atl/
 /publicado/
+/respaldos/
+/datos/contenidos/
+/datos/publicado/
