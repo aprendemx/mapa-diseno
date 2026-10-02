@@ -65,6 +65,20 @@ Hace falta porque la página referencia `contenidos/` relativo a sí misma: en
 producción nginx monta la multimedia dentro de su raíz, y abriendo el archivo
 directamente el mapa carga sin un solo video.
 
+## Publicar una entrega del sistema anterior
+
+Mientras el editor no esté en producción, las entregas siguen llegando como
+un zip generado por la herramienta PowerShell. Para subirlas:
+
+```bash
+./deploy/publicar-entrega.sh /mnt/c/Users/.../mapa-datos
+```
+
+Verifica que el HTML generado corresponda a `datos/proyecto.json` —si no, hay
+que correr `ACTUALIZAR MAPA.bat` antes— y que cada testigo referenciado esté
+presente. Después muestra **cuántos archivos se borrarían** y pide confirmación
+escrita, porque el `rsync` lleva `--delete` sobre casi 1 GB.
+
 ## Guardar y publicar son cosas distintas
 
 Guardar escribe en la base y no toca el sitio. Publicar valida el catálogo
