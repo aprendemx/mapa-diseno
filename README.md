@@ -79,6 +79,11 @@ que correr `ACTUALIZAR MAPA.bat` antes— y que cada testigo referenciado esté
 presente. Después muestra **cuántos archivos se borrarían** y pide confirmación
 escrita, porque el `rsync` lleva `--delete` sobre casi 1 GB.
 
+El guion es autocontenido: no necesita el resto del repositorio, solo `bash`,
+`rsync`, `python3` y acceso ssh. Copiarlo suelto a otra máquina alcanza.
+Detecta qué flags soporta el `rsync` que encuentra, porque el de macOS es
+2.6.9 hasta Sonoma y `--info=progress2` existe desde 3.1.0.
+
 ## Guardar y publicar son cosas distintas
 
 Guardar escribe en la base y no toca el sitio. Publicar valida el catálogo

@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 # Publica una entrega generada por la herramienta PowerShell.
 #
-#   ./deploy/publicar-entrega.sh /mnt/c/Users/LFZARAZUA/Downloads/mapa-datos
+#   ./deploy/publicar-entrega.sh ~/Downloads/mapa-datos
+#
+# Autocontenido: no necesita el resto del repositorio, solo bash, rsync,
+# python3 y acceso ssh al servidor. Copiar este archivo suelto alcanza.
 #
 # Provisorio: deja de hacer falta cuando el editor web este en produccion, que
 # hace esto mismo con validacion previa, swap atomico e historial.
@@ -18,6 +21,23 @@ ENTREGA="$ORIGEN/entrega"
 MAPA="$ENTREGA/ABRIR MAPA.html"
 
 fail() { echo "  FALLO: $1" >&2; exit 1; }
+tiene() { command -v "$1" >/dev/null 2>&1; }
+
+# macOS no trae todo esto de fabrica. Revisar antes de verificar una entrega
+# completa y fallar en el ultimo paso.
+for prog in rsync python3 ssh; do
+  tiene "$prog" || fail "falta $prog. En macOS: brew install rsync python3"
+done
+
+# rsync de macOS es 2.6.9 (de 2006) hasta Sonoma, y openrsync desde Sequoia.
+# --info= existe desde 3.1.0 y --itemize-changes desde 2.6.4, asi que se
+# prueban en lugar de asumirse: un flag no soportado falla recien al subir,
+# despues de haber verificado todo.
+soporta() { rsync --help 2>&1 | grep -q -- "$1"; }
+PROGRESO=()
+soporta '--info=' && PROGRESO=(--info=progress2) || { soporta '--progress' && PROGRESO=(--progress); }
+DETALLE=()
+soporta '--itemize-changes' && DETALLE=(--itemize-changes)
 
 [ -d "$ENTREGA" ]  || fail "no hay carpeta entrega/ en $ORIGEN"
 [ -f "$MAPA" ]     || fail "no hay 'ABRIR MAPA.html' en $ENTREGA"
@@ -63,17 +83,25 @@ RSYNC=(rsync -a --delete --partial
        --exclude 'entrega.zip' --exclude 'ABRIR MAPA.html'
        "$ENTREGA/" "$DESTINO")
 
-PLAN=$("${RSYNC[@]}" --dry-run --itemize-changes)
-NUEVOS=$(grep -c '^>f+++++++++' <<<"$PLAN" || true)
-CAMBIOS=$(grep -c '^>f' <<<"$PLAN" || true)
-BORRA=$(grep -c '^\*deleting' <<<"$PLAN" || true)
+PLAN=$("${RSYNC[@]}" --dry-run -v "${DETALLE[@]+"${DETALLE[@]}"}" 2>&1)
 
-echo "   archivos nuevos o modificados: $CAMBIOS (de ellos nuevos: $NUEVOS)"
+# Las versiones viejas escriben "deleting <ruta>"; las nuevas "*deleting ".
+BORRADOS=$(grep -E '^\*?deleting ' <<<"$PLAN" || true)
+BORRA=$(grep -cE '^\*?deleting ' <<<"$PLAN" || true)
+
+if [ ${#DETALLE[@]} -gt 0 ]; then
+  CAMBIOS=$(grep -c '^>f' <<<"$PLAN" || true)
+  NUEVOS=$(grep -c '^>f+++++++++' <<<"$PLAN" || true)
+  echo "   archivos nuevos o modificados: $CAMBIOS (de ellos nuevos: $NUEVOS)"
+else
+  echo "   archivos a transferir: $(grep -cvE '^(deleting |sending |sent |total |$|\./)' <<<"$PLAN" || true)"
+fi
+
 echo "   archivos que se BORRAN:        $BORRA"
 if [ "$BORRA" -gt 0 ]; then
   echo
   echo "   se borran, por ejemplo:"
-  grep '^\*deleting' <<<"$PLAN" | head -5 | sed 's/^/     /'
+  head -5 <<<"$BORRADOS" | sed 's/^/     /'
 fi
 
 echo
@@ -82,7 +110,7 @@ read -r -p "Escribi PUBLICAR para continuar: " respuesta
 [ "$respuesta" = "PUBLICAR" ] || { echo "Cancelado. No se subio nada."; exit 1; }
 
 echo
-"${RSYNC[@]}" --info=progress2
+"${RSYNC[@]}" "${PROGRESO[@]+"${PROGRESO[@]}"}"
 
 echo
 echo "Subido. Verificar:"
