@@ -43,6 +43,39 @@ async function crear() {
   }
 }
 
+/**
+ * Se renombra el nombre, nunca la ruta.
+ *
+ * El slug es la URL pública: cambiarlo rompería los enlaces que ya se hayan
+ * compartido, así que no se edita desde acá. El nombre es solo cómo se llama el
+ * mapa en el editor.
+ */
+const renombrando = ref('')
+const nombreNuevo = ref('')
+
+function empezarRenombrar(map: MapRow) {
+  renombrando.value = map.slug
+  nombreNuevo.value = map.name
+}
+
+async function guardarNombre(map: MapRow) {
+  const name = nombreNuevo.value.trim()
+  if (!name || name === map.name) { renombrando.value = ''; return }
+
+  error.value = ''
+  busy.value = true
+  try {
+    await $fetch(`/api/maps/${map.slug}`, { method: 'PATCH', body: { name } })
+    renombrando.value = ''
+    await refresh()
+  } catch (cause) {
+    error.value = (cause as { statusMessage?: string })?.statusMessage
+      ?? 'No se pudo renombrar.'
+  } finally {
+    busy.value = false
+  }
+}
+
 async function hacerPredeterminado(map: MapRow) {
   if (!confirm(`¿Servir "${map.name}" en la raíz del dominio?\n\nLos dos mapas siguen accesibles por su ruta; solo cambia cuál aparece en la portada.`)) return
   busy.value = true
@@ -98,7 +131,13 @@ async function borrar(map: MapRow) {
 
     <ul class="list">
       <li v-for="map in maps" :key="map.id">
-        <NuxtLink :to="`/${map.slug}`" class="name">
+        <form v-if="renombrando === map.slug" class="renombrar" @submit.prevent="guardarNombre(map)">
+          <input v-model="nombreNuevo" type="text" required autofocus
+                 @keyup.esc="renombrando = ''">
+          <button type="submit" :disabled="busy">Guardar</button>
+          <button type="button" @click="renombrando = ''">Cancelar</button>
+        </form>
+        <NuxtLink v-else :to="`/${map.slug}`" class="name">
           {{ map.name }}
           <span v-if="map.is_default" class="tag">en la raíz</span>
         </NuxtLink>
@@ -107,6 +146,9 @@ async function borrar(map: MapRow) {
           <template v-if="map.is_default"> &middot; también en /{{ map.slug }}</template>
         </span>
         <span class="actions">
+          <button type="button" :disabled="busy" @click="empezarRenombrar(map)">
+            Renombrar
+          </button>
           <button
             v-if="!map.is_default"
             type="button"
@@ -153,7 +195,10 @@ h1 { margin: 0 0 1rem; font-size: 1.35rem; }
 .name { grid-column: 1; font-weight: 600; font-size: 1.02rem; color: inherit; text-decoration: none; }
 .name:hover { color: var(--accent); }
 .route { grid-column: 1; font-family: ui-monospace, monospace; font-size: 0.82rem; color: var(--muted); }
-.actions { grid-row: 1 / span 2; grid-column: 2; display: flex; gap: 0.4rem; }
+.actions { grid-row: 1 / span 2; grid-column: 2; display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.renombrar { grid-column: 1; display: flex; gap: 0.4rem; align-items: center; }
+.renombrar input { font: inherit; padding: 0.35rem 0.5rem; border: 1px solid var(--line); border-radius: 5px; }
 .remove { color: var(--danger); }
 
 .tag {

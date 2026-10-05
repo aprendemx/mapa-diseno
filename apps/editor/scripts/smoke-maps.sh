@@ -66,13 +66,25 @@ ID=$(api "$BASE/api/maps/redmexico/media" | python3 -c 'import json,sys; print(j
 [ "$(code -X DELETE "$BASE/api/maps/$SLUG/media/$ID")" = "404" ] || fail "pudo borrar un medio ajeno"
 api "$BASE/api/maps/redmexico/media/$ID" | grep -q "$ID" || fail "el medio ajeno desaparecio"
 
-echo "9. un mapa inexistente en la ruta da 404"
+echo "9. renombrar cambia el nombre y NO la ruta"
+[ "$(code -X PATCH "$BASE/api/maps/$SLUG" -d '{"name":"Renombrado"}')" = "200" ] \
+  || fail "no pudo renombrar"
+[ "$(code -X PATCH "$BASE/api/maps/$SLUG" -d '{"name":"   "}')" = "422" ] \
+  || fail "acepto un nombre vacio"
+api "$BASE/api/maps" | python3 -c "
+import json, sys
+m = [x for x in json.load(sys.stdin)['maps'] if x['slug'] == '$SLUG'][0]
+assert m['name'] == 'Renombrado', m['name']
+assert m['slug'] == '$SLUG', 'la ruta publica no puede cambiar al renombrar'
+" || fail "el renombrado no quedo bien"
+
+echo "10. un mapa inexistente en la ruta da 404"
 [ "$(code "$BASE/api/maps/no-existe/media")" = "404" ] || fail "no dio 404"
 
-echo "10. no se puede borrar el mapa de la raiz"
+echo "11. no se puede borrar el mapa de la raiz"
 [ "$(code -X DELETE "$BASE/api/maps/redmexico")" = "409" ] || fail "permitio borrar el de la raiz"
 
-echo "11. pasar el nuevo a la raiz mueve los enlaces, no solo la base"
+echo "12. pasar el nuevo a la raiz mueve los enlaces, no solo la base"
 [ "$(code -X POST "$BASE/api/maps/$SLUG/default")" = "200" ] || fail "no pudo cambiar la raiz"
 api "$BASE/api/maps" | python3 -c '
 import json, sys
@@ -89,7 +101,7 @@ SITIO="${SITIO:-../../sitio}"
 [ "$(code -X POST "$BASE/api/maps/redmexico/default")" = "200" ] || fail "no pudo volver"
 [ "$(readlink "$SITIO/index.html")" = "redmexico/index.html" ] || fail "no volvio el enlace"
 
-echo "12. borrar el mapa de prueba deja el otro intacto"
+echo "13. borrar el mapa de prueba deja el otro intacto"
 [ "$(code -X DELETE "$BASE/api/maps/$SLUG")" = "200" ] || fail "no pudo borrar"
 AHORA=$(api "$BASE/api/maps/redmexico/media" | grep -c '"id"')
 [ "$AHORA" = "$MEDIOS" ] || fail "el catalogo de redmexico cambio: $MEDIOS -> $AHORA"
