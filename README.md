@@ -164,6 +164,25 @@ Las entregas que el mapa ya no publica se archivan en `archivo/<aaaa-mm>/`,
 fuera de git por peso. **No es un respaldo: es la única copia**, porque publicar
 el corte siguiente con `rsync --delete` las elimina de producción.
 
+## El aislamiento entre mapas se prueba, no se supone
+
+`packages/postgres/tests/isolation.integration.test.ts` pasa identificadores de
+mapa ajenos a propósito y exige que la respuesta sea "no existe".
+
+Mientras hubo un solo catálogo, "el mapa equivocado" no era un estado posible.
+Con varios, cada consulta necesita su `map_id` — y la que se olvide **no falla**:
+devuelve, edita o borra las filas del vecino, en silencio y con éxito aparente.
+
+Esa suite encontró un bug real al escribirse. `setDefaultMap` desmarcaba el mapa
+de la raíz y después intentaba marcar el nuevo; con un identificador inexistente
+el primer `update` ya había corrido, el segundo no hacía nada, y la transacción
+confirmaba igual porque no hubo error. El dominio quedaba sin ningún mapa que
+servir en `/`.
+
+Cuando toques una consulta de estas, rompé el `map_id` a mano y comprobá que la
+suite se ponga roja. Verificado: quitarlo de cuatro funciones hace fallar ocho
+pruebas.
+
 ## Las pruebas de integración usan su propia base
 
 Recrean el esquema en cada corrida. Apuntadas a la base de desarrollo la

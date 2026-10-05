@@ -94,12 +94,17 @@ export async function renameMap(db: Queryable, id: string, name: string): Promis
  */
 export async function setDefaultMap(db: Pooled, id: string): Promise<boolean> {
   return withTransaction(db, async (tx) => {
+    // Comprobar primero y desmarcar despues, en ese orden.
+    //
+    // Al reves --desmarcar y luego intentar marcar-- un id que no existe deja
+    // cero mapas predeterminados y la transaccion confirma igual, porque no
+    // hubo ningun error: la raiz del dominio se queda sin nada que servir.
+    const exists = await tx.query('select 1 from maps where id = $1', [id]);
+    if (exists.rows.length === 0) return false;
+
     await tx.query('update maps set is_default = false where is_default');
-    const result = await tx.query(
-      'update maps set is_default = true where id = $1 returning id',
-      [id],
-    );
-    return result.rows.length > 0;
+    await tx.query('update maps set is_default = true where id = $1', [id]);
+    return true;
   });
 }
 
