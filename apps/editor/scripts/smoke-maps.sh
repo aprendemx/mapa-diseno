@@ -9,6 +9,7 @@
 set -euo pipefail
 
 BASE="${BASE:-http://localhost:3000/admin}"
+PRINCIPAL="${PRINCIPAL:-}"
 EMAIL="${1:?uso: smoke-maps.sh <correo> <contrasena>}"
 PASSWORD="${2:?uso: smoke-maps.sh <correo> <contrasena>}"
 JAR="$(mktemp)"
@@ -23,6 +24,14 @@ echo "0. la lista de mapas exige sesion"
 
 curl -s -o /dev/null -c "$JAR" -X POST "$BASE/api/auth/login" \
   -H 'content-type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}"
+
+if [ -z "$PRINCIPAL" ]; then
+  PRINCIPAL=$(api "$BASE/api/maps" | python3 -c '
+import json, sys
+maps = json.load(sys.stdin)["maps"]
+raiz = [m for m in maps if m["is_default"]] or maps
+print(raiz[0]["slug"])')
+fi
 
 echo "1. hay un mapa y sirve la raiz"
 api "$BASE/api/maps" | python3 -c '
@@ -57,14 +66,14 @@ echo "6. el slug repetido se rechaza"
 
 echo "7. el mapa nuevo nace vacio, y el viejo sigue intacto"
 api "$BASE/api/maps/$SLUG/media" | grep -q '"media": \[\]' || fail "el mapa nuevo no nacio vacio"
-MEDIOS=$(api "$BASE/api/maps/redmexico/media" | grep -c '"id"')
-[ "$MEDIOS" -ge 32 ] || fail "el catalogo de redmexico cambio: $MEDIOS"
+MEDIOS=$(api "$BASE/api/maps/$PRINCIPAL/media" | grep -c '"id"')
+[ "$MEDIOS" -ge 32 ] || fail "el catalogo de $PRINCIPAL cambio: $MEDIOS"
 
 echo "8. un medio del otro mapa no se alcanza por la URL"
-ID=$(api "$BASE/api/maps/redmexico/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
+ID=$(api "$BASE/api/maps/$PRINCIPAL/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
 [ "$(code "$BASE/api/maps/$SLUG/media/$ID")" = "404" ] || fail "alcanzo un medio del mapa ajeno"
 [ "$(code -X DELETE "$BASE/api/maps/$SLUG/media/$ID")" = "404" ] || fail "pudo borrar un medio ajeno"
-api "$BASE/api/maps/redmexico/media/$ID" | grep -q "$ID" || fail "el medio ajeno desaparecio"
+api "$BASE/api/maps/$PRINCIPAL/media/$ID" | grep -q "$ID" || fail "el medio ajeno desaparecio"
 
 echo "9. renombrar cambia el nombre y NO la ruta"
 [ "$(code -X PATCH "$BASE/api/maps/$SLUG" -d '{"name":"Renombrado"}')" = "200" ] \
@@ -82,7 +91,7 @@ echo "10. un mapa inexistente en la ruta da 404"
 [ "$(code "$BASE/api/maps/no-existe/media")" = "404" ] || fail "no dio 404"
 
 echo "11. no se puede borrar el mapa de la raiz"
-[ "$(code -X DELETE "$BASE/api/maps/redmexico")" = "409" ] || fail "permitio borrar el de la raiz"
+[ "$(code -X DELETE "$BASE/api/maps/$PRINCIPAL")" = "409" ] || fail "permitio borrar el de la raiz"
 
 echo "12. pasar el nuevo a la raiz mueve los enlaces, no solo la base"
 [ "$(code -X POST "$BASE/api/maps/$SLUG/default")" = "200" ] || fail "no pudo cambiar la raiz"
@@ -98,13 +107,13 @@ SITIO="${SITIO:-../../sitio}"
 [ "$(readlink "$SITIO/contenidos")" = "$SLUG/contenidos" ] \
   || fail "el enlace de contenidos no siguio al mapa"
 
-[ "$(code -X POST "$BASE/api/maps/redmexico/default")" = "200" ] || fail "no pudo volver"
-[ "$(readlink "$SITIO/index.html")" = "redmexico/index.html" ] || fail "no volvio el enlace"
+[ "$(code -X POST "$BASE/api/maps/$PRINCIPAL/default")" = "200" ] || fail "no pudo volver"
+[ "$(readlink "$SITIO/index.html")" = "$PRINCIPAL/index.html" ] || fail "no volvio el enlace"
 
 echo "13. borrar el mapa de prueba deja el otro intacto"
 [ "$(code -X DELETE "$BASE/api/maps/$SLUG")" = "200" ] || fail "no pudo borrar"
-AHORA=$(api "$BASE/api/maps/redmexico/media" | grep -c '"id"')
-[ "$AHORA" = "$MEDIOS" ] || fail "el catalogo de redmexico cambio: $MEDIOS -> $AHORA"
+AHORA=$(api "$BASE/api/maps/$PRINCIPAL/media" | grep -c '"id"')
+[ "$AHORA" = "$MEDIOS" ] || fail "el catalogo de $PRINCIPAL cambio: $MEDIOS -> $AHORA"
 
 echo
 echo "Manejo de mapas correcto."

@@ -5,8 +5,9 @@
 set -euo pipefail
 
 BASE="${BASE:-http://localhost:3000/admin}"
-MAPA="${MAPA:-redmexico}"
-API="$BASE/api/maps/$MAPA"
+# El slug del mapa de la raiz, no uno fijo: renombrarlo rompia estas pruebas.
+MAPA="${MAPA:-}"
+API=
 ROOT="${ROOT:-../../sitio/$MAPA}"
 EMAIL="${1:?uso: smoke-files.sh <correo> <contrasena>}"
 PASSWORD="${2:?uso: smoke-files.sh <correo> <contrasena>}"
@@ -21,6 +22,15 @@ code() { curl -s -o /dev/null -w '%{http_code}' -b "$JAR" "$@"; }
 curl -s -o /dev/null -c "$JAR" -X POST "$BASE/api/auth/login" \
   -H 'content-type: application/json' \
   -d "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}"
+
+if [ -z "$MAPA" ]; then
+  MAPA=$(curl -s -b "$JAR" "$BASE/api/maps" | python3 -c '
+import json, sys
+maps = json.load(sys.stdin)["maps"]
+raiz = [m for m in maps if m["is_default"]] or maps
+print(raiz[0]["slug"])')
+fi
+API="$BASE/api/maps/$MAPA"
 
 MID=$(api "$API/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
 echo "medio de prueba: $MID"

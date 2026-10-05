@@ -5,8 +5,9 @@
 set -euo pipefail
 
 BASE="${BASE:-http://localhost:3000/admin}"
-MAPA="${MAPA:-redmexico}"
-API="$BASE/api/maps/$MAPA"
+# El slug del mapa de la raiz, no uno fijo: renombrarlo rompia estas pruebas.
+MAPA="${MAPA:-}"
+API=
 ROOT="${ROOT:-../..}"
 # Cada mapa tiene su arbol: su pagina y su multimedia juntas.
 ARBOL="${ARBOL:-$ROOT/sitio/$MAPA}"
@@ -21,11 +22,21 @@ api()  { curl -s -b "$JAR" -H 'content-type: application/json' "$@"; }
 code() { curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -H 'content-type: application/json' "$@"; }
 
 echo "0. publicar exige sesion"
-[ "$(curl -s -o /dev/null -w '%{http_code}' -X POST "$API/publish")" = "401" ] \
+# Cualquier slug sirve: requireUser corre antes de buscar el mapa.
+[ "$(curl -s -o /dev/null -w '%{http_code}' -X POST "$BASE/api/maps/cualquiera/publish")" = "401" ] \
   || fail "permitio publicar sin sesion"
 
 curl -s -o /dev/null -c "$JAR" -X POST "$BASE/api/auth/login" \
   -H 'content-type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}"
+
+if [ -z "$MAPA" ]; then
+  MAPA=$(curl -s -b "$JAR" "$BASE/api/maps" | python3 -c '
+import json, sys
+maps = json.load(sys.stdin)["maps"]
+raiz = [m for m in maps if m["is_default"]] or maps
+print(raiz[0]["slug"])')
+fi
+API="$BASE/api/maps/$MAPA"
 
 echo "1. la revision no encuentra problemas"
 api "$API/publish-check" | grep -q '"ok": *true' || fail "la revision encontro problemas"

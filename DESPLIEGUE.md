@@ -161,6 +161,7 @@ Para restaurar: `./deploy/restaurar.sh /mnt/respaldos/<fecha>`.
 docker compose run --rm tools node scripts/verify-catalog.ts --map redmexico
 docker compose run --rm tools node scripts/sweep-orphans.ts --map redmexico
 docker compose run --rm tools node scripts/link-default-map.ts
+docker compose run --rm tools node scripts/rename-map-slug.ts --from <slug> --to <slug>
 ```
 
 ### Barrido automático
@@ -228,6 +229,7 @@ ser alcanzable.
 ```bash
 ls -l sitio/      # index.html y contenidos deben ser enlaces
 docker compose run --rm tools node scripts/link-default-map.ts
+docker compose run --rm tools node scripts/rename-map-slug.ts --from <slug> --to <slug>
 ```
 
 **Un servicio nuevo no aparece aunque las labels estén bien.** Traefik lee Docker

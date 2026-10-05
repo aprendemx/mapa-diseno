@@ -63,6 +63,11 @@ Y el API igual: `/admin/api/maps/<slug>/media`. No saber sobre qué mapa estás
 escribiendo es la falla que el aislamiento del adaptador existe para cerrar;
 sería absurdo reintroducirla arriba.
 
+El **nombre** de un mapa se edita desde el editor; la **ruta** no. El slug es la
+URL que la gente comparte, así que cambiarlo es una operación de consola,
+deliberada: mueve el directorio, la fila de la base y los enlaces de la raíz, y
+si algo falla devuelve el directorio a su nombre sin tocar la base.
+
 Los ids de medio son únicos en todo el sistema y no por mapa: son la clave que
 referencian archivos, temas y cobertura, y el prefijo de cada id de nota
 publicada (`<mediumId>-nota-3`). Si dos mapas tienen un medio del mismo nombre,
@@ -101,6 +106,7 @@ npm run import-legacy       # migra datos/proyecto.json al catalogo
 npm run migrate-paths       # rutas legacy -> rutas por id (informe; --apply)
                             # correr siempre despues de import-legacy
 npm run link-default        # raiz del sitio -> mapa predeterminado
+npm run rename-slug         # --from <slug> --to <slug>: cambia la URL publica
 npm run verify-catalog      # regenera el mapa desde la base y lo resume
 npm run sweep               # archivos sin fila (informe; --delete)
                             # --all-maps para todos; retiene 90 dias
