@@ -155,6 +155,7 @@ async function save() {
         <p class="hint">Con esto apagado los temas se conservan acá, pero no se publican.</p>
 
         <WitnessList
+          :api="api"
           :files="form.files"
           :themes="form.socialThemes"
           :social-enabled="form.socialEnabled"

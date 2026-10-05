@@ -13,9 +13,9 @@ cd "$(dirname "$0")/.."
 set -a; . ./.env; set +a
 
 [ -f "$ORIGEN/catalogo.dump" ] || { echo "No hay catalogo.dump en $ORIGEN" >&2; exit 1; }
-[ -d "$ORIGEN/contenidos" ]    || { echo "No hay contenidos/ en $ORIGEN" >&2; exit 1; }
+[ -d "$ORIGEN/sitio" ]        || { echo "No hay sitio/ en $ORIGEN" >&2; exit 1; }
 
-echo "Esto reemplaza el catalogo y la multimedia actuales por los de:"
+echo "Esto reemplaza TODOS los mapas y su multimedia por los de:"
 echo "  $ORIGEN"
 read -r -p "Escribi RESTAURAR para continuar: " respuesta
 [ "$respuesta" = "RESTAURAR" ] || { echo "Cancelado."; exit 1; }
@@ -25,10 +25,11 @@ docker compose stop editor
 
 docker exec -i mapa-postgres pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB" \
   --clean --if-exists < "$ORIGEN/catalogo.dump"
-rsync -a --delete "$ORIGEN/contenidos/" datos/contenidos/
+# -l para que los enlaces de la raiz vuelvan como enlaces, no como copias.
+rsync -al --delete "$ORIGEN/sitio/" sitio/
 [ -f "$ORIGEN/mapa-base.html" ] && cp "$ORIGEN/mapa-base.html" mapa-base.html
 
 docker compose start editor
 echo
-echo "Restaurado. El mapa publicado NO cambio todavia: entra al editor y publica"
-echo "para que el sitio refleje este catalogo."
+echo "Restaurado. Las paginas publicadas son las del respaldo; si el catalogo"
+echo "cambio despues, entra al editor y publica cada mapa de nuevo."

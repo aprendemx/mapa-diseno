@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+# RETIRADO. El editor en /admin hace esto mismo con validacion previa, swap
+# atomico e historial por mapa.
+#
+# Se conserva solo para volver atras si hiciera falta. OJO: el destino que trae
+# apunta al layout plano anterior al corte --sitio/index.html y
+# sitio/contenidos/ sueltos-- y no al arbol por mapas, asi que NO sirve tal cual
+# sobre el sitio actual. Ver DESPLIEGUE.md, "Corte desde el sitio subido a mano".
+#
 # Publica una entrega generada por la herramienta PowerShell.
 #
 #   ./deploy/publicar-entrega.sh ~/Downloads/mapa-datos
@@ -6,8 +14,12 @@
 # Autocontenido: no necesita el resto del repositorio, solo bash, rsync,
 # python3 y acceso ssh al servidor. Copiar este archivo suelto alcanza.
 #
-# Provisorio: deja de hacer falta cuando el editor web este en produccion, que
-# hace esto mismo con validacion previa, swap atomico e historial.
+# RETIRADO. El editor en /admin hace esto mismo con validacion previa, swap
+# atomico e historial por mapa. Se conserva solo para volver atras si hiciera
+# falta: el destino que trae apunta al layout plano anterior al corte, no al
+# arbol por mapas, asi que NO sirve tal cual sobre el sitio actual.
+#
+# Ver DESPLIEGUE.md, seccion "Corte desde el sitio subido a mano".
 #
 # Verifica antes de subir, porque este rsync lleva --delete sobre ~1 GB: lo que
 # no venga en la entrega se borra del servidor. Un dedazo en la ruta de destino

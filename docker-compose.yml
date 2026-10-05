@@ -3,9 +3,12 @@
 # Depende de la red externa creada para Traefik:
 #   docker network create traefik_network
 #
-# Dos dominios, dos contenedores, un volumen compartido. Si el editor se cae,
-# el mapa publico sigue en linea: eso no es casualidad, es el motivo de que la
-# publicacion genere un archivo estatico en lugar de renderizarse al vuelo.
+# Un dominio, enrutado por path: /admin va al editor y todo lo demas a nginx.
+# Un solo certificado y ningun DNS nuevo por cada mapa.
+#
+# Si el editor se cae, los mapas siguen en linea: eso no es casualidad, es el
+# motivo de que publicar genere un archivo estatico en lugar de renderizarse al
+# vuelo.
 
 services:
 
@@ -38,21 +41,30 @@ services:
         condition: service_healthy
     environment:
       NUXT_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-      NUXT_MEDIA_ROOT: /datos
-      NUXT_PUBLISH_DIR: /datos/publicado
-      NUXT_TEMPLATE_PATH: /datos/mapa-base.html
+      # Un directorio por mapa, con su pagina y su multimedia. En la raiz, dos
+      # enlaces simbolicos al mapa predeterminado.
+      NUXT_SITE_ROOT: /sitio
+      NUXT_TEMPLATE_PATH: /plantilla/mapa-base.html
       NUXT_MAX_UPLOAD_BYTES: ${MAX_UPLOAD_BYTES:-2147483648}
       TZ: ${TZ}
     volumes:
-      # Escribe los dos: sube archivos a contenidos/ y publica en publicado/.
-      # Deben pertenecer al uid 1000, que es con el que corre el contenedor.
-      - ./datos:/datos
+      # El editor escribe aqui: sube archivos y publica paginas. Debe pertenecer
+      # al uid 1000, que es con el que corre el contenedor.
+      - ./sitio:/sitio
+      # La plantilla se lee en cada publicacion, asi que corregirla no obliga a
+      # reconstruir la imagen.
+      - ./mapa-base.html:/plantilla/mapa-base.html:ro
     labels:
       - traefik.enable=true
       # Obligatorio: el editor esta en dos redes y Traefik necesita saber por
       # cual alcanzarlo.
       - traefik.docker.network=traefik_network
-      - traefik.http.routers.mapa-editor.rule=Host(`${EDITOR_HOST}`)
+      # Mismo host que los mapas, distinto prefijo. La prioridad se declara en
+      # lugar de confiar en que Traefik ordene por longitud de regla: si alguna
+      # vez empatan, el editor queda detras del catch-all y deja de ser
+      # alcanzable.
+      - traefik.http.routers.mapa-editor.rule=Host(`${MAPA_HOST}`) && PathPrefix(`/admin`)
+      - traefik.http.routers.mapa-editor.priority=100
       - traefik.http.routers.mapa-editor.entrypoints=websecure
       - traefik.http.routers.mapa-editor.tls=true
       - traefik.http.routers.mapa-editor.tls.certresolver=le
@@ -75,8 +87,8 @@ services:
       TZ: ${TZ}
     volumes:
       # Solo lectura: nginx entrega lo que el editor publico, nunca escribe.
-      - ./datos/publicado:/usr/share/nginx/html:ro
-      - ./datos/contenidos:/usr/share/nginx/html/contenidos:ro
+      # Un solo montaje: los enlaces de la raiz viven dentro del arbol.
+      - ./sitio:/usr/share/nginx/html:ro
       - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     healthcheck:
       # 127.0.0.1 y no localhost: con el config montado :ro el script de
@@ -90,6 +102,7 @@ services:
       - traefik.enable=true
       - traefik.docker.network=traefik_network
       - traefik.http.routers.mapa.rule=Host(`${MAPA_HOST}`)
+      - traefik.http.routers.mapa.priority=1
       - traefik.http.routers.mapa.entrypoints=websecure
       - traefik.http.routers.mapa.tls=true
       - traefik.http.routers.mapa.tls.certresolver=le

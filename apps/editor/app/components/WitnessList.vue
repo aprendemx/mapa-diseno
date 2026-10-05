@@ -10,6 +10,8 @@ const props = defineProps<{
   files: MediumDetail['files']
   themes: MediumDetail['socialThemes']
   socialEnabled: boolean
+  /** Construye URL del API acotadas al mapa. Viene de `useMap()`. */
+  api: (path?: string) => string
 }>()
 
 const emit = defineEmits<{
@@ -52,7 +54,13 @@ function move(index: number, by: number) {
 const themeIndex = (id: string | undefined) =>
   props.themes.findIndex((theme) => theme.id === id)
 
-const previewUrl = (path: string) => `/${path}`
+/**
+ * El preview sale por el editor, no por el sitio público.
+ *
+ * Una sola URL en desarrollo y en producción, y la misma para el mapa de la
+ * raíz que para los demás.
+ */
+const previewUrl = (path: string) => props.api(`/files/${path}`)
 </script>
 
 <template>

@@ -12,6 +12,8 @@
 # Las dos mitades van juntas a proposito. Un volcado de la base que referencia
 # archivos que no estan respaldados no sirve para restaurar nada, y un archivo
 # sin su fila es un huerfano que el barrido borrara.
+#
+# El arbol incluye todos los mapas y los enlaces de la raiz.
 set -euo pipefail
 
 DESTINO="${1:-./respaldos}"
@@ -29,15 +31,18 @@ echo "[$(date +%T)] volcando la base…"
 docker exec -t mapa-postgres pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" --format=custom \
   > "$TRABAJO/catalogo.dump"
 
-echo "[$(date +%T)] copiando multimedia…"
+echo "[$(date +%T)] copiando el árbol de mapas…"
 # --link-dest contra el respaldo anterior: los archivos que no cambiaron se
 # enlazan en vez de copiarse, asi que treinta respaldos de 2.2 GB ocupan 2.2 GB
 # mas lo que haya cambiado.
+# -l conserva los enlaces simbolicos de la raiz tal cual, sin seguirlos: si se
+# copiaran como archivos, restaurar dejaria la pagina del mapa predeterminado
+# duplicada en la raiz y el repunte dejaria de funcionar.
 ANTERIOR="$(find "$DESTINO" -maxdepth 1 -mindepth 1 -type d ! -name "$FECHA" | sort | tail -1)"
-if [ -n "$ANTERIOR" ] && [ -d "$ANTERIOR/contenidos" ]; then
-  rsync -a --delete --link-dest="$ANTERIOR/contenidos" datos/contenidos/ "$TRABAJO/contenidos/"
+if [ -n "$ANTERIOR" ] && [ -d "$ANTERIOR/sitio" ]; then
+  rsync -al --delete --link-dest="$ANTERIOR/sitio" sitio/ "$TRABAJO/sitio/"
 else
-  rsync -a --delete datos/contenidos/ "$TRABAJO/contenidos/"
+  rsync -al --delete sitio/ "$TRABAJO/sitio/"
 fi
 
 # La plantilla es codigo, pero si alguien la corrige en caliente el respaldo
@@ -48,7 +53,7 @@ echo "[$(date +%T)] verificando…"
 [ -s "$TRABAJO/catalogo.dump" ] || { echo "El volcado quedo vacio." >&2; exit 1; }
 FILAS=$(docker exec -t mapa-postgres psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tAc \
   'select count(*) from media_files' | tr -d '\r')
-ARCHIVOS=$(find "$TRABAJO/contenidos" -type f ! -path '*/logos-redes/*' | wc -l)
+ARCHIVOS=$(find "$TRABAJO/sitio" -type f -path '*/contenidos/*' ! -path '*/logos-redes/*' | wc -l)
 echo "  filas de archivo en la base: $FILAS"
 echo "  archivos respaldados:        $ARCHIVOS"
 [ "$ARCHIVOS" -ge "$FILAS" ] || echo "  AVISO: hay menos archivos que filas. Revisar antes de confiar en este respaldo."

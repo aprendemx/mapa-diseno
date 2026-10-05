@@ -2,6 +2,11 @@
 # servidor con Traefik; esta existe para que las pruebas de integracion
 # corran contra un motor real en lugar de contra un doble.
 
+# Nombre de proyecto explicito. Sin esto Compose lo deriva del directorio, y
+# cualquier otro archivo compose de aqui comparte el mismo espacio: un
+# `down -v` de un stack de ensayo se llevo el contenedor de desarrollo una vez.
+name: mapa-dev
+
 services:
 
   postgres:

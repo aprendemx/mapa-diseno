@@ -27,9 +27,6 @@ export default defineNuxtConfig({
     preset: 'node-server',
     // Serves media for previews inside the editor. These are the same bytes
     // nginx already serves publicly, so nothing new is exposed by it.
-    // Solo para previsualizar multimedia dentro del editor. En produccion la
-    // sirve nginx desde el mismo arbol.
-    publicAssets: [{ dir: '../../sitio', baseURL: '/sitio', maxAge: 0 }],
   },
 
   typescript: { strict: true, typeCheck: false },

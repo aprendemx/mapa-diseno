@@ -72,7 +72,7 @@ el segundo queda `canal-once-2`.
 
 ```bash
 npm install
-docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up -d   # proyecto `mapa-dev`
 
 # Esquema y base de pruebas
 docker exec -i mapa-postgres-dev psql -U mapa -d mapa < packages/project-store/src/schema.sql
@@ -211,6 +211,24 @@ servir en `/`.
 Cuando toques una consulta de estas, rompé el `map_id` a mano y comprobá que la
 suite se ponga roja. Verificado: quitarlo de cuatro funciones hace fallar ocho
 pruebas.
+
+## El despliegue
+
+`DESPLIEGUE.md` tiene el procedimiento completo, incluido el **corte desde el
+sitio subido a mano**. Lo verificado en local con Traefik, nginx y la imagen
+reales:
+
+| Ruta | Quién atiende | Cache-Control |
+| --- | --- | --- |
+| `/` | nginx → mapa predeterminado (por enlace) | `no-cache` |
+| `/<slug>/` | nginx → ese mapa | `no-cache` |
+| `/contenidos/…` | nginx → media (por enlace) | 30 días |
+| `/admin/…` | el editor | — |
+
+Las dos reglas de Traefik comparten host y se distinguen por prefijo, con
+`priority` declarada en lugar de confiar en que ordene por longitud de regla: si
+alguna vez empatan, el editor queda detrás del catch-all y deja de ser
+alcanzable.
 
 ## Las pruebas de integración usan su propia base
 
