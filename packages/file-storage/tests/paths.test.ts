@@ -97,3 +97,46 @@ describe('isSafeRelativePath', () => {
     });
   }
 });
+
+describe('storagePath is idempotent', () => {
+  const medio = 'canal-once';
+  const id = 'archivo-1787070380674-dfwsw';
+  const nombre = (ruta: string) => ruta.split('/').pop()!;
+
+  test('feeding it a name it produced returns the same name', () => {
+    // The path migration derives the destination from the current filename. A
+    // second run used to prefix the id again, move every file, and on a third
+    // run truncate the real name out of existence.
+    const uno = storagePath(medio, id, 'Nota Videojuegos.mp4');
+    const dos = storagePath(medio, id, nombre(uno));
+    const tres = storagePath(medio, id, nombre(dos));
+
+    assert.equal(uno, 'contenidos/canal-once/archivo-1787070380674-dfwsw-nota-videojuegos.mp4');
+    assert.equal(dos, uno);
+    assert.equal(tres, uno);
+  });
+
+  test('survives a name that is only the id', () => {
+    const uno = storagePath(medio, id, `${id}.mp4`);
+    assert.equal(uno, `contenidos/${medio}/${id}.mp4`);
+    assert.equal(storagePath(medio, id, nombre(uno)), uno);
+  });
+
+  test('a truncated label stays stable instead of eroding', () => {
+    const uno = storagePath(medio, id, `${'palabra '.repeat(20)}.mp4`);
+    const dos = storagePath(medio, id, nombre(uno));
+    assert.equal(dos, uno);
+  });
+
+  test('a real filename that happens to start with the id is still handled', () => {
+    const uno = storagePath(medio, id, `${id}-ya-migrado.mp4`);
+    assert.equal(uno, `contenidos/${medio}/${id}-ya-migrado.mp4`);
+    assert.equal(storagePath(medio, id, nombre(uno)), uno);
+  });
+
+  test('another file id in the name is not mistaken for its own', () => {
+    const ajeno = 'archivo-1700000000000-aaaaa';
+    const ruta = storagePath(medio, id, `${ajeno}-cosa.mp4`);
+    assert.equal(ruta, `contenidos/${medio}/${id}-${ajeno}-cosa.mp4`);
+  });
+});

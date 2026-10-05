@@ -62,6 +62,13 @@ export function kindOf(filename: string): FileKind {
  * `mediumId` is frozen at creation and `fileId` is unique, so this path is
  * stable for the life of the file. The label is decoration for whoever is
  * looking at the directory; nothing reads it back.
+ *
+ * Idempotent: feeding it a name it already produced returns the same name.
+ * That matters because the path migration derives the destination from the
+ * current filename, so without this a second run prefixes the id again —
+ * `<id>-<id>-nota.mp4` — moves every file, and on a third run the truncation
+ * eats the real name entirely. Fixing it here rather than in the migration
+ * keeps every other caller safe too.
  */
 export function storagePath(
   mediumId: string,
@@ -70,7 +77,16 @@ export function storagePath(
 ): string {
   const extension = extensionOf(originalFilename);
   const base = originalFilename.slice(0, originalFilename.length - extension.length);
-  const label = slug(base).slice(0, LABEL_LENGTH).replace(/-+$/, '');
+
+  const withoutId = base.startsWith(`${fileId}-`)
+    ? base.slice(fileId.length + 1)
+    : base === fileId
+      ? ''
+      : base;
+
+  // `slug('')` falls back to 'medio', so an empty label must short-circuit
+  // instead of acquiring one.
+  const label = withoutId ? slug(withoutId).slice(0, LABEL_LENGTH).replace(/-+$/, '') : '';
 
   const name = label ? `${fileId}-${label}${extension}` : `${fileId}${extension}`;
   return `${ROOT}/${mediumId}/${name}`;
