@@ -39,8 +39,13 @@ async function publish() {
   problems.value = []
   result.value = ''
   try {
-    const response = await $fetch<{ bytes: number }>(api('/publish'), { method: 'POST' })
-    result.value = `Publicado. ${(response.bytes / 1024).toFixed(0)} KB en línea.`
+    const response = await $fetch<{ bytes: number, unchanged: boolean }>(
+      api('/publish'),
+      { method: 'POST' },
+    )
+    result.value = response.unchanged
+      ? 'No había cambios: la página se regeneró y el historial quedó igual.'
+      : `Publicado. ${(response.bytes / 1024).toFixed(0)} KB en línea.`
     checked.value = false
     await refresh()
   } catch (cause) {

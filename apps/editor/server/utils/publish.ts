@@ -6,7 +6,12 @@ import type { MapData } from '@mapa-mexico/map-generator'
 import { checkPublishable, fromRows } from '@mapa-mexico/project-store'
 import type { MapRow, Problem } from '@mapa-mexico/project-store'
 import { pointRootAt, statStored, writeFileAtomic } from '@mapa-mexico/file-storage'
-import { getPublication, readCatalog, recordPublication } from '@mapa-mexico/postgres'
+import {
+  getPublication,
+  latestPublication,
+  readCatalog,
+  recordPublication,
+} from '@mapa-mexico/postgres'
 import type { Pooled, PublicationSummary, SessionUser } from '@mapa-mexico/postgres'
 
 export interface PublishRefusal {
@@ -18,6 +23,8 @@ export interface PublishSuccess {
   ok: true
   publication: PublicationSummary
   bytes: number
+  /** La página se regeneró, pero el contenido era el mismo que ya estaba. */
+  unchanged: boolean
 }
 
 /**
@@ -81,13 +88,26 @@ export async function publishCatalogue(
   const data = generateMapData(project)
   const bytes = await put(map, data)
 
+  // Publicar dos veces sin cambios regenera la página, pero no merece otra
+  // entrada en el historial. Veinte entradas idénticas no se pueden navegar, y
+  // navegarlo es justamente para lo que existe: elegir a cuál volver.
+  const previous = await latestPublication(db, map.id)
+  const unchanged = previous
+    ? JSON.stringify((await getPublication(db, map.id, previous.id))?.mapData) ===
+      JSON.stringify(data)
+    : false
+
+  if (unchanged && previous) {
+    return { ok: true, publication: previous, bytes, unchanged: true }
+  }
+
   const publication = await recordPublication(db, {
     mapId: map.id,
     userId: user.id,
     userName: user.name,
     mapData: data,
   })
-  return { ok: true, publication, bytes }
+  return { ok: true, publication, bytes, unchanged: false }
 }
 
 /**
@@ -108,6 +128,8 @@ export async function restorePublication(
   if (!previous) return undefined
 
   const bytes = await put(map, previous.mapData)
+  // Una restauración siempre se registra, incluso si el contenido coincide con
+  // lo que ya estaba: lo que importa asentar es que alguien decidió volver.
   const publication = await recordPublication(db, {
     mapId: map.id,
     userId: user.id,
@@ -115,5 +137,5 @@ export async function restorePublication(
     mapData: previous.mapData,
     restoredFrom: previous.id,
   })
-  return { ok: true, publication, bytes }
+  return { ok: true, publication, bytes, unchanged: false }
 }

@@ -31,25 +31,35 @@ const TIPOS = {
   '.flac': 'audio/flac',
 }
 
-function resolver(url) {
+/**
+ * Las mismas dos candidatas que prueba nginx con `try_files $uri $uri/index.html`.
+ *
+ * Sin la segunda, /telesecundarias da 404 aunque la pagina este publicada: el
+ * directorio existe pero no es un archivo. nginx lo resolveria y este servidor
+ * no, que es la clase de diferencia entre desarrollo y produccion que hace
+ * perder una tarde buscando un bug que no existe.
+ */
+function candidatas(url) {
   const ruta = normalize(decodeURIComponent(url.split('?')[0]))
-  if (ruta.includes('..')) return undefined
+  if (ruta.includes('..')) return []
 
-  // Los enlaces simbolicos de la raiz hacen el resto: no hay caso especial.
-  return join(SITIO, ruta === '/' ? 'index.html' : ruta)
+  if (ruta === '/') return [join(SITIO, 'index.html')]
+  return [join(SITIO, ruta), join(SITIO, ruta, 'index.html')]
 }
 
 createServer(async (peticion, respuesta) => {
-  const archivo = resolver(peticion.url ?? '/')
-  if (!archivo) return respuesta.writeHead(400).end('Ruta no permitida')
+  const posibles = candidatas(peticion.url ?? '/')
+  if (posibles.length === 0) return respuesta.writeHead(400).end('Ruta no permitida')
 
+  let archivo
   let info
-  try {
-    info = await stat(archivo)
-    if (!info.isFile()) throw new Error('no es un archivo')
-  } catch {
-    return respuesta.writeHead(404).end('No encontrado')
+  for (const posible of posibles) {
+    try {
+      const encontrado = await stat(posible)
+      if (encontrado.isFile()) { archivo = posible; info = encontrado; break }
+    } catch { /* probar la siguiente */ }
   }
+  if (!archivo || !info) return respuesta.writeHead(404).end('No encontrado')
 
   const tipo = TIPOS[extname(archivo).toLowerCase()] ?? 'application/octet-stream'
   const rango = /^bytes=(\d*)-(\d*)$/.exec(peticion.headers.range ?? '')

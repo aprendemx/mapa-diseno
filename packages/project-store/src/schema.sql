@@ -158,7 +158,12 @@ create table publications (
   -- Denormalised on purpose: the history must still say who published when the
   -- account is long gone.
   published_by_name text not null,
-  map_data          jsonb not null,
+  -- json y no jsonb: jsonb normaliza y reordena las claves, y de aqui sale el
+  -- contenido que se vuelve a renderizar al restaurar. Con jsonb una
+  -- restauracion publicaba los mismos datos con el orden barajado, y comparar
+  -- dos publicaciones por texto nunca daba igual. No consultamos dentro de esta
+  -- columna --se lee entera-- asi que jsonb no aportaba nada a cambio.
+  map_data          json not null,
   media_count       integer not null,
   note_count        integer not null,
   witness_count     integer not null,

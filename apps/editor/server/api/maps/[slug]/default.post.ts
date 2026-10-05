@@ -19,5 +19,6 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Ese mapa ya no existe.' })
   }
 
-  return { ok: true, links: [] }
+  const links = await pointRootAt(useRuntimeConfig().siteRoot, map.slug)
+  return { ok: true, links }
 })

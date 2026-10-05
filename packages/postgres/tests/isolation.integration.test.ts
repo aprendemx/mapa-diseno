@@ -409,4 +409,32 @@ describe('un mapa no alcanza al otro', () => {
       assert.equal((huerfanas.rows[0] as { n: number }).n, 0, 'la cascada debe haber limpiado');
     });
   });
+
+  describe('lo que guarda una publicación', () => {
+    test('conserva el orden de claves tal cual', async (t) => {
+      if (skip(t)) return;
+
+      // La columna es `json` y no `jsonb` por esto. jsonb normaliza y reordena,
+      // y de aquí sale el contenido que se vuelve a renderizar al restaurar: con
+      // jsonb una restauración publicaba los mismos datos con el orden barajado,
+      // y comparar dos publicaciones por texto nunca daba igual —así que
+      // publicar sin cambios añadía una entrada al historial cada vez.
+      const data = mapData();
+      const guardada = await recordPublication(pool!, {
+        mapId: uno.id, userId, userName: 'Editora', mapData: data,
+      });
+
+      const leida = await getPublication(pool!, uno.id, guardada.id);
+      assert.equal(
+        JSON.stringify(leida?.mapData),
+        JSON.stringify(data),
+        'el texto tiene que volver idéntico, no solo equivalente',
+      );
+      assert.deepEqual(
+        Object.keys(leida!.mapData),
+        Object.keys(data),
+        'y las claves en el mismo orden',
+      );
+    });
+  });
 });

@@ -92,17 +92,45 @@ cmp -s "$OUT" /tmp/publicado-antes.html || fail "MODIFICO LA PAGINA pese a recha
 mv "$ARBOL/$FPATH.escondido" "$ARBOL/$FPATH"
 rm -f /tmp/publicado-antes.html
 
-echo "6. publicar de nuevo y restaurar la version anterior"
-api -X POST "$API/publish" >/dev/null
-OLD=$(api "$API/publications" | python3 -c 'import json,sys; print(json.load(sys.stdin)["publications"][1]["id"])')
-api -X POST "$API/publications/$OLD/restore" | grep -q '"publication"' || fail "no restauro"
+echo "6. publicar sin cambios no agrega otra entrada al historial"
+ANTES=$(api "$API/publications" | grep -c '"id"')
+api -X POST "$API/publish" | grep -q '"unchanged": *true' \
+  || fail "no detecto que no habia cambios"
+DESPUES=$(api "$API/publications" | grep -c '"id"')
+[ "$ANTES" = "$DESPUES" ] \
+  || fail "el historial crecio sin cambios: $ANTES -> $DESPUES"
+
+echo "7. cambiar algo, publicar, y restaurar la version anterior"
+# Hace falta un cambio real entre las dos: con el deduplicado, publicar dos veces
+# lo mismo deja una sola entrada --que es justamente lo que comprueba el paso 6.
+MID=$(api "$API/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
+ORIGINAL=$(api "$API/media/$MID")
+MODIFICADO=$(python3 -c "
+import json, sys
+m = json.loads(sys.argv[1])['medium']
+m['notes'] = (m['notes'] + '\nNota agregada por la prueba de humo').strip()
+print(json.dumps(m))" "$ORIGINAL")
+
+api -X PUT "$API/media/$MID" -d "$MODIFICADO" >/dev/null
+api -X POST "$API/publish" | grep -q '"unchanged": *false' || fail "no vio el cambio"
+
+VIEJA=$(api "$API/publications" | python3 -c 'import json,sys; print(json.load(sys.stdin)["publications"][1]["id"])')
+api -X POST "$API/publications/$VIEJA/restore" | grep -q '"publication"' || fail "no restauro"
 api "$API/publications" | python3 -c '
 import json,sys
 p = json.load(sys.stdin)["publications"][0]
 assert p["restoredFrom"], "la restauracion no quedo marcada"
 ' || fail "la restauracion no quedo marcada"
 
-echo "7. restaurar algo inexistente -> 404"
+# Restaurar NO toca el catalogo: el cambio sigue en los datos del editor.
+api "$API/media/$MID" | grep -q 'Nota agregada por la prueba de humo' \
+  || fail "restaurar el sitio modifico el catalogo"
+
+# Devolver el medio como estaba.
+api -X PUT "$API/media/$MID" \
+  -d "$(python3 -c "import json,sys; print(json.dumps(json.loads(sys.argv[1])['medium']))" "$ORIGINAL")" >/dev/null
+
+echo "8. restaurar algo inexistente -> 404"
 [ "$(code -X POST "$API/publications/00000000-0000-0000-0000-000000000000/restore")" = "404" ] \
   || fail "esperaba 404"
 

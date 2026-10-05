@@ -11,5 +11,9 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  return { publication: result.publication, bytes: result.bytes }
+  return {
+    publication: result.publication,
+    bytes: result.bytes,
+    unchanged: result.unchanged,
+  }
 })
