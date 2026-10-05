@@ -4,9 +4,13 @@
 #   ./scripts/smoke-publish.sh <correo> <contrasena>
 set -euo pipefail
 
-BASE="${BASE:-http://localhost:3000}"
+BASE="${BASE:-http://localhost:3000/admin}"
+MAPA="${MAPA:-redmexico}"
+API="$BASE/api/maps/$MAPA"
 ROOT="${ROOT:-../..}"
-OUT="${OUT:-$ROOT/publicado/index.html}"
+# Cada mapa tiene su arbol: su pagina y su multimedia juntas.
+ARBOL="${ARBOL:-$ROOT/sitio/$MAPA}"
+OUT="${OUT:-$ARBOL/index.html}"
 EMAIL="${1:?uso: smoke-publish.sh <correo> <contrasena>}"
 PASSWORD="${2:?uso: smoke-publish.sh <correo> <contrasena>}"
 JAR="$(mktemp)"
@@ -17,18 +21,18 @@ api()  { curl -s -b "$JAR" -H 'content-type: application/json' "$@"; }
 code() { curl -s -o /dev/null -w '%{http_code}' -b "$JAR" -H 'content-type: application/json' "$@"; }
 
 echo "0. publicar exige sesion"
-[ "$(curl -s -o /dev/null -w '%{http_code}' -X POST "$BASE/api/publish")" = "401" ] \
+[ "$(curl -s -o /dev/null -w '%{http_code}' -X POST "$API/publish")" = "401" ] \
   || fail "permitio publicar sin sesion"
 
 curl -s -o /dev/null -c "$JAR" -X POST "$BASE/api/auth/login" \
   -H 'content-type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}"
 
 echo "1. la revision no encuentra problemas"
-api "$BASE/api/publish-check" | grep -q '"ok": *true' || fail "la revision encontro problemas"
+api "$API/publish-check" | grep -q '"ok": *true' || fail "la revision encontro problemas"
 
 echo "2. publicar escribe la pagina"
 rm -f "$OUT"
-api -X POST "$BASE/api/publish" | grep -q '"publication"' || fail "no publico"
+api -X POST "$API/publish" | grep -q '"publication"' || fail "no publico"
 [ -f "$OUT" ] || fail "no escribio $OUT"
 
 echo "3. la pagina publicada tiene los datos y el control de multimedia"
@@ -37,7 +41,7 @@ grep -q 'const PROJECT_DATA=' "$OUT" || fail "falta PROJECT_DATA"
 # Se compara contra el catalogo vivo, no contra numeros fijos: cualquier otra
 # prueba de humo que edite datos invalidaria una foto, y lo que importa aqui no
 # es cuantos medios hay sino que lo publicado sea exactamente lo que hay.
-ESPERADO=$(api "$BASE/api/media" | python3 -c '
+ESPERADO=$(api "$API/media" | python3 -c '
 import json, sys
 m = json.load(sys.stdin)["media"]
 print(json.dumps({
@@ -63,35 +67,43 @@ assert len(data['contents']) > 0
 CHECK
 [ $? -eq 0 ] || fail "el contenido publicado no coincide con el catalogo"
 
-echo "4. quedo registrado en el historial"
-api "$BASE/api/publications" | grep -q '"mediaCount": *29' || fail "no quedo en el historial"
+echo "4. quedo registrado en el historial, con lo que hay"
+# Contra el catalogo vivo y no contra un numero fijo: otra prueba de humo que
+# edite datos invalidaria la foto, y ya paso una vez.
+MEDIOS=$(api "$API/media" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["media"]))')
+api "$API/publications" | python3 -c "
+import json, sys
+p = json.load(sys.stdin)['publications']
+assert p, 'el historial quedo vacio'
+assert p[0]['mediaCount'] == $MEDIOS, (p[0]['mediaCount'], $MEDIOS)
+" || fail "el historial no refleja el catalogo"
 
 echo "5. un archivo faltante bloquea la publicacion, sin tocar nada"
 VICTIM=$(python3 -c "
 import json,sys,urllib.request
-" ; api "$BASE/api/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
-FPATH=$(api "$BASE/api/media/$VICTIM" | python3 -c 'import json,sys; print(json.load(sys.stdin)["medium"]["files"][0]["path"])')
-mv "$ROOT/$FPATH" "$ROOT/$FPATH.escondido"
+" ; api "$API/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
+FPATH=$(api "$API/media/$VICTIM" | python3 -c 'import json,sys; print(json.load(sys.stdin)["medium"]["files"][0]["path"])')
+mv "$ARBOL/$FPATH" "$ARBOL/$FPATH.escondido"
 
 cp "$OUT" /tmp/publicado-antes.html
-api "$BASE/api/publish-check" | grep -q '"ok": *false' || fail "la revision no vio el archivo faltante"
-[ "$(code -X POST "$BASE/api/publish")" = "422" ] || fail "publico con un archivo faltante"
+api "$API/publish-check" | grep -q '"ok": *false' || fail "la revision no vio el archivo faltante"
+[ "$(code -X POST "$API/publish")" = "422" ] || fail "publico con un archivo faltante"
 cmp -s "$OUT" /tmp/publicado-antes.html || fail "MODIFICO LA PAGINA pese a rechazar"
-mv "$ROOT/$FPATH.escondido" "$ROOT/$FPATH"
+mv "$ARBOL/$FPATH.escondido" "$ARBOL/$FPATH"
 rm -f /tmp/publicado-antes.html
 
 echo "6. publicar de nuevo y restaurar la version anterior"
-api -X POST "$BASE/api/publish" >/dev/null
-OLD=$(api "$BASE/api/publications" | python3 -c 'import json,sys; print(json.load(sys.stdin)["publications"][1]["id"])')
-api -X POST "$BASE/api/publications/$OLD/restore" | grep -q '"publication"' || fail "no restauro"
-api "$BASE/api/publications" | python3 -c '
+api -X POST "$API/publish" >/dev/null
+OLD=$(api "$API/publications" | python3 -c 'import json,sys; print(json.load(sys.stdin)["publications"][1]["id"])')
+api -X POST "$API/publications/$OLD/restore" | grep -q '"publication"' || fail "no restauro"
+api "$API/publications" | python3 -c '
 import json,sys
 p = json.load(sys.stdin)["publications"][0]
 assert p["restoredFrom"], "la restauracion no quedo marcada"
 ' || fail "la restauracion no quedo marcada"
 
 echo "7. restaurar algo inexistente -> 404"
-[ "$(code -X POST "$BASE/api/publications/00000000-0000-0000-0000-000000000000/restore")" = "404" ] \
+[ "$(code -X POST "$API/publications/00000000-0000-0000-0000-000000000000/restore")" = "404" ] \
   || fail "esperaba 404"
 
 echo

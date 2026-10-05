@@ -1,11 +1,16 @@
 /**
- * Sirve el mapa publicado en local, igual que lo hace nginx en produccion.
+ * Sirve el arbol de mapas en local, igual que nginx en produccion.
  *
  *   node deploy/servir-publicado.mjs [puerto]
  *
- * Existe porque la pagina publicada referencia `contenidos/` relativo a si
- * misma. En produccion nginx monta la multimedia dentro de su raiz; abriendo
- * el archivo directamente no hay nada ahi y el mapa carga sin un solo video.
+ *   /              -> sitio/index.html   (enlace al mapa predeterminado)
+ *   /contenidos/…  -> sitio/contenidos   (idem)
+ *   /<slug>/…      -> sitio/<slug>/…
+ *
+ * Una sola raiz y nada por mapa: la pagina referencia `contenidos/` relativo a
+ * si misma, asi que cada mapa en su directorio resuelve solo. Abriendo el
+ * archivo directamente no hay nada que servir la multimedia y el mapa carga sin
+ * un solo video, que parece un fallo del generador y no lo es.
  *
  * Soporta peticiones Range, que es lo que necesita el seek de los videos.
  */
@@ -14,9 +19,7 @@ import { stat } from 'node:fs/promises'
 import { createServer } from 'node:http'
 import { extname, join, normalize, resolve } from 'node:path'
 
-const RAIZ = resolve(import.meta.dirname, '..')
-const PUBLICADO = join(RAIZ, 'publicado')
-const CONTENIDOS = join(RAIZ, 'contenidos')
+const SITIO = resolve(import.meta.dirname, '..', 'sitio')
 const PUERTO = Number(process.argv[2] ?? 8080)
 
 const TIPOS = {
@@ -32,9 +35,8 @@ function resolver(url) {
   const ruta = normalize(decodeURIComponent(url.split('?')[0]))
   if (ruta.includes('..')) return undefined
 
-  if (ruta === '/' || ruta === '/index.html') return join(PUBLICADO, 'index.html')
-  if (ruta.startsWith('/contenidos/')) return join(CONTENIDOS, ruta.slice('/contenidos/'.length))
-  return join(PUBLICADO, ruta)
+  // Los enlaces simbolicos de la raiz hacen el resto: no hay caso especial.
+  return join(SITIO, ruta === '/' ? 'index.html' : ruta)
 }
 
 createServer(async (peticion, respuesta) => {
@@ -75,5 +77,5 @@ createServer(async (peticion, respuesta) => {
   })
   createReadStream(archivo).pipe(respuesta)
 }).listen(PUERTO, '127.0.0.1', () => {
-  console.log(`\nMapa publicado en http://localhost:${PUERTO}\n`)
+  console.log(`\nSitio en http://localhost:${PUERTO}\n`)
 })

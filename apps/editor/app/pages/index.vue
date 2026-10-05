@@ -1,78 +1,59 @@
 <script setup lang="ts">
-import type { MediumSummary } from '@mapa-mexico/postgres'
+import type { MapRow } from '@mapa-mexico/project-store'
 
-const { data, refresh, status } = await useFetch<{ media: MediumSummary[] }>('/api/media')
+const { data, refresh } = await useFetch<{ maps: MapRow[] }>('/api/maps')
 
-const search = ref('')
+const maps = computed(() => data.value?.maps ?? [])
+const creating = ref(false)
 const busy = ref(false)
+const error = ref('')
 
-const media = computed(() => data.value?.media ?? [])
+const nuevo = reactive({ name: '', slug: '' })
 
-/** Accent-insensitive, so "mexico" finds "México". */
-const fold = (value: string) =>
-  value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLocaleLowerCase('es')
+/** El slug se propone desde el nombre, pero se puede corregir antes de crear. */
+const sugerir = (name: string) =>
+  name.normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)
 
-const visible = computed(() => {
-  const needle = fold(search.value.trim())
-  if (!needle) return media.value
-  return media.value.filter((medium) => fold(medium.name).includes(needle))
-})
+watch(() => nuevo.name, (name) => { nuevo.slug = sugerir(name) })
 
-const counters = computed(() => ({
-  media: media.value.length,
-  shown: media.value.filter((m) => m.active).length,
-  states: new Set(media.value.filter((m) => m.active && m.stateId).map((m) => m.stateId)).size,
-}))
-
-/** Strips the `[[...]]` markers the map renders as emphasised place names. */
-const plain = (name: string) => name.replace(/\[\[(.*?)\]\]/g, '$1')
-
-async function createMedium() {
+async function crear() {
+  error.value = ''
   busy.value = true
   try {
-    const { id } = await $fetch<{ id: string }>('/api/media', {
+    const { map } = await $fetch<{ map: MapRow }>('/api/maps', {
       method: 'POST',
-      body: {
-        name: 'Medio sin nombre',
-        stateId: '',
-        active: true,
-        notes: '',
-        coverageText: '',
-        coverageStates: [],
-        socialEnabled: false,
-        socialThemes: [],
-      },
+      body: { name: nuevo.name, slug: nuevo.slug },
     })
-    await navigateTo(`/medios/${id}`)
+    await navigateTo(`/${map.slug}`)
+  } catch (cause) {
+    error.value = (cause as { statusMessage?: string })?.statusMessage
+      ?? 'No se pudo crear el mapa.'
   } finally {
     busy.value = false
   }
 }
 
-async function remove(medium: MediumSummary) {
-  const warning = medium.fileCount > 0
-    ? `\n\nTiene ${medium.fileCount} archivo(s). Los archivos NO se borran del disco.`
-    : ''
-  if (!confirm(`¿Eliminar "${plain(medium.name)}"?${warning}`)) return
-
+async function hacerPredeterminado(map: MapRow) {
+  if (!confirm(`¿Servir "${map.name}" en la raíz del dominio?\n\nLos dos mapas siguen accesibles por su ruta; solo cambia cuál aparece en la portada.`)) return
   busy.value = true
   try {
-    await $fetch(`/api/media/${medium.id}`, { method: 'DELETE' })
+    await $fetch(`/api/maps/${map.slug}/default`, { method: 'POST' })
     await refresh()
   } finally {
     busy.value = false
   }
 }
 
-async function sortAlphabetically() {
-  const ids = [...media.value]
-    .sort((a, b) => plain(a.name).localeCompare(plain(b.name), 'es', { sensitivity: 'base' }))
-    .map((m) => m.id)
-
+async function borrar(map: MapRow) {
+  if (!confirm(`¿Eliminar el mapa "${map.name}"?\n\nSe borra su catálogo, su apariencia y su historial.\nLos archivos en sitio/${map.slug}/ NO se borran.`)) return
   busy.value = true
+  error.value = ''
   try {
-    await $fetch('/api/media-order', { method: 'PUT', body: { ids } })
+    await $fetch(`/api/maps/${map.slug}`, { method: 'DELETE' })
     await refresh()
+  } catch (cause) {
+    error.value = (cause as { statusMessage?: string })?.statusMessage ?? 'No se pudo eliminar.'
   } finally {
     busy.value = false
   }
@@ -80,97 +61,92 @@ async function sortAlphabetically() {
 </script>
 
 <template>
-  <section>
+  <section class="maps">
     <div class="bar">
-      <h1>Medios</h1>
-      <div class="actions">
-        <NuxtLink to="/apariencia" class="link">Apariencia</NuxtLink>
-        <NuxtLink to="/publicar" class="link">Publicar</NuxtLink>
-        <button type="button" :disabled="busy" @click="sortAlphabetically">Ordenar A–Z</button>
-        <button type="button" :disabled="busy" @click="createMedium">+ Nuevo medio</button>
-      </div>
+      <h1>Mapas</h1>
+      <button type="button" :disabled="busy" @click="creating = !creating">
+        {{ creating ? 'Cancelar' : '+ Nuevo mapa' }}
+      </button>
     </div>
 
-    <dl class="counters">
-      <div><dt>Estados</dt><dd>32</dd></div>
-      <div><dt>Con medios visibles</dt><dd>{{ counters.states }}</dd></div>
-      <div><dt>Medios</dt><dd>{{ counters.media }}</dd></div>
-      <div><dt>Visibles</dt><dd>{{ counters.shown }}</dd></div>
-    </dl>
+    <form v-if="creating" class="nuevo" @submit.prevent="crear">
+      <label for="map-name">Nombre</label>
+      <input id="map-name" v-model="nuevo.name" type="text" placeholder="Telesecundarias" required autofocus>
 
-    <label class="search">
-      <span class="sr-only">Buscar por nombre</span>
-      <input v-model="search" type="search" placeholder="Buscar por nombre…">
-    </label>
+      <label for="map-slug">Ruta pública</label>
+      <div class="slug">
+        <span>mapa.aprende.gob.mx/</span>
+        <input id="map-slug" v-model="nuevo.slug" type="text" required>
+      </div>
+      <p class="hint">
+        No se puede cambiar después sin romper los enlaces que ya se hayan compartido.
+      </p>
 
-    <p v-if="status === 'pending'" class="muted">Cargando…</p>
-    <p v-else-if="visible.length === 0" class="muted">
-      {{ search ? 'Ningún medio coincide con esa búsqueda.' : 'Todavía no hay medios.' }}
-    </p>
+      <button type="submit" :disabled="busy">{{ busy ? 'Creando…' : 'Crear mapa' }}</button>
+    </form>
 
-    <ul v-else class="list">
-      <li v-for="medium in visible" :key="medium.id" :class="{ hidden: !medium.active }">
-        <NuxtLink :to="`/medios/${medium.id}`" class="name">
-          {{ plain(medium.name) }}
-          <span v-if="!medium.active" class="tag">oculto</span>
+    <p v-if="error" class="problem" role="alert">{{ error }}</p>
+
+    <ul class="list">
+      <li v-for="map in maps" :key="map.id">
+        <NuxtLink :to="`/${map.slug}`" class="name">
+          {{ map.name }}
+          <span v-if="map.is_default" class="tag">en la raíz</span>
         </NuxtLink>
-        <span class="meta">
-          {{ medium.stateName ?? 'Sin estado' }}
-          &middot; {{ medium.noteCount }} nota(s)
-          &middot; {{ medium.fileCount }} archivo(s)
-          <template v-if="medium.themeCount"> &middot; {{ medium.themeCount }} tema(s)</template>
+        <span class="route">/{{ map.slug }}</span>
+        <span class="actions">
+          <button
+            v-if="!map.is_default"
+            type="button"
+            :disabled="busy"
+            @click="hacerPredeterminado(map)"
+          >Pasar a la raíz</button>
+          <button
+            v-if="!map.is_default && maps.length > 1"
+            type="button"
+            class="remove"
+            :disabled="busy"
+            @click="borrar(map)"
+          >Eliminar</button>
         </span>
-        <button type="button" class="remove" :disabled="busy" @click="remove(medium)">
-          Eliminar
-        </button>
       </li>
     </ul>
   </section>
 </template>
 
 <style scoped>
-.bar { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-h1 { margin: 0; font-size: 1.35rem; }
-.actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-.link { color: var(--accent); text-decoration: none; font-weight: 600; padding: 0.55rem 0.25rem; }
-.link:hover { text-decoration: underline; }
+.maps { max-width: 46rem; }
+.bar { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+h1 { margin: 0 0 1rem; font-size: 1.35rem; }
 
-.counters { display: flex; gap: 1.5rem; flex-wrap: wrap; margin: 1.25rem 0; padding: 0; }
-.counters div { display: flex; flex-direction: column; }
-.counters dt { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
-.counters dd { margin: 0; font-size: 1.4rem; font-weight: 600; }
+.nuevo {
+  display: grid; gap: 0.3rem; margin-bottom: 1.25rem;
+  padding: 1rem 1.15rem 1.25rem; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px;
+}
+.nuevo label { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+.nuevo button { margin-top: 1rem; justify-self: start; background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
 
-.search { display: block; max-width: 24rem; margin-bottom: 1rem; }
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.slug { display: flex; align-items: center; gap: 0.3rem; }
+.slug span { font-size: 0.85rem; color: var(--muted); white-space: nowrap; }
+.hint { margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--muted); }
+.problem { color: var(--danger); font-size: 0.88rem; }
 
 .list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
 .list li {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.25rem 1rem;
-  align-items: center;
-  padding: 0.75rem 0.9rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 1rem; align-items: center;
+  padding: 0.8rem 0.95rem; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 8px;
 }
-.list li.hidden { opacity: 0.6; }
-
-.name { grid-column: 1; font-weight: 600; color: inherit; text-decoration: none; }
+.name { grid-column: 1; font-weight: 600; font-size: 1.02rem; color: inherit; text-decoration: none; }
 .name:hover { color: var(--accent); }
-.meta { grid-column: 1; font-size: 0.85rem; color: var(--muted); }
-.remove { grid-row: 1 / span 2; grid-column: 2; color: var(--danger); }
+.route { grid-column: 1; font-family: ui-monospace, monospace; font-size: 0.82rem; color: var(--muted); }
+.actions { grid-row: 1 / span 2; grid-column: 2; display: flex; gap: 0.4rem; }
+.remove { color: var(--danger); }
 
 .tag {
-  margin-left: 0.5rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
-  background: #ece9e2;
-  color: var(--muted);
-  font-weight: 700;
+  margin-left: 0.5rem; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em;
+  font-weight: 700; color: var(--accent); background: #e4efe8;
+  border-radius: 4px; padding: 0.15rem 0.45rem;
 }
-.muted { color: var(--muted); }
 </style>

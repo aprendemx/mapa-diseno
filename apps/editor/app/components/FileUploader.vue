@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ mediumId: string }>()
+const props = defineProps<{ mediumId: string, api: (path?: string) => string }>()
 const emit = defineEmits<{ uploaded: [], error: [message: string] }>()
 
 interface Job {
@@ -24,7 +24,9 @@ const busy = computed(() => jobs.value.some((job) => job.state === 'subiendo'))
 function upload(file: File, job: Job): Promise<void> {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest()
-    const url = `/api/media/${props.mediumId}/files?filename=${encodeURIComponent(file.name)}`
+    const url = props.api(
+      `/media/${props.mediumId}/files?filename=${encodeURIComponent(file.name)}`,
+    )
 
     request.open('PUT', url)
     request.upload.addEventListener('progress', (event) => {

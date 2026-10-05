@@ -1,38 +1,34 @@
 import type { H3Event } from 'h3'
 import type { MapRow } from '@mapa-mexico/project-store'
-import { getDefaultMap, getMapBySlug } from '@mapa-mexico/postgres'
+import { getMapBySlug } from '@mapa-mexico/postgres'
 import { resolve } from 'node:path'
 
 /**
- * El mapa sobre el que opera la peticion.
+ * El mapa sobre el que opera la petición, tomado de la ruta.
  *
- * Por ahora: el de la raiz, o el que indique `?mapa=<slug>`. Cuando el editor
- * tenga su selector, el slug vendra de la ruta y este resolvedor seguira
- * siendo el unico lugar que lo decide — que es el punto de tenerlo aparte.
+ * De la ruta y no de una cookie o de un valor por omisión a propósito: una
+ * petición que no dice en qué mapa escribe es una petición que puede escribir
+ * en el equivocado, y eso es justo lo que el aislamiento del adaptador existe
+ * para impedir. Si la URL lo dice, no hay nada que adivinar.
  */
 export async function currentMap(event: H3Event): Promise<MapRow> {
-  const slug = (getQuery(event)['mapa'] as string | undefined)?.trim()
+  const slug = getRouterParam(event, 'slug')
+  if (!slug) {
+    throw createError({ statusCode: 400, statusMessage: 'Falta el mapa en la ruta.' })
+  }
 
-  const map = slug
-    ? await getMapBySlug(database(), slug)
-    : await getDefaultMap(database())
-
+  const map = await getMapBySlug(database(), slug)
   if (!map) {
-    throw createError({
-      statusCode: slug ? 404 : 500,
-      statusMessage: slug
-        ? `No existe el mapa "${slug}".`
-        : 'No hay ningún mapa marcado como predeterminado.',
-    })
+    throw createError({ statusCode: 404, statusMessage: `No existe el mapa "${slug}".` })
   }
   return map
 }
 
 /**
- * El arbol de ese mapa dentro del sitio: `<sitio>/<slug>/`.
+ * El árbol de ese mapa dentro del sitio: `<sitio>/<slug>/`.
  *
- * Cada mapa tiene su propio `contenidos/`, y es lo que hace que la pagina
- * publicada pueda seguir referenciando rutas relativas sin saber donde vive.
+ * Cada mapa tiene su propio `contenidos/`, y es lo que permite que la página
+ * publicada siga referenciando rutas relativas sin saber en qué ruta se sirve.
  */
 export function mapRoot(map: MapRow): string {
   return resolve(useRuntimeConfig().siteRoot, map.slug)

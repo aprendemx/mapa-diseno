@@ -29,7 +29,7 @@ const flag = (value: unknown): Flag => (value ? '1' : '0');
 
 const SOCIAL_NETWORKS = ['instagram', 'facebook', 'x', 'tiktok', 'youtube'] as const;
 
-const APPEARANCE_DEFAULTS: Appearance = {
+export const APPEARANCE_DEFAULTS: Appearance = {
   backgroundColor: '#2f302e',
   titleColor: '#e9e9dc',
   stateWithMediaColor: '#e9e9dc',

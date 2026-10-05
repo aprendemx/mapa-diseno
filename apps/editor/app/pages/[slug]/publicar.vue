@@ -2,8 +2,9 @@
 import type { PublicationSummary } from '@mapa-mexico/postgres'
 import type { Problem } from '@mapa-mexico/project-store'
 
+const { api, link } = useMap()
 const { data: history, refresh } = await useFetch<{ publications: PublicationSummary[] }>(
-  '/api/publications',
+  () => api('/publications'),
 )
 
 const problems = ref<Problem[]>([])
@@ -21,7 +22,7 @@ async function check() {
   busy.value = 'revisando'
   result.value = ''
   try {
-    const response = await $fetch<{ ok: boolean, problems: Problem[] }>('/api/publish-check')
+    const response = await $fetch<{ ok: boolean, problems: Problem[] }>(api('/publish-check'))
     problems.value = response.problems
     checked.value = true
     if (response.ok) result.value = 'El catálogo está listo para publicarse.'
@@ -35,7 +36,7 @@ async function publish() {
   problems.value = []
   result.value = ''
   try {
-    const response = await $fetch<{ bytes: number }>('/api/publish', { method: 'POST' })
+    const response = await $fetch<{ bytes: number }>(api('/publish'), { method: 'POST' })
     result.value = `Publicado. ${(response.bytes / 1024).toFixed(0)} KB en línea.`
     checked.value = false
     await refresh()
@@ -56,7 +57,7 @@ async function restore(publication: PublicationSummary) {
 
   busy.value = 'restaurando'
   try {
-    await $fetch(`/api/publications/${publication.id}/restore`, { method: 'POST' })
+    await $fetch(api(`/publications/${publication.id}/restore`), { method: 'POST' })
     result.value = `Se volvió a publicar la versión del ${when}.`
     await refresh()
   } finally {
@@ -67,7 +68,7 @@ async function restore(publication: PublicationSummary) {
 
 <template>
   <section class="publish">
-    <NuxtLink to="/" class="back">&larr; Medios</NuxtLink>
+    <NuxtLink :to="link()" class="back">&larr; Medios</NuxtLink>
     <h1>Publicar</h1>
     <p class="hint">
       Guardar cambia los datos. Publicar es lo que los pone en línea: valida todo

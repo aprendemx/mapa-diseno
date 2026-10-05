@@ -23,7 +23,8 @@ const SLIDERS: { key: keyof Appearance, label: string, min: number, max: number,
   { key: 'glowOutline', label: 'Contorno', min: 0, max: 5, step: 0.1 },
 ]
 
-const { data } = await useFetch<{ appearance: Appearance }>('/api/appearance')
+const { api, link } = useMap()
+const { data } = await useFetch<{ appearance: Appearance }>(() => api('/appearance'))
 const form = reactive(structuredClone(toRaw(data.value!.appearance)))
 
 const problems = ref<Problem[]>([])
@@ -37,7 +38,7 @@ async function save() {
   saved.value = false
   saving.value = true
   try {
-    await $fetch('/api/appearance', { method: 'PUT', body: form })
+    await $fetch(api('/appearance'), { method: 'PUT', body: form })
     saved.value = true
   } catch (cause) {
     const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
@@ -52,7 +53,7 @@ async function save() {
 
 <template>
   <section class="appearance">
-    <NuxtLink to="/" class="back">&larr; Medios</NuxtLink>
+    <NuxtLink :to="link()" class="back">&larr; Medios</NuxtLink>
     <h1>Apariencia del mapa</h1>
     <p class="hint">
       Estos valores se aplican cuando se publica el mapa, no al guardarlos acá.

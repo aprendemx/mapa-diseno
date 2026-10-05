@@ -4,8 +4,9 @@ import type { Problem } from '@mapa-mexico/project-store'
 
 const route = useRoute()
 const id = route.params['id'] as string
+const { api, link } = useMap()
 
-const { data, refresh } = await useFetch<{ medium: MediumDetail }>(`/api/media/${id}`)
+const { data, refresh } = await useFetch<{ medium: MediumDetail }>(() => api(`/media/${id}`))
 const { data: catalogue } = await useFetch<{ states: StateOption[] }>('/api/states')
 
 const states = computed(() => catalogue.value?.states ?? [])
@@ -40,19 +41,19 @@ function addTheme() {
 }
 
 async function reorder(ids: string[]) {
-  await $fetch(`/api/media/${id}/witness-order`, { method: 'PUT', body: { ids } })
+  await $fetch(api(`/media/${id}/witness-order`), { method: 'PUT', body: { ids } })
   await reload()
 }
 
 async function removeFile(fileId: string) {
   if (!confirm('¿Quitar este archivo del medio?\n\nEl archivo NO se borra del disco.')) return
-  await $fetch(`/api/media/${id}/files/${fileId}`, { method: 'DELETE' })
+  await $fetch(api(`/media/${id}/files/${fileId}`), { method: 'DELETE' })
   await reload()
   notice.value = 'Archivo quitado del medio. Los bytes siguen en disco hasta el barrido.'
 }
 
 async function describeFile(fileId: string, description: string) {
-  await $fetch(`/api/media/${id}/files/${fileId}`, { method: 'PATCH', body: { description } })
+  await $fetch(api(`/media/${id}/files/${fileId}`), { method: 'PATCH', body: { description } })
 }
 
 async function save() {
@@ -61,7 +62,7 @@ async function save() {
   saved.value = false
   saving.value = true
   try {
-    await $fetch(`/api/media/${id}`, { method: 'PUT', body: form })
+    await $fetch(api(`/media/${id}`), { method: 'PUT', body: form })
     await reload()
     saved.value = true
   } catch (cause) {
@@ -77,7 +78,7 @@ async function save() {
 
 <template>
   <section class="editor">
-    <NuxtLink to="/" class="back">&larr; Medios</NuxtLink>
+    <NuxtLink :to="link()" class="back">&larr; Medios</NuxtLink>
 
     <form @submit.prevent="save">
       <fieldset>
@@ -142,6 +143,7 @@ async function save() {
 
         <FileUploader
           :medium-id="id"
+          :api="api"
           @uploaded="reload"
           @error="(message) => (problems = [{ field: '', message }])"
         />

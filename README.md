@@ -42,6 +42,22 @@ cd apps/editor
 npm run link-default        # apunta la raíz al mapa predeterminado
 ```
 
+El editor vive bajo **`/admin`** del mismo dominio, así que Traefik enruta por
+path y no hace falta un dominio ni un certificado más. **El mapa que estás
+editando va en la URL**, no en una cookie:
+
+```
+/admin                        la lista de mapas
+/admin/<slug>                 los medios de ese mapa
+/admin/<slug>/medios/<id>     un medio
+/admin/<slug>/apariencia
+/admin/<slug>/publicar
+```
+
+Y el API igual: `/admin/api/maps/<slug>/media`. No saber sobre qué mapa estás
+escribiendo es la falla que el aislamiento del adaptador existe para cerrar;
+sería absurdo reintroducirla arriba.
+
 Los ids de medio son únicos en todo el sistema y no por mapa: son la clave que
 referencian archivos, temas y cobertura, y el prefijo de cada id de nota
 publicada (`<mediumId>-nota-3`). Si dos mapas tienen un medio del mismo nombre,
@@ -138,7 +154,15 @@ no pueden — cookies reales, subidas reales:
 ./scripts/smoke-crud.sh  <correo> <contraseña>
 ./scripts/smoke-files.sh <correo> <contraseña>
 ./scripts/smoke-publish.sh <correo> <contraseña>
+./scripts/smoke-maps.sh  <correo> <contraseña>
 ```
+
+**Los `scripts/` también se verifican.** Quedaban fuera del `typecheck` de Nuxt,
+que solo mira `app/` y `server/`, y por eso el barrido de huérfanos sobrevivió a
+un cambio de firma: perdió el argumento del mapa, dejó de ver referencias y
+empezó a reportar los 66 archivos vivos como huérfanos —ofreciendo borrarlos—
+mientras la prueba de humo pasaba, porque solo comprobaba que el archivo
+*apareciera* en la lista.
 
 ## Las referencias golden
 

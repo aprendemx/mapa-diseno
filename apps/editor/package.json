@@ -8,7 +8,7 @@
     "build": "nuxt build",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "nuxt typecheck",
+    "typecheck": "nuxt typecheck && tsc -p tsconfig.scripts.json --noEmit",
     "create-user": "node --env-file-if-exists=.env scripts/create-user.ts",
     "import-legacy": "node --env-file-if-exists=.env scripts/import-legacy.ts",
     "migrate-paths": "node --env-file-if-exists=.env scripts/migrate-file-paths.ts",

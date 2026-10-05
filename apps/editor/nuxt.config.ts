@@ -1,5 +1,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
+
+  // El editor se sirve bajo /admin del mismo dominio que los mapas, asi que
+  // Traefik enruta por path y no hace falta un dominio ni un certificado mas.
+  // Traefik NO recorta el prefijo: llega entero y Nuxt lo espera entero.
+  app: { baseURL: '/admin/' },
+
   devtools: { enabled: true },
 
   runtimeConfig: {
@@ -21,6 +27,8 @@ export default defineNuxtConfig({
     preset: 'node-server',
     // Serves media for previews inside the editor. These are the same bytes
     // nginx already serves publicly, so nothing new is exposed by it.
+    // Solo para previsualizar multimedia dentro del editor. En produccion la
+    // sirve nginx desde el mismo arbol.
     publicAssets: [{ dir: '../../sitio', baseURL: '/sitio', maxAge: 0 }],
   },
 

@@ -9,7 +9,7 @@
 # out kills the session server-side and not just in the browser.
 set -euo pipefail
 
-BASE="${BASE:-http://localhost:3000}"
+BASE="${BASE:-http://localhost:3000/admin}"
 EMAIL="${1:?uso: smoke-auth.sh <correo> <contrasena>}"
 PASSWORD="${2:?uso: smoke-auth.sh <correo> <contrasena>}"
 JAR="$(mktemp)"
