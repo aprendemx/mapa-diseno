@@ -60,17 +60,19 @@ Si el paso 2 no da `200`, parar y revisar los enlaces. El resto puede esperar.
 # 3. Levantar la base y el editor
 cp .env.example .env
 $EDITOR .env                            # MAPA_HOST y POSTGRES_PASSWORD
-docker build -f apps/editor/Dockerfile -t mapa-editor:$(date +%Y-%m-%d) .
-$EDITOR .env                            # poner esa etiqueta en EDITOR_IMAGE
+V=$(date +%Y-%m-%d)
+docker build -f apps/editor/Dockerfile -t mapa-editor:$V .
+docker build -f apps/editor/Dockerfile --target tools -t mapa-tools:$V .
+$EDITOR .env                            # EDITOR_IMAGE y TOOLS_IMAGE
 docker compose up -d postgres
 docker exec -i mapa-postgres psql -U mapa -d mapa < packages/project-store/src/schema.sql
 
 # 4. Importar el catálogo. Trae las rutas legacy, así que migrarlas después.
 docker compose up -d editor
-docker compose exec editor node scripts/import-legacy.ts \
+docker compose run --rm tools node scripts/import-legacy.ts \
   --file /plantilla/proyecto.json --map redmexico --name "Red México"
-docker compose exec editor node scripts/migrate-paths.ts --map redmexico --apply
-docker compose exec editor node scripts/create-user.ts \
+docker compose run --rm tools node scripts/migrate-paths.ts --map redmexico --apply
+docker compose run --rm tools node scripts/create-user.ts \
   --email vos@aprende.gob.mx --name "Tu nombre"
 
 # 5. El resto del stack
@@ -99,8 +101,10 @@ vuelve a servirse sin el editor.
 ```bash
 cd /opt/mapa-mexico
 git pull
-docker build -f apps/editor/Dockerfile -t mapa-editor:$(date +%Y-%m-%d) .
-$EDITOR .env                    # actualizar EDITOR_IMAGE
+V=$(date +%Y-%m-%d)
+docker build -f apps/editor/Dockerfile -t mapa-editor:$V .
+docker build -f apps/editor/Dockerfile --target tools -t mapa-tools:$V .
+$EDITOR .env                    # actualizar EDITOR_IMAGE y TOOLS_IMAGE
 docker compose up -d editor
 ```
 
@@ -112,7 +116,7 @@ una línea del `.env` y levantar de nuevo.
 No hay registro abierto ni lo va a haber.
 
 ```bash
-docker compose exec editor node scripts/create-user.ts \
+docker compose run --rm tools node scripts/create-user.ts \
   --email alguien@aprende.gob.mx --name "Nombre"
 ```
 
@@ -120,7 +124,7 @@ La contraseña se imprime una sola vez. No se puede **recuperar** —solo se gua
 su hash— pero sí reestablecer:
 
 ```bash
-docker compose exec editor node scripts/reset-password.ts \
+docker compose run --rm tools node scripts/reset-password.ts \
   --email alguien@aprende.gob.mx
 ```
 
@@ -154,10 +158,30 @@ Para restaurar: `./deploy/restaurar.sh /mnt/respaldos/<fecha>`.
 ## Mantenimiento
 
 ```bash
-docker compose exec editor node scripts/verify-catalog.ts --map redmexico
-docker compose exec editor node scripts/sweep-orphans.ts --map redmexico
-docker compose exec editor node scripts/link-default-map.ts
+docker compose run --rm tools node scripts/verify-catalog.ts --map redmexico
+docker compose run --rm tools node scripts/sweep-orphans.ts --map redmexico
+docker compose run --rm tools node scripts/link-default-map.ts
 ```
+
+### Barrido automático
+
+Los guiones de mantenimiento **no están en la imagen del editor**: Nitro deja un
+servidor autocontenido sin `node_modules`, y los guiones necesitan `pg` y los
+paquetes del monorepo. Van en una imagen aparte, que además es la razón de que el
+servidor expuesto no traiga herramientas que crean cuentas y borran archivos.
+
+```
+0 4 * * 0 cd /opt/mapa-mexico && docker compose run --rm tools node scripts/sweep-orphans.ts --all-maps --delete >> /var/log/mapa-barrido.log 2>&1
+```
+
+Domingos a las 4. `--all-maps` porque un barrido que cubra solo el mapa que
+alguien nombró en el crontab deja los demás creciendo sin techo. La ventana sale
+de `RETENER_ARCHIVOS_DIAS` en el `.env` —90 días— para que la línea del cron no
+lleve números sueltos.
+
+Se niega a borrar más del 80 % de los archivos de un árbol sin `--force`: borrar
+casi todo es alarmante sea cual sea el motivo, y la proporción se ve sin saber la
+causa.
 
 ### La ventana del barrido es también la ventana de restauración
 
@@ -203,7 +227,7 @@ ser alcanzable.
 
 ```bash
 ls -l sitio/      # index.html y contenidos deben ser enlaces
-docker compose exec editor node scripts/link-default-map.ts
+docker compose run --rm tools node scripts/link-default-map.ts
 ```
 
 **Un servicio nuevo no aparece aunque las labels estén bien.** Traefik lee Docker

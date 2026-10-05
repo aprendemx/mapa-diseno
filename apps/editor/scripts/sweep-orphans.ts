@@ -1,8 +1,9 @@
 /**
  * Finds media on disk that no catalogue row points at.
  *
- *   npm run sweep -- --map redmexico                           # informe
- *   npm run sweep -- --map redmexico --delete --older-than 30  # borra
+ *   npm run sweep -- --map redmexico                     # informe de un mapa
+ *   npm run sweep -- --all-maps                          # informe de todos
+ *   npm run sweep -- --all-maps --delete --older-than 90  # borra
  *
  * The old editor did this implicitly, on every save, with no confirmation and
  * no age threshold: anything under `contenidos/` missing from the incoming
@@ -20,7 +21,7 @@ import { argv, env, exit } from 'node:process'
 
 import pg from 'pg'
 import { listStored, resolveInRoot } from '@mapa-mexico/file-storage'
-import { getMapBySlug, listReferencedPaths } from '@mapa-mexico/postgres'
+import { getMapBySlug, listMaps, listMedia, listReferencedPaths } from '@mapa-mexico/postgres'
 
 function flag(name: string): string | undefined {
   const at = argv.indexOf(`--${name}`)
@@ -31,9 +32,11 @@ function flag(name: string): string | undefined {
 const PROTECTED = /^contenidos\/logos-redes\//
 
 const slug = flag('map') ?? 'redmexico'
-const siteRoot = flag('site') ?? '../../sitio'
+const siteRoot = flag('site') ?? env['NUXT_SITE_ROOT'] ?? '../../sitio'
 const remove = argv.includes('--delete')
-const olderThanDays = Number(flag('older-than') ?? 30)
+// El valor vive en el entorno para que la linea del cron no lleve numeros
+// sueltos que despues nadie sabe de donde salieron.
+const olderThanDays = Number(flag('older-than') ?? env['RETENER_ARCHIVOS_DIAS'] ?? 90)
 const databaseUrl = env['NUXT_DATABASE_URL'] ?? env['DATABASE_URL']
 
 if (!databaseUrl) {
@@ -48,75 +51,95 @@ if (!Number.isFinite(olderThanDays) || olderThanDays < 0) {
 const pool = new pg.Pool({ connectionString: databaseUrl, max: 1 })
 const megabytes = (bytes: number) => (bytes / 1024 / 1024).toFixed(1)
 
-const map = await getMapBySlug(pool, slug)
-if (!map) {
-  console.error(`No existe el mapa "${slug}".`)
-  await pool.end()
-  exit(1)
-}
+// --all-maps existe para el cron: un barrido que cubra solo el mapa que alguien
+// nombro en el crontab deja los demas creciendo sin techo.
+const mapas = argv.includes('--all-maps')
+  ? await listMaps(pool)
+  : await (async () => {
+      const uno = await getMapBySlug(pool, slug)
+      if (!uno) {
+        console.error(`No existe el mapa "${slug}".`)
+        await pool.end()
+        exit(1)
+      }
+      return [uno]
+    })()
 
-// Cada mapa tiene su propio arbol y sus propias referencias. Barrer con las
-// referencias de otro mapa borraria archivos vivos.
-const mediaRoot = flag('root') ?? `${siteRoot}/${map.slug}`
+let totalBorrados = 0
+let totalLiberado = 0
 
 try {
-  const [stored, referenced] = await Promise.all([
-    listStored(mediaRoot),
-    listReferencedPaths(pool, map.id),
-  ])
+  for (const map of mapas) {
+    // Cada mapa tiene su propio arbol y sus propias referencias. Barrer con las
+    // referencias de otro mapa borraria archivos vivos.
+    const mediaRoot = flag('root') ?? `${siteRoot}/${map.slug}`
 
-  const cutoff = Date.now() - olderThanDays * 24 * 60 * 60 * 1000
-  const orphans: { path: string, bytes: number, ageDays: number, sweepable: boolean }[] = []
+    const [stored, referenced, medios] = await Promise.all([
+      listStored(mediaRoot),
+      listReferencedPaths(pool, map.id),
+      listMedia(pool, map.id),
+    ])
 
-  for (const path of stored) {
-    if (referenced.has(path) || PROTECTED.test(path)) continue
-    const info = await stat(resolveInRoot(mediaRoot, path))
-    orphans.push({
-      path,
-      bytes: info.size,
-      ageDays: Math.floor((Date.now() - info.mtimeMs) / 86_400_000),
-      sweepable: info.mtimeMs < cutoff,
-    })
-  }
+    const cutoff = Date.now() - olderThanDays * 24 * 60 * 60 * 1000
+    const orphans: { path: string, bytes: number, ageDays: number, sweepable: boolean }[] = []
 
-  const total = orphans.reduce((sum, orphan) => sum + orphan.bytes, 0)
-  const sweepable = orphans.filter((orphan) => orphan.sweepable)
+    for (const path of stored) {
+      if (referenced.has(path) || PROTECTED.test(path)) continue
+      const info = await stat(resolveInRoot(mediaRoot, path))
+      orphans.push({
+        path,
+        bytes: info.size,
+        ageDays: Math.floor((Date.now() - info.mtimeMs) / 86_400_000),
+        sweepable: info.mtimeMs < cutoff,
+      })
+    }
 
-  console.log(`\nMapa /${map.slug} — ${mediaRoot}`)
-  console.log(`${stored.length} archivo(s) en disco, ${referenced.size} referenciado(s).`)
+    const total = orphans.reduce((sum, o) => sum + o.bytes, 0)
+    const sweepable = orphans.filter((o) => o.sweepable)
 
-  // Una desproporcion asi significa que la consulta de referencias no vio lo
-  // que debia, no que haya 66 huerfanos. Parar antes de ofrecer borrarlos.
-  if (stored.length > 0 && referenced.size === 0) {
-    console.error(
-      '\nEl catalogo no referencia NINGUN archivo y en disco hay ' +
-      `${stored.length}. Eso es una consulta mal acotada, no un disco lleno ` +
-      'de huerfanos. No se borra nada.',
-    )
-    exit(1)
-  }
-  console.log(`${orphans.length} huerfano(s), ${megabytes(total)} MB.`)
-  console.log(`${sweepable.length} con mas de ${olderThanDays} dia(s).\n`)
+    console.log(`\nMapa /${map.slug} — ${mediaRoot}`)
+    console.log(`${stored.length} archivo(s) en disco, ${referenced.size} referenciado(s).`)
 
-  for (const orphan of orphans.slice(0, 20)) {
-    const mark = orphan.sweepable ? ' ' : '*'
-    console.log(`  ${mark} ${orphan.path}  (${megabytes(orphan.bytes)} MB, ${orphan.ageDays} d)`)
-  }
-  if (orphans.length > 20) console.log(`  ... y ${orphans.length - 20} mas`)
-  if (orphans.length > sweepable.length) {
-    console.log(`\n  * demasiado reciente para borrar con --older-than ${olderThanDays}`)
+    console.log(`${orphans.length} huerfano(s), ${megabytes(total)} MB.`)
+    console.log(`${sweepable.length} con mas de ${olderThanDays} dia(s).`)
+
+    for (const orphan of orphans.slice(0, 10)) {
+      console.log(`  ${orphan.sweepable ? ' ' : '*'} ${orphan.path}` +
+        `  (${megabytes(orphan.bytes)} MB, ${orphan.ageDays} d)`)
+    }
+    if (orphans.length > 10) console.log(`  ... y ${orphans.length - 10} mas`)
+
+    if (!remove) continue
+
+    // Guarda de radio de dano, no de causa. Borrar casi todo lo que hay en un
+    // arbol es alarmante sea cual sea el motivo --una consulta mal acotada, un
+    // mapa importado a medias, un volumen montado donde no debia-- y la
+    // proporcion se ve sin saber por que.
+    //
+    // No se mira si el catalogo referencia cero archivos: un medio sin archivos
+    // es normal, asi que un mapa pequeno da cero referencias legitimamente.
+    const proporcion = stored.length === 0 ? 0 : sweepable.length / stored.length
+    if (sweepable.length > 20 && proporcion > 0.8 && !argv.includes('--force')) {
+      console.error(
+        `\nBorraria ${sweepable.length} de ${stored.length} archivos de /${map.slug} ` +
+        `(${Math.round(proporcion * 100)} %). Eso es casi todo el arbol.\n` +
+        'Revisa el informe y volve a correr con --force si de verdad corresponde.',
+      )
+      exit(1)
+    }
+
+    for (const orphan of sweepable) {
+      await unlink(resolve(mediaRoot, orphan.path))
+    }
+    totalBorrados += sweepable.length
+    totalLiberado += sweepable.reduce((sum, o) => sum + o.bytes, 0)
   }
 
   if (!remove) {
     console.log('\nInforme unicamente. Agrega --delete para borrarlos.\n')
-    exit(0)
+  } else {
+    console.log(`\n${totalBorrados} archivo(s) borrados, ${megabytes(totalLiberado)} MB liberados.\n`)
   }
-
-  for (const orphan of sweepable) {
-    await unlink(resolve(mediaRoot, orphan.path))
-  }
-  const freed = sweepable.reduce((sum, orphan) => sum + orphan.bytes, 0)
-  console.log(`\n${sweepable.length} archivo(s) borrados, ${megabytes(freed)} MB liberados.\n`)
 } finally {
   await pool.end()
 }

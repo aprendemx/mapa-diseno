@@ -79,6 +79,32 @@ services:
       - traefik_network
       - interna
 
+  # Guiones de mantenimiento. No corre como servicio: se invoca a demanda.
+  #
+  #   docker compose run --rm tools node scripts/create-user.ts --email … --name …
+  #
+  # Imagen distinta a la del editor a proposito: el servidor expuesto no deberia
+  # traer herramientas que crean cuentas y borran archivos.
+  tools:
+    image: ${TOOLS_IMAGE}
+    profiles: ["tools"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NUXT_DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      NUXT_SITE_ROOT: /sitio
+      # Dias que sobrevive un archivo tras quitarlo de su medio. Es tambien hasta
+      # donde se puede volver en el historial.
+      RETENER_ARCHIVOS_DIAS: ${RETENER_ARCHIVOS_DIAS:-90}
+      TZ: ${TZ}
+    volumes:
+      - ./sitio:/sitio
+      # Solo lectura: de aqui sale el documento legacy en la importacion inicial.
+      - ./datos:/datos:ro
+    networks:
+      - interna
+
   mapa:
     image: nginx:1.27-alpine
     container_name: mapa-publico

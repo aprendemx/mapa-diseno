@@ -20,6 +20,20 @@ COPY packages/ packages/
 COPY apps/editor/ apps/editor/
 RUN npm run build --workspace @mapa-mexico/editor
 
+# Los guiones de mantenimiento no caben en la imagen de ejecucion: Nitro deja
+# un servidor autocontenido sin node_modules, y los guiones necesitan `pg` y los
+# paquetes del monorepo. Esta etapa los lleva con sus dependencias.
+#
+# Es una etapa aparte y no un añadido a la de ejecucion para que el servidor que
+# queda expuesto siga sin traer el repositorio entero ni herramientas que crean
+# cuentas y borran archivos.
+FROM deps AS tools
+WORKDIR /repo/apps/editor
+COPY packages/ /repo/packages/
+COPY apps/editor/ /repo/apps/editor/
+USER node
+CMD ["node", "--version"]
+
 FROM node:24-alpine AS runtime
 WORKDIR /app
 ENV NODE_ENV=production

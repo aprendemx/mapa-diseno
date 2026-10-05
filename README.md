@@ -103,6 +103,7 @@ npm run migrate-paths       # rutas legacy -> rutas por id (informe; --apply)
 npm run link-default        # raiz del sitio -> mapa predeterminado
 npm run verify-catalog      # regenera el mapa desde la base y lo resume
 npm run sweep               # archivos sin fila (informe; --delete)
+                            # --all-maps para todos; retiene 90 dias
 npm run create-user
 npm run reset-password      # --email <correo> [--password-stdin]
 ```
@@ -169,6 +170,23 @@ un cambio de firma: perdió el argumento del mapa, dejó de ver referencias y
 empezó a reportar los 66 archivos vivos como huérfanos —ofreciendo borrarlos—
 mientras la prueba de humo pasaba, porque solo comprobaba que el archivo
 *apareciera* en la lista.
+
+## Los archivos borrados no desaparecen de inmediato
+
+Quitar un archivo de un medio borra la fila y deja los bytes. Lo que eso protege
+es que *la aplicación* borre lo que no debía —el editor anterior vaciaba
+`contenidos/` en cada guardado ante un payload incompleto— y no es una función de
+recuperación para quien edita: no hay forma de verlos ni restaurarlos desde la
+interfaz.
+
+Para que no crezcan sin techo, el barrido corre semanalmente en el servidor y
+retiene **90 días**. Dos consecuencias que conviene tener presentes:
+
+- La ventana de retención es **también la ventana de restauración**. Una versión
+  del historial cuyos archivos ya se barrieron no se puede republicar: restaurar
+  lo comprueba y se niega nombrando los que faltan.
+- Las publicaciones anteriores a una migración de rutas tampoco se pueden
+  restaurar. Los archivos existen, pero con otro nombre.
 
 ## Las referencias golden
 

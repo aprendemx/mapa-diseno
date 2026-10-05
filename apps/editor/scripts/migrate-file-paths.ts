@@ -34,7 +34,7 @@ function flag(name: string): string | undefined {
 
 const apply = argv.includes('--apply')
 const slug = flag('map') ?? 'redmexico'
-const siteRoot = flag('site') ?? '../../sitio'
+const siteRoot = flag('site') ?? env['NUXT_SITE_ROOT'] ?? '../../sitio'
 const databaseUrl = env['NUXT_DATABASE_URL'] ?? env['DATABASE_URL']
 
 if (!databaseUrl) {
