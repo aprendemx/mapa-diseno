@@ -7,7 +7,7 @@ Un dominio, enrutado por path. Un solo certificado y ningún DNS nuevo por mapa.
 | Ruta | Contenedor | Rol |
 | --- | --- | --- |
 | `/` | `mapa-publico` (nginx) | El mapa predeterminado |
-| `/<slug>/` | `mapa-publico` | Cada mapa por su ruta |
+| `/<slug>/` | `mapa-publico` | Cada mapa por su ruta (hoy `/mapa2`) |
 | `/admin/` | `mapa-editor` (Nuxt) | El editor, con login |
 | — | `mapa-postgres` | Base de datos, sin ruta desde afuera |
 
@@ -22,15 +22,64 @@ genere un archivo estático en lugar de renderizar al vuelo.
 ├── mapa-base.html              ← la plantilla; se lee en cada publicación
 ├── deploy/{nginx.conf, respaldar.sh, restaurar.sh}
 └── sitio/
-    ├── index.html  -> redmexico/index.html      (el mapa de la raíz)
-    ├── contenidos  -> redmexico/contenidos
-    ├── redmexico/{index.html, contenidos/…}
+    ├── index.html  -> mapa2/index.html           (el mapa de la raíz)
+    ├── contenidos  -> mapa2/contenidos
+    ├── mapa2/{index.html, contenidos/…}
     └── <otro-mapa>/{index.html, contenidos/…}
 ```
 
 La raíz son **dos enlaces simbólicos**. La página referencia `contenidos/…`
 relativo a sí misma, así que cada mapa en su directorio resuelve solo, y cambiar
 cuál sirve la raíz cuesta dos renames en lugar de mover casi un giga.
+
+## Primer despliegue, en un servidor limpio
+
+Si el servidor ya sirve el mapa subido a mano, saltar a la sección siguiente.
+
+```bash
+# 1. Clonar. El código viene de git; la multimedia va aparte, nunca en el repo.
+sudo mkdir -p /opt/mapa-mexico && sudo chown $USER:$USER /opt/mapa-mexico
+git clone git@github.com:aprendemx/mapa-diseno.git /opt/mapa-mexico
+cd /opt/mapa-mexico
+
+# 2. El árbol que escribe el editor. Corre como uid 1000.
+mkdir -p sitio && sudo chown -R 1000:1000 sitio
+
+# 3. Configurar
+cp .env.example .env
+$EDITOR .env          # MAPA_HOST y POSTGRES_PASSWORD (openssl rand -base64 30)
+
+# 4. Dos imágenes de la misma construcción: el servidor y las herramientas.
+V=$(date +%Y-%m-%d)
+docker build -f apps/editor/Dockerfile -t mapa-editor:$V .
+docker build -f apps/editor/Dockerfile --target tools -t mapa-tools:$V .
+$EDITOR .env          # poner esas etiquetas en EDITOR_IMAGE y TOOLS_IMAGE
+
+# 5. Base y esquema
+docker compose up -d postgres
+docker exec -i mapa-postgres psql -U mapa -d mapa < packages/project-store/src/schema.sql
+
+# 6. Subir la multimedia al árbol del mapa. Sin -z: los mp4 ya están comprimidos.
+rsync -av --partial --info=progress2 \
+  sitio/mapa2/contenidos/ usuario@servidor:/opt/mapa-mexico/sitio/mapa2/contenidos/
+
+# 7. Catálogo, rutas, raíz y cuenta
+docker compose run --rm tools node scripts/import-legacy.ts \
+  --file /datos/proyecto.json --map mapa2 --name "Red México"
+docker compose run --rm tools node scripts/migrate-file-paths.ts --map mapa2 --apply
+docker compose run --rm tools node scripts/link-default-map.ts
+docker compose run --rm tools node scripts/create-user.ts \
+  --email vos@aprende.gob.mx --name "Tu nombre"
+
+# 8. El resto del stack
+docker compose up -d
+```
+
+Después, en el navegador: `https://<dominio>/admin` → revisar → publicar.
+
+El orden importa en dos lugares. La multimedia va **antes** de `migrate-file-paths`,
+que mueve archivos y necesita encontrarlos. Y `link-default-map` va **después**
+del import, porque necesita saber qué mapa es el predeterminado.
 
 ## Corte desde el sitio subido a mano
 
@@ -43,11 +92,11 @@ cd /opt/mapa-mexico
 # 0. RESPALDAR PRIMERO. Es la única copia de la multimedia.
 tar -cf /mnt/respaldos/antes-del-corte.tar sitio/
 
-# 1. El contenido actual pasa a ser el mapa `redmexico`
-mkdir -p sitio/redmexico
-mv sitio/index.html sitio/contenidos sitio/redmexico/
-ln -s redmexico/index.html sitio/index.html
-ln -s redmexico/contenidos sitio/contenidos
+# 1. El contenido actual pasa a ser el mapa `mapa2`
+mkdir -p sitio/mapa2
+mv sitio/index.html sitio/contenidos sitio/mapa2/
+ln -s mapa2/index.html sitio/index.html
+ln -s mapa2/contenidos sitio/contenidos
 sudo chown -R 1000:1000 sitio          # el editor corre como uid 1000
 
 # 2. Comprobar que el sitio sigue sirviendo lo mismo ANTES de seguir
@@ -57,7 +106,11 @@ curl -sI -A 'Mozilla/5.0' https://mapa.aprende.gob.mx/ | head -1
 Si el paso 2 no da `200`, parar y revisar los enlaces. El resto puede esperar.
 
 ```bash
-# 3. Levantar la base y el editor
+# 3. Traer el código y levantar la base
+#    Si /opt/mapa-mexico no es un clon todavía, clonar aparte y mover el .env y
+#    sitio/ al nuevo directorio: el repo no debe sobrescribirlos.
+git clone git@github.com:aprendemx/mapa-diseno.git /tmp/mapa-repo
+rsync -a --exclude .git --exclude sitio --exclude .env /tmp/mapa-repo/ ./
 cp .env.example .env
 $EDITOR .env                            # MAPA_HOST y POSTGRES_PASSWORD
 V=$(date +%Y-%m-%d)
@@ -68,10 +121,12 @@ docker compose up -d postgres
 docker exec -i mapa-postgres psql -U mapa -d mapa < packages/project-store/src/schema.sql
 
 # 4. Importar el catálogo. Trae las rutas legacy, así que migrarlas después.
-docker compose up -d editor
+#    El documento sale de datos/proyecto.json, que el servicio tools monta en
+#    /datos como solo lectura.
 docker compose run --rm tools node scripts/import-legacy.ts \
-  --file /plantilla/proyecto.json --map redmexico --name "Red México"
-docker compose run --rm tools node scripts/migrate-paths.ts --map redmexico --apply
+  --file /datos/proyecto.json --map mapa2 --name "Red México"
+docker compose run --rm tools node scripts/migrate-file-paths.ts --map mapa2 --apply
+docker compose run --rm tools node scripts/link-default-map.ts
 docker compose run --rm tools node scripts/create-user.ts \
   --email vos@aprende.gob.mx --name "Tu nombre"
 
@@ -79,7 +134,7 @@ docker compose run --rm tools node scripts/create-user.ts \
 docker compose up -d
 ```
 
-`migrate-paths` mueve los archivos dentro de `sitio/redmexico/` y reescribe las
+`migrate-file-paths` mueve los archivos dentro de `sitio/mapa2/` y reescribe las
 rutas de la base. Informa antes de mover y verifica después que lo único que
 cambió en el mapa generado fueron las rutas.
 
@@ -95,6 +150,16 @@ diferencia — que es justo lo que `migrate-paths` cambió a propósito.
 
 Si algo no cuadra, el respaldo del paso 0 restaura el estado anterior y el sitio
 vuelve a servirse sin el editor.
+
+## El código vive en git
+
+```
+git@github.com:aprendemx/mapa-diseno.git
+```
+
+Lo que **no** está en el repo: `sitio/` (casi un giga de multimedia y las páginas
+publicadas, reproducibles desde la base) y `.env` (las credenciales). Un `git
+pull` en el servidor nunca los toca.
 
 ## Actualizaciones
 
@@ -158,8 +223,8 @@ Para restaurar: `./deploy/restaurar.sh /mnt/respaldos/<fecha>`.
 ## Mantenimiento
 
 ```bash
-docker compose run --rm tools node scripts/verify-catalog.ts --map redmexico
-docker compose run --rm tools node scripts/sweep-orphans.ts --map redmexico
+docker compose run --rm tools node scripts/verify-catalog.ts --map mapa2
+docker compose run --rm tools node scripts/sweep-orphans.ts --map mapa2
 docker compose run --rm tools node scripts/link-default-map.ts
 docker compose run --rm tools node scripts/rename-map-slug.ts --from <slug> --to <slug>
 ```
