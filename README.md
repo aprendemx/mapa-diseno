@@ -37,9 +37,14 @@ cada mapa en su directorio funciona sin reescribir una sola ruta almacenada.
 La raíz del dominio son dos enlaces simbólicos, y cambiar cuál es el mapa
 predeterminado es repuntarlos — no mover casi un giga.
 
+Pasar un mapa a la raíz desde el editor mueve **las dos cosas que van juntas**:
+la marca en la base y los enlaces. Si solo cambiara la base, el sitio seguiría
+entregando el mapa anterior sin avisar. Publicar el mapa de la raíz también los
+asegura, lo que cubre el primer despliegue y el caso de que alguien los borre.
+
 ```bash
 cd apps/editor
-npm run link-default        # apunta la raíz al mapa predeterminado
+npm run link-default        # por si hay que repuntarlos a mano
 ```
 
 El editor vive bajo **`/admin`** del mismo dominio, así que Traefik enruta por

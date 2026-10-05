@@ -1,6 +1,6 @@
 import { test, describe, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, readdir, rm, writeFile, mkdir } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, readlink, rm, writeFile, mkdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Readable } from 'node:stream';
@@ -13,6 +13,7 @@ import {
   removeStored,
   resolveInRoot,
   statStored,
+  pointRootAt,
   writeFileAtomic,
   writeStreamed,
 } from '../src/index.ts';
@@ -168,5 +169,69 @@ describe('writeFileAtomic', () => {
     const path = join(root, 'publicado', 'anidado', 'index.html');
     await writeFileAtomic(path, 'x');
     assert.equal(await readFile(path, 'utf8'), 'x');
+  });
+});
+
+describe('pointRootAt', () => {
+  const sitio = () => mkdtemp(join(tmpdir(), 'mapa-sitio-'));
+
+  test('crea los dos enlaces y el directorio del mapa', async () => {
+    const base = await sitio();
+    try {
+      const links = await pointRootAt(base, 'redmexico');
+      assert.deepEqual(links.map((l) => [l.name, l.target, l.changed]), [
+        ['index.html', 'redmexico/index.html', true],
+        ['contenidos', 'redmexico/contenidos', true],
+      ]);
+      assert.equal(await readlink(join(base, 'index.html')), 'redmexico/index.html');
+      assert.equal(await readlink(join(base, 'contenidos')), 'redmexico/contenidos');
+    } finally {
+      await rm(base, { recursive: true, force: true });
+    }
+  });
+
+  test('es idempotente', async () => {
+    const base = await sitio();
+    try {
+      await pointRootAt(base, 'redmexico');
+      const otra = await pointRootAt(base, 'redmexico');
+      assert.deepEqual(otra.map((l) => l.changed), [false, false]);
+    } finally {
+      await rm(base, { recursive: true, force: true });
+    }
+  });
+
+  test('repunta a otro mapa sin mover nada', async () => {
+    const base = await sitio();
+    try {
+      await pointRootAt(base, 'redmexico');
+      await writeFileAtomic(join(base, 'redmexico', 'index.html'), '<html>red</html>');
+      await writeFileAtomic(join(base, 'telesecundarias', 'index.html'), '<html>tele</html>');
+
+      const links = await pointRootAt(base, 'telesecundarias');
+      assert.deepEqual(links.map((l) => l.changed), [true, true]);
+
+      // La raiz entrega el otro mapa, y el primero sigue en su sitio.
+      assert.equal(await readFile(join(base, 'index.html'), 'utf8'), '<html>tele</html>');
+      assert.equal(
+        await readFile(join(base, 'redmexico', 'index.html'), 'utf8'),
+        '<html>red</html>',
+      );
+    } finally {
+      await rm(base, { recursive: true, force: true });
+    }
+  });
+
+  test('se niega a pisar un archivo real en la raíz', async () => {
+    const base = await sitio();
+    try {
+      // Una publicación del sistema anterior quedó ahí. Borrarla sin avisar
+      // sería borrar la única copia de algo.
+      await writeFileAtomic(join(base, 'index.html'), '<html>a mano</html>');
+      await assert.rejects(() => pointRootAt(base, 'redmexico'), UnsafePathError);
+      assert.equal(await readFile(join(base, 'index.html'), 'utf8'), '<html>a mano</html>');
+    } finally {
+      await rm(base, { recursive: true, force: true });
+    }
   });
 });

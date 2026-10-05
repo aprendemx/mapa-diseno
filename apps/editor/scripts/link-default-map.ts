@@ -15,11 +15,11 @@
  * almacenada. Y cambiar cual es el predeterminado es repuntar dos enlaces en
  * lugar de mover casi un giga.
  */
-import { lstat, mkdir, readlink, rm, symlink } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { resolve } from 'node:path'
 import { env, exit } from 'node:process'
 
 import pg from 'pg'
+import { pointRootAt } from '@mapa-mexico/file-storage'
 import { getDefaultMap } from '@mapa-mexico/postgres'
 
 const siteRoot = resolve(env['NUXT_SITE_ROOT'] ?? '../../sitio')
@@ -32,28 +32,6 @@ if (!databaseUrl) {
 
 const pool = new pg.Pool({ connectionString: databaseUrl, max: 1 })
 
-/** Reemplaza el enlace si apunta a otro lado; no toca un archivo real. */
-async function point(nombre: string, destino: string): Promise<string> {
-  const ruta = join(siteRoot, nombre)
-
-  try {
-    const info = await lstat(ruta)
-    if (!info.isSymbolicLink()) {
-      throw new Error(
-        `${ruta} existe y no es un enlace simbólico. ` +
-        'Moverlo o borrarlo a mano: este script no pisa archivos reales.',
-      )
-    }
-    if (await readlink(ruta) === destino) return 'ya apuntaba bien'
-    await rm(ruta)
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error
-  }
-
-  await symlink(destino, ruta)
-  return 'enlazado'
-}
-
 try {
   const map = await getDefaultMap(pool)
   if (!map) {
@@ -61,11 +39,11 @@ try {
     exit(1)
   }
 
-  await mkdir(join(siteRoot, map.slug), { recursive: true })
-
   console.log(`\nRaíz del sitio -> /${map.slug} (${map.name})`)
-  console.log(`  index.html  ${await point('index.html', `${map.slug}/index.html`)}`)
-  console.log(`  contenidos  ${await point('contenidos', `${map.slug}/contenidos`)}\n`)
+  for (const link of await pointRootAt(siteRoot, map.slug)) {
+    console.log(`  ${link.name.padEnd(11)} ${link.changed ? 'enlazado' : 'ya apuntaba bien'}`)
+  }
+  console.log()
 } finally {
   await pool.end()
 }

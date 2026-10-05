@@ -5,7 +5,7 @@ import { MEDIA_STOP_SCRIPT, generateMapData, renderMap } from '@mapa-mexico/map-
 import type { MapData } from '@mapa-mexico/map-generator'
 import { checkPublishable, fromRows } from '@mapa-mexico/project-store'
 import type { MapRow, Problem } from '@mapa-mexico/project-store'
-import { statStored, writeFileAtomic } from '@mapa-mexico/file-storage'
+import { pointRootAt, statStored, writeFileAtomic } from '@mapa-mexico/file-storage'
 import { getPublication, readCatalog, recordPublication } from '@mapa-mexico/postgres'
 import type { Pooled, PublicationSummary, SessionUser } from '@mapa-mexico/postgres'
 
@@ -50,6 +50,14 @@ export async function inspect(db: Pooled, map: MapRow): Promise<Problem[]> {
 async function put(map: MapRow, data: MapData): Promise<number> {
   const html = renderMap({ template: await readTemplate(), mediaStop: MEDIA_STOP_SCRIPT, data })
   await writeFileAtomic(join(mapRoot(map), 'index.html'), html)
+
+  // Si este mapa es el de la raíz, asegurar los enlaces en cada publicación.
+  // Es idempotente, y cubre el primer despliegue y el caso de que alguien los
+  // haya borrado: sin ellos el dominio no entrega nada en `/` y la publicación
+  // habría dicho que todo salió bien.
+  if (map.is_default) {
+    await pointRootAt(useRuntimeConfig().siteRoot, map.slug)
+  }
   return Buffer.byteLength(html)
 }
 

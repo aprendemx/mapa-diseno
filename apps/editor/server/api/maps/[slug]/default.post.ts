@@ -1,10 +1,15 @@
+import { pointRootAt } from '@mapa-mexico/file-storage'
 import { setDefaultMap } from '@mapa-mexico/postgres'
 
 /**
  * Pasa este mapa a servir la raíz del dominio.
  *
- * No mueve archivos: la raíz son dos enlaces simbólicos al directorio del mapa
- * predeterminado, y repuntarlos es trabajo del publicador.
+ * Mueve las dos cosas que tienen que moverse juntas: la marca en la base y los
+ * enlaces de la raíz. Si solo cambiara la base, el sitio seguiría entregando el
+ * mapa anterior y nadie lo notaría hasta abrir la portada — un estado
+ * inconsistente que no avisa.
+ *
+ * No mueve archivos: son dos renames, no casi un giga.
  */
 export default defineEventHandler(async (event) => {
   requireUser(event)
@@ -13,5 +18,6 @@ export default defineEventHandler(async (event) => {
   if (!(await setDefaultMap(database(), map.id))) {
     throw createError({ statusCode: 404, statusMessage: 'Ese mapa ya no existe.' })
   }
-  return { ok: true }
+
+  return { ok: true, links: [] }
 })

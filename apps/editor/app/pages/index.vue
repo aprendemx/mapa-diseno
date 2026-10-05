@@ -11,6 +11,15 @@ const error = ref('')
 const nuevo = reactive({ name: '', slug: '' })
 
 /** El slug se propone desde el nombre, pero se puede corregir antes de crear. */
+/**
+ * Dónde queda en línea cada mapa.
+ *
+ * El predeterminado se sirve en la raíz *y* en su ruta; los demás solo en la
+ * suya. Decirlo acá evita la pregunta de por qué el mapa que acabo de publicar
+ * no aparece en la portada.
+ */
+const publicUrl = (map: MapRow) => (map.is_default ? '/' : `/${map.slug}`)
+
 const sugerir = (name: string) =>
   name.normalize('NFD').replace(/[̀-ͯ]/g, '')
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40)
@@ -93,7 +102,10 @@ async function borrar(map: MapRow) {
           {{ map.name }}
           <span v-if="map.is_default" class="tag">en la raíz</span>
         </NuxtLink>
-        <span class="route">/{{ map.slug }}</span>
+        <span class="route">
+          {{ publicUrl(map) }}
+          <template v-if="map.is_default"> &middot; también en /{{ map.slug }}</template>
+        </span>
         <span class="actions">
           <button
             v-if="!map.is_default"

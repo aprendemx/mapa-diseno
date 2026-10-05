@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import type { PublicationSummary } from '@mapa-mexico/postgres'
-import type { Problem } from '@mapa-mexico/project-store'
+import type { MapRow, Problem } from '@mapa-mexico/project-store'
 
-const { api, link } = useMap()
+const { api, link, slug } = useMap()
+
+const { data: catalogue } = await useFetch<{ maps: MapRow[] }>('/api/maps')
+const map = computed(() => catalogue.value?.maps.find((m) => m.slug === slug.value))
 const { data: history, refresh } = await useFetch<{ publications: PublicationSummary[] }>(
   () => api('/publications'),
 )
@@ -75,6 +78,17 @@ async function restore(publication: PublicationSummary) {
       primero y, si algo falla, no toca nada.
     </p>
 
+    <p class="donde">
+      <template v-if="map?.is_default">
+        Este mapa se sirve en <code>/</code> — la portada del dominio — y también
+        en <code>/{{ slug }}</code>.
+      </template>
+      <template v-else>
+        Este mapa se sirve en <code>/{{ slug }}</code>. La portada del dominio
+        entrega otro; se cambia desde la lista de mapas.
+      </template>
+    </p>
+
     <div class="current" v-if="current">
       <strong>En línea:</strong>
       versión del {{ formatted(current.publishedAt) }}, por {{ current.publishedByName }}
@@ -136,7 +150,14 @@ async function restore(publication: PublicationSummary) {
 .back:hover { color: var(--accent); }
 h1 { margin: 0 0 0.25rem; font-size: 1.35rem; }
 h2 { margin: 2rem 0 0.75rem; font-size: 1.05rem; }
-.hint { margin: 0 0 1.25rem; color: var(--muted); font-size: 0.9rem; max-width: 40rem; }
+.hint { margin: 0 0 0.75rem; color: var(--muted); font-size: 0.9rem; max-width: 40rem; }
+
+.donde {
+  margin: 0 0 1.25rem; padding: 0.6rem 0.85rem; border-radius: 8px;
+  background: #eef2ee; border: 1px solid var(--line);
+  font-size: 0.88rem; max-width: 40rem;
+}
+.donde code { background: #fff; padding: 0 0.3rem; border-radius: 3px; font-size: 0.85rem; }
 
 .current {
   padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-radius: 8px;

@@ -16,7 +16,9 @@ export {
   removeStored,
   resolveInRoot,
   statStored,
+  pointRootAt,
   writeFileAtomic,
   writeStreamed,
+  ROOT_LINKS,
 } from './store.ts';
-export type { WriteResult } from './store.ts';
+export type { WriteResult, RootLink } from './store.ts';

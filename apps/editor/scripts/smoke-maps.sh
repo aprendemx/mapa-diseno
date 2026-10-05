@@ -72,14 +72,22 @@ echo "9. un mapa inexistente en la ruta da 404"
 echo "10. no se puede borrar el mapa de la raiz"
 [ "$(code -X DELETE "$BASE/api/maps/redmexico")" = "409" ] || fail "permitio borrar el de la raiz"
 
-echo "11. pasar el nuevo a la raiz y volver"
+echo "11. pasar el nuevo a la raiz mueve los enlaces, no solo la base"
 [ "$(code -X POST "$BASE/api/maps/$SLUG/default")" = "200" ] || fail "no pudo cambiar la raiz"
 api "$BASE/api/maps" | python3 -c '
 import json, sys
 maps = json.load(sys.stdin)["maps"]
 raiz = [m for m in maps if m["is_default"]]
 assert len(raiz) == 1 and raiz[0]["slug"] == "prueba-humo", raiz' || fail "la raiz no cambio bien"
+# Sin esto la base diria una cosa y el sitio entregaria otra, en silencio.
+SITIO="${SITIO:-../../sitio}"
+[ "$(readlink "$SITIO/index.html")" = "$SLUG/index.html" ] \
+  || fail "el enlace de la raiz no siguio al mapa: $(readlink "$SITIO/index.html")"
+[ "$(readlink "$SITIO/contenidos")" = "$SLUG/contenidos" ] \
+  || fail "el enlace de contenidos no siguio al mapa"
+
 [ "$(code -X POST "$BASE/api/maps/redmexico/default")" = "200" ] || fail "no pudo volver"
+[ "$(readlink "$SITIO/index.html")" = "redmexico/index.html" ] || fail "no volvio el enlace"
 
 echo "12. borrar el mapa de prueba deja el otro intacto"
 [ "$(code -X DELETE "$BASE/api/maps/$SLUG")" = "200" ] || fail "no pudo borrar"

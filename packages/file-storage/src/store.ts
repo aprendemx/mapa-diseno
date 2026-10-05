@@ -1,5 +1,7 @@
 import { createWriteStream } from 'node:fs';
-import { mkdir, readdir, rename, rm, stat, unlink, writeFile } from 'node:fs/promises';
+import {
+  lstat, mkdir, readdir, readlink, rename, rm, stat, symlink, unlink, writeFile,
+} from 'node:fs/promises';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { pipeline } from 'node:stream/promises';
 import { randomBytes } from 'node:crypto';
@@ -170,4 +172,63 @@ export async function listStored(mediaRoot: string): Promise<string[]> {
 
   await walk(base);
   return found.sort();
+}
+
+/** Los dos enlaces que forman la raiz del sitio. */
+export const ROOT_LINKS = ['index.html', ROOT] as const;
+
+export interface RootLink {
+  name: string;
+  target: string;
+  changed: boolean;
+}
+
+/**
+ * Apunta la raiz del sitio al mapa indicado.
+ *
+ *   <sitio>/index.html  -> <slug>/index.html
+ *   <sitio>/contenidos  -> <slug>/contenidos
+ *
+ * Asi y no copiando la pagina a la raiz porque la pagina referencia
+ * `contenidos/...` relativo a si misma: con los enlaces, `/` y
+ * `/contenidos/x.mp4` caen en el arbol del mapa sin reescribir una sola ruta
+ * almacenada. Y cambiar de mapa predeterminado cuesta dos renames en lugar de
+ * mover cerca de un giga.
+ *
+ * Idempotente: si ya apuntan donde deben, no toca nada.
+ */
+export async function pointRootAt(siteRoot: string, slug: string): Promise<RootLink[]> {
+  const base = resolve(siteRoot);
+  await mkdir(join(base, slug), { recursive: true });
+
+  const results: RootLink[] = [];
+  for (const name of ROOT_LINKS) {
+    const path = join(base, name);
+    const target = `${slug}/${name}`;
+
+    let existing: string | undefined;
+    try {
+      const info = await lstat(path);
+      if (!info.isSymbolicLink()) {
+        // Un archivo real ahi es casi seguro una publicacion del sistema
+        // anterior. Borrarlo sin avisar seria borrar la unica copia de algo.
+        throw new UnsafePathError(
+          `${path} existe y no es un enlace simbólico. Moverlo o borrarlo a mano.`,
+        );
+      }
+      existing = await readlink(path);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') throw error;
+    }
+
+    if (existing === target) {
+      results.push({ name, target, changed: false });
+      continue;
+    }
+
+    if (existing !== undefined) await unlink(path);
+    await symlink(target, path);
+    results.push({ name, target, changed: true });
+  }
+  return results;
 }
