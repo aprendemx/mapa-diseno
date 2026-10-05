@@ -159,6 +159,21 @@ docker compose exec editor node scripts/sweep-orphans.ts --map redmexico
 docker compose exec editor node scripts/link-default-map.ts
 ```
 
+### La ventana del barrido es también la ventana de restauración
+
+Restaurar una publicación vuelve a renderizar los datos que guardó, y esos datos
+referencian archivos. Si el barrido ya se llevó esos bytes, **la restauración se
+niega y dice cuáles faltan** en lugar de dejar el mapa en línea con videos que no
+cargan.
+
+O sea: con `--older-than 30`, una versión de más de 30 días cuyos archivos se
+quitaron de su medio ya no se puede volver a publicar. Es el precio de no
+acumular sin techo, y conviene saberlo antes de elegir el número.
+
+Lo mismo pasa con las publicaciones anteriores a una migración de rutas: los
+archivos existen, pero bajo otro nombre, así que esas versiones tampoco se
+pueden restaurar.
+
 El barrido **por omisión solo informa**. Con `--delete` no toca nada más nuevo
 que `--older-than` días, porque el huérfano más probable es un archivo recién
 subido cuya fila todavía no llegó. Y se niega a seguir si el catálogo no

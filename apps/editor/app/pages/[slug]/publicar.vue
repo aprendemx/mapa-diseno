@@ -64,10 +64,17 @@ async function restore(publication: PublicationSummary) {
   if (!confirm(`¿Volver a publicar la versión del ${when}?\n\nNo se modifican los datos que estás editando: solo vuelve a línea esa versión del mapa.`)) return
 
   busy.value = 'restaurando'
+  problems.value = []
+  result.value = ''
   try {
     await $fetch(api(`/publications/${publication.id}/restore`), { method: 'POST' })
     result.value = `Se volvió a publicar la versión del ${when}.`
     await refresh()
+  } catch (cause) {
+    const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
+    problems.value = payload?.problems ?? [
+      { field: '', message: 'No se pudo restaurar esa versión.' },
+    ]
   } finally {
     busy.value = ''
   }

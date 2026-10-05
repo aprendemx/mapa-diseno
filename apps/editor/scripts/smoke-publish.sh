@@ -130,7 +130,30 @@ api "$API/media/$MID" | grep -q 'Nota agregada por la prueba de humo' \
 api -X PUT "$API/media/$MID" \
   -d "$(python3 -c "import json,sys; print(json.dumps(json.loads(sys.argv[1])['medium']))" "$ORIGINAL")" >/dev/null
 
-echo "8. restaurar algo inexistente -> 404"
+echo "8. restaurar una version cuyos archivos ya no estan se niega"
+# La ventana del barrido es tambien la ventana de restauracion. Sin esta
+# comprobacion, restaurar escribia la pagina igual y dejaba el mapa en linea con
+# videos que dan 404, sin decir nada.
+RESTAURABLE=$(api "$API/publications" | python3 -c 'import json,sys; print(json.load(sys.stdin)["publications"][0]["id"])')
+VICTIMA=$(api "$API/media/$MID" | python3 -c '
+import json, sys
+f = json.load(sys.stdin)["medium"]["files"]
+print(f[0]["path"] if f else "")')
+
+if [ -n "$VICTIMA" ]; then
+  cp "$OUT" /tmp/publicado-antes-restaurar.html
+  mv "$ARBOL/$VICTIMA" "$ARBOL/$VICTIMA.barrido"
+  [ "$(code -X POST "$API/publications/$RESTAURABLE/restore")" = "422" ] \
+    || fail "restauro una version con archivos faltantes"
+  cmp -s "$OUT" /tmp/publicado-antes-restaurar.html \
+    || fail "MODIFICO LA PAGINA pese a rechazar la restauracion"
+  mv "$ARBOL/$VICTIMA.barrido" "$ARBOL/$VICTIMA"
+  rm -f /tmp/publicado-antes-restaurar.html
+else
+  echo "   (ese medio no tiene archivos; se omite)"
+fi
+
+echo "9. restaurar algo inexistente -> 404"
 [ "$(code -X POST "$API/publications/00000000-0000-0000-0000-000000000000/restore")" = "404" ] \
   || fail "esperaba 404"
 

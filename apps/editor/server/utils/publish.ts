@@ -40,6 +40,30 @@ async function readTemplate(): Promise<string> {
 const existsIn = (root: string) => async (path: string) =>
   Boolean(await statStored(root, path))
 
+/**
+ * Comprueba que los archivos de una publicación guardada sigan en disco.
+ *
+ * Publicar valida el catálogo actual; esto valida uno del pasado. Hace falta
+ * porque las dos cosas se pueden separar con el tiempo: si un archivo se quitó
+ * de su medio y el barrido se llevó los bytes, la publicación que lo
+ * referenciaba sigue en el historial pero ya no se puede reproducir.
+ *
+ * Sin esta comprobación restaurar escribía la página igual, dejando el mapa en
+ * línea con videos que dan 404 y sin decir nada.
+ */
+async function missingFiles(map: MapRow, data: MapData): Promise<Problem[]> {
+  const root = mapRoot(map)
+  const problems: Problem[] = []
+
+  for (const content of data.contents) {
+    if (!('file' in content) || content.file.trim() === '') continue
+    if (!(await statStored(root, content.file))) {
+      problems.push({ field: 'files', message: `No se encontró: ${content.file}` })
+    }
+  }
+  return problems
+}
+
 /** Revisa un mapa sin tocar nada. Tambien es el primer paso de publicar. */
 export async function inspect(db: Pooled, map: MapRow): Promise<Problem[]> {
   const project = fromRows(await readCatalog(db, map.id))
@@ -123,9 +147,16 @@ export async function restorePublication(
   map: MapRow,
   user: SessionUser,
   publicationId: string,
-): Promise<PublishSuccess | undefined> {
+): Promise<PublishRefusal | PublishSuccess | undefined> {
   const previous = await getPublication(db, map.id, publicationId)
   if (!previous) return undefined
+
+  // La ventana de retención del barrido es también la ventana de restauración:
+  // pasada esa fecha, una versión cuyos archivos ya no están no se puede volver
+  // a publicar. Mejor negarse y decir cuáles faltan que dejar el mapa en línea
+  // con videos que no cargan.
+  const problems = await missingFiles(map, previous.mapData)
+  if (problems.length > 0) return { ok: false, problems }
 
   const bytes = await put(map, previous.mapData)
   // Una restauración siempre se registra, incluso si el contenido coincide con
