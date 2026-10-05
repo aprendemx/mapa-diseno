@@ -1,8 +1,8 @@
 /**
  * Moves stored media from the legacy name-derived layout to id-derived paths.
  *
- *   npm run migrate-paths              # informe, no toca nada
- *   npm run migrate-paths -- --apply   # mueve y actualiza la base
+ *   npm run migrate-paths -- --map redmexico            # informe
+ *   npm run migrate-paths -- --map redmexico --apply    # mueve y actualiza
  *
  * Legacy layout: contenidos/<estado>/<slug del nombre>/<slug del archivo>.mp4
  * New layout:    contenidos/<mediumId>/<fileId>-<etiqueta>.mp4
@@ -22,7 +22,7 @@ import pg from 'pg'
 import { generateMapData } from '@mapa-mexico/map-generator'
 import type { MapData } from '@mapa-mexico/map-generator'
 import { fromRows } from '@mapa-mexico/project-store'
-import { readCatalog } from '@mapa-mexico/postgres'
+import { getMapBySlug, readCatalog } from '@mapa-mexico/postgres'
 import { moveStored, statStored, storagePath } from '@mapa-mexico/file-storage'
 
 function flag(name: string): string | undefined {
@@ -33,7 +33,8 @@ function flag(name: string): string | undefined {
 }
 
 const apply = argv.includes('--apply')
-const mediaRoot = flag('root') ?? '../..'
+const slug = flag('map') ?? 'redmexico'
+const siteRoot = flag('site') ?? '../../sitio'
 const databaseUrl = env['NUXT_DATABASE_URL'] ?? env['DATABASE_URL']
 
 if (!databaseUrl) {
@@ -42,6 +43,16 @@ if (!databaseUrl) {
 }
 
 const pool = new pg.Pool({ connectionString: databaseUrl, max: 2 })
+
+const map = await getMapBySlug(pool, slug)
+if (!map) {
+  console.error(`No existe el mapa "${slug}".`)
+  await pool.end()
+  exit(1)
+}
+
+// Cada mapa tiene su propio arbol: las rutas almacenadas son relativas a el.
+const mediaRoot = `${siteRoot}/${map.slug}`
 
 /** Everything except `contents[].file`, so the diff can ignore the intended change. */
 function withoutFilePaths(data: MapData): string {
@@ -54,10 +65,15 @@ function withoutFilePaths(data: MapData): string {
 }
 
 try {
-  const before = generateMapData(fromRows(await readCatalog(pool)))
+  const before = generateMapData(fromRows(await readCatalog(pool, map.id)))
 
   const files = (
-    await pool.query('select id, medium_id, path from media_files order by medium_id, witness_position')
+    await pool.query(
+      `select f.id, f.medium_id, f.path
+         from media_files f join media m on m.id = f.medium_id
+        where m.map_id = $1 order by f.medium_id, f.witness_position`,
+      [map.id],
+    )
   ).rows as { id: string, medium_id: string, path: string }[]
 
   const planned = files
@@ -139,7 +155,7 @@ try {
     throw error
   }
 
-  const after = generateMapData(fromRows(await readCatalog(pool)))
+  const after = generateMapData(fromRows(await readCatalog(pool, map.id)))
 
   if (withoutFilePaths(before) !== withoutFilePaths(after)) {
     console.error('\nLa migracion cambio algo ademas de las rutas. Revisar antes de publicar.')

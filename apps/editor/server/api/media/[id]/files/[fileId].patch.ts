@@ -12,7 +12,8 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 422, statusMessage: 'La descripción es demasiado larga.' })
   }
 
-  const updated = await updateFileDescription(database(), mediumId, fileId, description)
+  const map = await currentMap(event)
+  const updated = await updateFileDescription(database(), map.id, mediumId, fileId, description)
   if (!updated) throw createError({ statusCode: 404, statusMessage: 'Ese archivo no existe.' })
 
   return { ok: true }

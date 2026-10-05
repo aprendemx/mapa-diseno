@@ -13,7 +13,8 @@
     "import-legacy": "node --env-file-if-exists=.env scripts/import-legacy.ts",
     "migrate-paths": "node --env-file-if-exists=.env scripts/migrate-file-paths.ts",
     "sweep": "node --env-file-if-exists=.env scripts/sweep-orphans.ts",
-    "verify-catalog": "node --env-file-if-exists=.env scripts/verify-catalog.ts"
+    "verify-catalog": "node --env-file-if-exists=.env scripts/verify-catalog.ts",
+    "link-default": "node --env-file-if-exists=.env scripts/link-default-map.ts"
   },
   "dependencies": {
     "@mapa-mexico/auth": "*",

@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  await updateAppearance(database(), appearance)
+  const map = await currentMap(event)
+  await updateAppearance(database(), map.id, appearance)
   return { ok: true }
 })

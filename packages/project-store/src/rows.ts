@@ -6,6 +6,15 @@
  * anything holding a `Project` is talking to the domain.
  */
 
+/** Un mapa tematico. Varios conviven en el mismo dominio, por ruta. */
+export interface MapRow {
+  id: string;
+  slug: string;
+  name: string;
+  /** El que se sirve en la raiz del dominio. Solo uno lo es. */
+  is_default: boolean;
+}
+
 export interface StateRow {
   id: string;
   name: string;
@@ -13,6 +22,7 @@ export interface StateRow {
 }
 
 export interface AppearanceRow {
+  map_id: string;
   background_color: string;
   title_color: string;
   state_with_media_color: string;
@@ -32,6 +42,7 @@ export interface AppearanceRow {
 
 export interface MediumRow {
   id: string;
+  map_id: string;
   name: string;
   folder_slug: string;
   active: boolean;
@@ -71,9 +82,17 @@ export interface SocialThemeRow {
   witness_position: number;
 }
 
-/** Everything the catalogue is, as the database holds it. */
+/**
+ * Un mapa completo, como lo guarda la base.
+ *
+ * El mapa viene dentro y no al lado a proposito: todas las filas de abajo le
+ * pertenecen, y tenerlo en la misma estructura hace imposible pasar las filas
+ * de un mapa con el identificador de otro.
+ */
 export interface CatalogRows {
+  map: MapRow;
   appearance: AppearanceRow;
+  /** Compartidos entre todos los mapas: los 32 estados son los mismos. */
   states: StateRow[];
   media: MediumRow[];
   coverageStates: CoverageStateRow[];

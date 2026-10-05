@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Se esperaba una lista de identificadores.' })
   }
 
-  await reorderWitnesses(database(), mediumId, body.ids as string[])
+  const map = await currentMap(event)
+  await reorderWitnesses(database(), map.id, mediumId, body.ids as string[])
   return { ok: true }
 })

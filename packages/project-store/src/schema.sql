@@ -26,6 +26,28 @@ create index sessions_expires_at_idx on sessions (expires_at);
 
 create index sessions_user_id_idx on sessions (user_id);
 
+-- Un mapa por tematica: redmexico, telesecundarias, lo que venga. Cada uno
+-- tiene su catalogo y su apariencia; comparten los 32 estados, la plantilla y
+-- las cuentas.
+create table maps (
+  id         uuid primary key default gen_random_uuid(),
+  slug       text not null unique,
+  name       text not null,
+  -- El mapa que se sirve en la raiz del dominio. Solo puede haber uno.
+  is_default boolean not null default false,
+  created_at timestamptz not null default now(),
+
+  constraint maps_slug_shape check (slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
+  -- Un mapa con uno de estos slugs taparia el editor o la multimedia. Se
+  -- prohibe en el almacenamiento y no solo en la validacion, porque la
+  -- consecuencia es que el editor deja de ser alcanzable.
+  constraint maps_slug_reserved check (
+    slug not in ('admin', 'editor', 'api', 'contenidos', 'index', '_nuxt', 'assets')
+  )
+);
+
+create unique index maps_single_default on maps (is_default) where is_default;
+
 -- The 32 states are a fixed catalogue. The old server rejected any attempt to
 -- change them; here the absence of a write path says the same thing.
 create table states (
@@ -34,9 +56,11 @@ create table states (
   position integer not null unique
 );
 
--- Exactly one row, forever. The check constraint is what makes that true.
+-- Una fila por mapa, garantizado por la clave primaria. Antes era una fila
+-- unica con un check sobre una columna booleana; eso dejo de alcanzar en cuanto
+-- la apariencia paso a ser de cada mapa.
 create table appearance (
-  singleton              boolean primary key default true check (singleton),
+  map_id                 uuid primary key references maps (id) on delete cascade,
   background_color       text not null,
   title_color            text not null,
   state_with_media_color text not null,
@@ -57,7 +81,13 @@ create table appearance (
 );
 
 create table media (
+  -- Unico en todo el sistema, no por mapa: es la clave que referencian
+  -- archivos, temas y cobertura, y el prefijo de cada id de nota publicada
+  -- (`<mediumId>-nota-3`). Si dos mapas tienen un medio del mismo nombre, el
+  -- segundo queda `canal-once-2`. Es el precio de mantener simples cuatro
+  -- claves foraneas y los ids ya publicados.
   id             text primary key,
+  map_id         uuid not null references maps (id) on delete cascade,
   name           text not null,
   -- Derived from `name` by the legacy editor to build file paths. Kept so the
   -- import loses nothing; obsolete once storage is keyed by id.
@@ -74,6 +104,7 @@ create table media (
 );
 
 create index media_state_id_idx on media (state_id);
+create index media_map_id_idx on media (map_id);
 
 create table media_coverage_states (
   medium_id text not null references media (id) on delete cascade,
@@ -121,6 +152,7 @@ create index social_themes_medium_id_idx on social_themes (medium_id);
 -- what you want when the rollback exists because the template changed.
 create table publications (
   id                uuid primary key default gen_random_uuid(),
+  map_id            uuid not null references maps (id) on delete cascade,
   published_at      timestamptz not null default now(),
   published_by      uuid references users (id) on delete set null,
   -- Denormalised on purpose: the history must still say who published when the
@@ -134,4 +166,4 @@ create table publications (
   restored_from     uuid references publications (id) on delete set null
 );
 
-create index publications_published_at_idx on publications (published_at desc);
+create index publications_published_at_idx on publications (map_id, published_at desc);

@@ -29,6 +29,7 @@ const toSummary = (row: Record<string, unknown>): PublicationSummary => ({
 export async function recordPublication(
   db: Queryable,
   publication: {
+    mapId: string;
     userId: string;
     userName: string;
     mapData: MapData;
@@ -38,11 +39,13 @@ export async function recordPublication(
   const { mapData } = publication;
   const result = await db.query(
     `insert into publications
-       (published_by, published_by_name, map_data, media_count, note_count, witness_count, restored_from)
-     values ($1, $2, $3, $4, $5, $6, $7)
+       (map_id, published_by, published_by_name, map_data, media_count, note_count,
+        witness_count, restored_from)
+     values ($1, $2, $3, $4, $5, $6, $7, $8)
      returning id, published_at, published_by_name, media_count, note_count,
                witness_count, restored_from`,
     [
+      publication.mapId,
       publication.userId,
       publication.userName,
       JSON.stringify(mapData),
@@ -57,26 +60,28 @@ export async function recordPublication(
 
 export async function listPublications(
   db: Queryable,
+  mapId: string,
   limit = 30,
 ): Promise<PublicationSummary[]> {
   const result = await db.query(
     `select id, published_at, published_by_name, media_count, note_count,
             witness_count, restored_from
-       from publications order by published_at desc limit $1`,
-    [limit],
+       from publications where map_id = $1 order by published_at desc limit $2`,
+    [mapId, limit],
   );
   return (result.rows as Record<string, unknown>[]).map(toSummary);
 }
 
 export async function getPublication(
   db: Queryable,
+  mapId: string,
   id: string,
 ): Promise<PublicationRecord | undefined> {
   const result = await db.query(
     `select id, published_at, published_by_name, map_data, media_count,
             note_count, witness_count, restored_from
-       from publications where id = $1`,
-    [id],
+       from publications where map_id = $1 and id = $2`,
+    [mapId, id],
   );
   const row = result.rows[0] as Record<string, unknown> | undefined;
   if (!row) return undefined;
@@ -84,10 +89,11 @@ export async function getPublication(
   return { ...toSummary(row), mapData: row['map_data'] as MapData };
 }
 
-/** The one currently on the site, as far as this system knows. */
+/** La que esta en linea para ese mapa, segun este sistema. */
 export async function latestPublication(
   db: Queryable,
+  mapId: string,
 ): Promise<PublicationSummary | undefined> {
-  const [latest] = await listPublications(db, 1);
+  const [latest] = await listPublications(db, mapId, 1);
   return latest;
 }

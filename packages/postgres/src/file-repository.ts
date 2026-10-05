@@ -18,8 +18,26 @@ export interface StoredFileRecord {
  */
 export async function addFile(
   db: Queryable,
-  file: { id: string; mediumId: string; kind: string; path: string; description?: string },
+  file: {
+    id: string;
+    mapId: string;
+    mediumId: string;
+    kind: string;
+    path: string;
+    description?: string;
+  },
 ): Promise<StoredFileRecord> {
+  // El medio tiene que pertenecer al mapa. Sin esta comprobacion, un id de
+  // medio ajeno adjunta el archivo al catalogo de otro mapa, y los bytes
+  // quedan bajo un directorio que ese mapa no sirve.
+  const owns = await db.query(
+    'select 1 from media where id = $1 and map_id = $2',
+    [file.mediumId, file.mapId],
+  );
+  if (owns.rows.length === 0) {
+    throw new Error(`El medio ${file.mediumId} no pertenece al mapa ${file.mapId}.`);
+  }
+
   const result = await db.query(
     `insert into media_files (id, medium_id, kind, path, description, witness_position)
      values ($1, $2, $3, $4, $5, (
@@ -46,13 +64,17 @@ export async function addFile(
 
 export async function updateFileDescription(
   db: Queryable,
+  mapId: string,
   mediumId: string,
   fileId: string,
   description: string,
 ): Promise<boolean> {
   const result = await db.query(
-    'update media_files set description = $3 where medium_id = $1 and id = $2 returning id',
-    [mediumId, fileId, description],
+    `update media_files f set description = $4
+       where f.medium_id = $2 and f.id = $3
+         and exists (select 1 from media m where m.id = f.medium_id and m.map_id = $1)
+     returning f.id`,
+    [mapId, mediumId, fileId, description],
   );
   return result.rows.length > 0;
 }
@@ -68,12 +90,16 @@ export async function updateFileDescription(
  */
 export async function removeFile(
   db: Queryable,
+  mapId: string,
   mediumId: string,
   fileId: string,
 ): Promise<string | undefined> {
   const result = await db.query(
-    'delete from media_files where medium_id = $1 and id = $2 returning path',
-    [mediumId, fileId],
+    `delete from media_files f
+       where f.medium_id = $2 and f.id = $3
+         and exists (select 1 from media m where m.id = f.medium_id and m.map_id = $1)
+     returning f.path`,
+    [mapId, mediumId, fileId],
   );
   return (result.rows[0] as { path: string } | undefined)?.path;
 }
@@ -86,10 +112,18 @@ export async function removeFile(
  */
 export async function reorderWitnesses(
   db: Pooled,
+  mapId: string,
   mediumId: string,
   orderedIds: string[],
 ): Promise<void> {
   await withTransaction(db, async (tx) => {
+    const owns = await tx.query(
+      'select 1 from media where id = $1 and map_id = $2',
+      [mediumId, mapId],
+    );
+    if (owns.rows.length === 0) {
+      throw new Error(`El medio ${mediumId} no pertenece al mapa ${mapId}.`);
+    }
     // Park everything out of the way first. Without this, rewriting positions
     // one by one can transiently collide with a position still held by another
     // row, and the intermediate state is visible to anything reading.
@@ -124,8 +158,21 @@ export async function reorderWitnesses(
   });
 }
 
-/** Every path the catalogue still points at. The sweep compares against this. */
-export async function listReferencedPaths(db: Queryable): Promise<Set<string>> {
-  const result = await db.query('select path from media_files');
+/**
+ * Las rutas que el catalogo de un mapa todavia referencia.
+ *
+ * Por mapa y no globales: cada mapa tiene su propio arbol de multimedia, asi
+ * que un barrido que comparara contra las rutas de todos los mapas conservaria
+ * huerfanos ajenos, y uno que ignorara el mapa borraria archivos vivos.
+ */
+export async function listReferencedPaths(
+  db: Queryable,
+  mapId: string,
+): Promise<Set<string>> {
+  const result = await db.query(
+    `select f.path from media_files f join media m on m.id = f.medium_id
+      where m.map_id = $1`,
+    [mapId],
+  );
   return new Set((result.rows as { path: string }[]).map((row) => row.path));
 }

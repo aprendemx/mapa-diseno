@@ -1,12 +1,11 @@
 import { readFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
+import { join, resolve } from 'node:path'
 
 import { MEDIA_STOP_SCRIPT, generateMapData, renderMap } from '@mapa-mexico/map-generator'
 import type { MapData } from '@mapa-mexico/map-generator'
 import { checkPublishable, fromRows } from '@mapa-mexico/project-store'
-import type { Problem } from '@mapa-mexico/project-store'
-import { statStored } from '@mapa-mexico/file-storage'
-import { writeFileAtomic } from '@mapa-mexico/file-storage'
+import type { MapRow, Problem } from '@mapa-mexico/project-store'
+import { statStored, writeFileAtomic } from '@mapa-mexico/file-storage'
 import { getPublication, readCatalog, recordPublication } from '@mapa-mexico/postgres'
 import type { Pooled, PublicationSummary, SessionUser } from '@mapa-mexico/postgres'
 
@@ -22,63 +21,60 @@ export interface PublishSuccess {
 }
 
 /**
- * The template is read at publish time, so a corrected `mapa-base.html` takes
- * effect on the next publish without rebuilding the app. The media stop script
- * travels inside the bundle: a path into `src/` resolves in development and
- * not in a container.
+ * La plantilla se lee al publicar, asi que un `mapa-base.html` corregido toma
+ * efecto en la publicacion siguiente sin reconstruir la imagen. El script que
+ * detiene la multimedia viaja dentro del paquete: una ruta a `src/` resuelve en
+ * desarrollo y no en un contenedor.
  */
-async function readTemplates() {
-  const { templatePath } = useRuntimeConfig()
-  return {
-    template: await readFile(resolve(templatePath), 'utf8'),
-    mediaStop: MEDIA_STOP_SCRIPT,
-  }
+async function readTemplate(): Promise<string> {
+  return readFile(resolve(useRuntimeConfig().templatePath), 'utf8')
+}
+
+const existsIn = (root: string) => async (path: string) =>
+  Boolean(await statStored(root, path))
+
+/** Revisa un mapa sin tocar nada. Tambien es el primer paso de publicar. */
+export async function inspect(db: Pooled, map: MapRow): Promise<Problem[]> {
+  const project = fromRows(await readCatalog(db, map.id))
+  return checkPublishable(project, existsIn(mapRoot(map)))
 }
 
 /**
- * Checks the catalogue without touching anything.
+ * Escribe la pagina del mapa en su propio directorio.
  *
- * Its own endpoint as well as the first step of publishing, so the editor can
- * say what is wrong before anyone commits to it.
+ * `<sitio>/<slug>/index.html`, al lado de su `contenidos/`. Por eso la pagina
+ * puede seguir referenciando rutas relativas sin saber en que ruta se sirve:
+ * es lo que permite que varios mapas convivan en un dominio sin reescribir
+ * ninguna ruta almacenada.
  */
-export async function inspect(db: Pooled): Promise<Problem[]> {
-  const project = fromRows(await readCatalog(db))
-  const root = mediaRoot()
-  return checkPublishable(project, async (path) => Boolean(await statStored(root, path)))
-}
-
-async function put(data: MapData): Promise<number> {
-  const { template, mediaStop } = await readTemplates()
-  const html = renderMap({ template, mediaStop, data })
-
-  const { publishDir } = useRuntimeConfig()
-  await writeFileAtomic(resolve(publishDir, 'index.html'), html)
+async function put(map: MapRow, data: MapData): Promise<number> {
+  const html = renderMap({ template: await readTemplate(), mediaStop: MEDIA_STOP_SCRIPT, data })
+  await writeFileAtomic(join(mapRoot(map), 'index.html'), html)
   return Buffer.byteLength(html)
 }
 
 /**
- * Validates, renders and swaps — in that order, and nothing before its turn.
+ * Valida, genera y reemplaza — en ese orden, y nada antes de su turno.
  *
- * The legacy generator validated *after* it had written the JSON, moved the
- * files and deleted the orphans, so a failed check left the disk changed and
- * the published map stale. Here a refusal means nothing happened at all.
+ * El generador viejo validaba *despues* de haber escrito el JSON, movido los
+ * archivos y borrado los huerfanos, asi que un fallo dejaba el disco cambiado y
+ * el mapa publicado viejo. Aqui un rechazo significa que no paso nada.
  */
 export async function publishCatalogue(
   db: Pooled,
+  map: MapRow,
   user: SessionUser,
 ): Promise<PublishRefusal | PublishSuccess> {
-  const project = fromRows(await readCatalog(db))
-  const root = mediaRoot()
+  const project = fromRows(await readCatalog(db, map.id))
 
-  const problems = await checkPublishable(project, async (path) =>
-    Boolean(await statStored(root, path)),
-  )
+  const problems = await checkPublishable(project, existsIn(mapRoot(map)))
   if (problems.length > 0) return { ok: false, problems }
 
   const data = generateMapData(project)
-  const bytes = await put(data)
+  const bytes = await put(map, data)
 
   const publication = await recordPublication(db, {
+    mapId: map.id,
     userId: user.id,
     userName: user.name,
     mapData: data,
@@ -87,24 +83,25 @@ export async function publishCatalogue(
 }
 
 /**
- * Re-publishes an earlier publication's data.
+ * Vuelve a publicar los datos de una publicacion anterior de ESE mapa.
  *
- * It re-renders rather than restoring stored HTML, so a rollback picks up the
- * current template — which is what you want when the rollback exists because
- * something about the page itself went wrong. It also does not touch the
- * catalogue: rolling back the site is not the same as undoing someone's edits,
- * and conflating the two loses work.
+ * Renderiza de nuevo en lugar de restaurar HTML guardado, asi que recoge la
+ * plantilla actual — que es lo que se quiere cuando la restauracion existe
+ * porque algo de la pagina fallo. Y no toca el catalogo: volver atras el sitio
+ * no es deshacer las ediciones de alguien.
  */
 export async function restorePublication(
   db: Pooled,
+  map: MapRow,
   user: SessionUser,
   publicationId: string,
 ): Promise<PublishSuccess | undefined> {
-  const previous = await getPublication(db, publicationId)
+  const previous = await getPublication(db, map.id, publicationId)
   if (!previous) return undefined
 
-  const bytes = await put(previous.mapData)
+  const bytes = await put(map, previous.mapData)
   const publication = await recordPublication(db, {
+    mapId: map.id,
     userId: user.id,
     userName: user.name,
     mapData: previous.mapData,

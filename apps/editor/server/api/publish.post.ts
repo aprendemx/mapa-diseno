@@ -1,6 +1,7 @@
 export default defineEventHandler(async (event) => {
   const user = requireUser(event)
-  const result = await publishCatalogue(database(), user)
+  const map = await currentMap(event)
+  const result = await publishCatalogue(database(), map, user)
 
   if (!result.ok) {
     throw createError({

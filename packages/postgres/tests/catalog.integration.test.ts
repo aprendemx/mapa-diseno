@@ -11,7 +11,8 @@ import type { MapData, Project } from '@mapa-mexico/map-generator';
 import { toRows, fromRows } from '@mapa-mexico/project-store';
 import type { CatalogRows } from '@mapa-mexico/project-store';
 
-import { readCatalog, replaceCatalog } from '../src/index.ts';
+import { createMap, readCatalog, replaceCatalog } from '../src/index.ts';
+import type { MapRow } from '@mapa-mexico/project-store';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..', '..');
@@ -43,6 +44,7 @@ const isLocal = /@(127\.0\.0\.1|localhost|\[::1\])[:/]/.test(DATABASE_URL);
 const isTestDatabase = /_test(\?|$)/.test(DATABASE_URL);
 
 let pool: pg.Pool | undefined;
+let mapa: MapRow | undefined;
 /** Why the suite could not run. Empty means it did. */
 let unavailable = 'TEST_DATABASE_URL must be a loopback database whose name ends in _test';
 let reachable = false;
@@ -66,7 +68,7 @@ after(async () => {
 
 describe('the catalogue, through real SQL', () => {
   let stored: CatalogRows | undefined;
-  const imported = toRows(project);
+  let imported: CatalogRows | undefined;
 
   test('imports and reads back the whole catalogue', async (t) => {
     if (!reachable || !pool) return t.skip(`database unavailable: ${unavailable}`);
@@ -74,8 +76,16 @@ describe('the catalogue, through real SQL', () => {
     await pool.query('drop schema public cascade; create schema public;');
     await pool.query(schema);
 
+    mapa = await createMap(pool, {
+      slug: 'redmexico',
+      name: 'Red México',
+      appearance: project.appearance,
+      isDefault: true,
+    });
+    imported = toRows(project, mapa);
+
     await replaceCatalog(pool, imported);
-    stored = await readCatalog(pool);
+    stored = await readCatalog(pool, mapa.id);
 
     assert.equal(stored.media.length, 29);
     assert.equal(stored.files.length, 158);
@@ -84,7 +94,7 @@ describe('the catalogue, through real SQL', () => {
   });
 
   test('returns rows identical to the ones it was given', async (t) => {
-    if (!stored) return t.skip(`database unavailable: ${unavailable}`);
+    if (!stored || !imported) return t.skip(`database unavailable: ${unavailable}`);
     // Catches exactly what a stubbed driver would not: numeric coming back as
     // a string, a boolean as 't', an integer widened to something else.
     assert.deepStrictEqual(stored, imported);
@@ -99,7 +109,9 @@ describe('the catalogue, through real SQL', () => {
   });
 
   test('a failed import leaves the catalogue untouched', async (t) => {
-    if (!reachable || !pool) return t.skip(`database unavailable: ${unavailable}`);
+    if (!reachable || !pool || !imported || !mapa) {
+      return t.skip(`database unavailable: ${unavailable}`);
+    }
 
     const broken: CatalogRows = {
       ...imported,
@@ -110,7 +122,7 @@ describe('the catalogue, through real SQL', () => {
 
     await assert.rejects(() => replaceCatalog(pool!, broken));
 
-    const after = await readCatalog(pool);
+    const after = await readCatalog(pool, mapa.id);
     assert.deepStrictEqual(after, imported, 'the rollback must restore every table');
   });
 });

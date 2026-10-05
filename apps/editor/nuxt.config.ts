@@ -8,14 +8,12 @@ export default defineNuxtConfig({
     // Cookies are marked Secure unless this says otherwise, so a
     // misconfiguration fails closed rather than sending them in the clear.
     insecureCookies: '',
-    // Where `contenidos/` lives. In production this is the same directory
-    // nginx serves the published map from.
-    mediaRoot: '../..',
+    // La raiz del arbol que sirve nginx. Dentro hay un directorio por mapa, y
+    // en la raiz dos enlaces simbolicos al mapa predeterminado.
+    siteRoot: '../../sitio',
     maxUploadBytes: String(2 * 1024 * 1024 * 1024),
-    // The template the published page is built from, and where it lands.
-    // In production `publishDir` is the directory nginx serves.
+    // La plantilla desde la que se construye la pagina publicada.
     templatePath: '../../mapa-base.html',
-    publishDir: '../../publicado',
   },
 
   nitro: {
@@ -23,7 +21,7 @@ export default defineNuxtConfig({
     preset: 'node-server',
     // Serves media for previews inside the editor. These are the same bytes
     // nginx already serves publicly, so nothing new is exposed by it.
-    publicAssets: [{ dir: '../../contenidos', baseURL: '/contenidos', maxAge: 0 }],
+    publicAssets: [{ dir: '../../sitio', baseURL: '/sitio', maxAge: 0 }],
   },
 
   typescript: { strict: true, typeCheck: false },

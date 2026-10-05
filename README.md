@@ -19,6 +19,34 @@ Los cinco paquetes puros corren con `node --test` sin build: Node ejecuta
 TypeScript directo. Solo `postgres` abre un socket, y eso se ve en el árbol de
 directorios a propósito.
 
+## Varios mapas en un dominio
+
+Cada temática es un mapa con su propio catálogo y su propia apariencia.
+Comparten los 32 estados, la plantilla y las cuentas.
+
+```
+sitio/
+├── index.html   -> redmexico/index.html     (enlaces al mapa predeterminado)
+├── contenidos   -> redmexico/contenidos
+├── redmexico/{index.html, contenidos/…}
+└── telesecundarias/{index.html, contenidos/…}
+```
+
+La página publicada referencia `contenidos/…` **relativo a sí misma**, así que
+cada mapa en su directorio funciona sin reescribir una sola ruta almacenada.
+La raíz del dominio son dos enlaces simbólicos, y cambiar cuál es el mapa
+predeterminado es repuntarlos — no mover casi un giga.
+
+```bash
+cd apps/editor
+npm run link-default        # apunta la raíz al mapa predeterminado
+```
+
+Los ids de medio son únicos en todo el sistema y no por mapa: son la clave que
+referencian archivos, temas y cobertura, y el prefijo de cada id de nota
+publicada (`<mediumId>-nota-3`). Si dos mapas tienen un medio del mismo nombre,
+el segundo queda `canal-once-2`.
+
 ## Puesta en marcha
 
 ```bash
@@ -31,11 +59,12 @@ docker exec mapa-postgres-dev psql -U mapa -d postgres -c 'create database mapa_
 
 cd apps/editor
 cp .env.example .env
-npm run import-legacy -- --file ../../datos/proyecto.json
+npm run import-legacy -- --file ../../datos/proyecto.json --map redmexico
 # Obligatorio despues de importar: proyecto.json trae las rutas legacy, y los
 # archivos en disco ya usan el esquema por id. Sin esto, publicar falla con
-# 158 archivos "no encontrados" y tiene razon.
-npm run migrate-paths -- --apply
+# los archivos "no encontrados" y tiene razon.
+npm run migrate-paths -- --map redmexico --apply
+npm run link-default
 npm run create-user -- --email vos@aprende.gob.mx --name "Tu nombre"
 npm run dev
 ```
@@ -50,6 +79,7 @@ cd apps/editor
 npm run import-legacy       # migra datos/proyecto.json al catalogo
 npm run migrate-paths       # rutas legacy -> rutas por id (informe; --apply)
                             # correr siempre despues de import-legacy
+npm run link-default        # raiz del sitio -> mapa predeterminado
 npm run verify-catalog      # regenera el mapa desde la base y lo resume
 npm run sweep               # archivos sin fila (informe; --delete)
 npm run create-user

@@ -13,7 +13,8 @@ export default defineEventHandler(async (event) => {
   const mediumId = getRouterParam(event, 'id')!
   const fileId = getRouterParam(event, 'fileId')!
 
-  const path = await removeFile(database(), mediumId, fileId)
+  const map = await currentMap(event)
+  const path = await removeFile(database(), map.id, mediumId, fileId)
   if (!path) throw createError({ statusCode: 404, statusMessage: 'Ese archivo no existe.' })
 
   return { ok: true, orphanedPath: path }

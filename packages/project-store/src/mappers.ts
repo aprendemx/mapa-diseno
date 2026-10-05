@@ -9,6 +9,7 @@ import type {
 import type {
   AppearanceRow,
   CatalogRows,
+  MapRow,
   CoverageStateRow,
   MediaFileRow,
   MediumRow,
@@ -44,8 +45,9 @@ const byWitness = <T extends { witness_position: number }>(rows: T[]): T[] =>
 
 // --- Appearance ------------------------------------------------------------
 
-export function appearanceToRow(appearance: Appearance): AppearanceRow {
+export function appearanceToRow(appearance: Appearance, mapId: string): AppearanceRow {
   return {
+    map_id: mapId,
     background_color: appearance.backgroundColor,
     title_color: appearance.titleColor,
     state_with_media_color: appearance.stateWithMediaColor,
@@ -129,7 +131,7 @@ function resolveWitnessOrder(
  * with no links are kept: an empty theme is someone midway through authoring,
  * not corruption, and publish is where it gets filtered.
  */
-export function toRows(project: Project): CatalogRows {
+export function toRows(project: Project, map: MapRow): CatalogRows {
   const states: StateRow[] = (project.states ?? []).map((state, index) => ({
     id: str(state.id),
     name: str(state.name),
@@ -147,6 +149,7 @@ export function toRows(project: Project): CatalogRows {
 
     media.push({
       id: mediumId,
+      map_id: map.id,
       name: str(medium.name),
       folder_slug: str(medium.folderSlug),
       active: medium.active === true,
@@ -222,7 +225,8 @@ export function toRows(project: Project): CatalogRows {
   });
 
   return {
-    appearance: appearanceToRow(project.appearance),
+    map,
+    appearance: appearanceToRow(project.appearance, map.id),
     states,
     media,
     coverageStates,

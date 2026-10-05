@@ -2,5 +2,6 @@ import { listMedia } from '@mapa-mexico/postgres'
 
 export default defineEventHandler(async (event) => {
   requireUser(event)
-  return { media: await listMedia(database()) }
+  const map = await currentMap(event)
+  return { media: await listMedia(database(), map.id) }
 })

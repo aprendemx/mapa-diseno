@@ -47,7 +47,7 @@ export async function listStates(db: Queryable): Promise<StateOption[]> {
  * the list shows "4 archivos, 2 temas" and nothing more, and fetching the rows
  * to count them would be the classic N+1 the schema exists to avoid.
  */
-export async function listMedia(db: Queryable): Promise<MediumSummary[]> {
+export async function listMedia(db: Queryable, mapId: string): Promise<MediumSummary[]> {
   const result = await db.query(`
     select m.id, m.name, m.active, m.state_id, s.name as state_name, m.position,
            (select count(*) from media_files f where f.medium_id = m.id)::int as file_count,
@@ -57,8 +57,9 @@ export async function listMedia(db: Queryable): Promise<MediumSummary[]> {
            ), 0) as note_count
       from media m
       left join states s on s.id = m.state_id
+     where m.map_id = $1
      order by m.position
-  `);
+  `, [mapId]);
 
   return (result.rows as Record<string, unknown>[]).map((row) => ({
     id: row['id'] as string,
@@ -73,11 +74,22 @@ export async function listMedia(db: Queryable): Promise<MediumSummary[]> {
   }));
 }
 
-export async function getMedium(db: Queryable, id: string): Promise<MediumDetail | undefined> {
+/**
+ * Un medio, acotado a su mapa.
+ *
+ * El id es unico en todo el sistema, asi que buscar solo por id funcionaria —
+ * y devolveria el medio de otro mapa si alguien pasa un id ajeno. El `map_id`
+ * en el where convierte eso en "no existe", que es la respuesta correcta.
+ */
+export async function getMedium(
+  db: Queryable,
+  mapId: string,
+  id: string,
+): Promise<MediumDetail | undefined> {
   const medium = await db.query(
     `select id, name, active, state_id, notes, coverage_text, social_enabled, position
-       from media where id = $1`,
-    [id],
+       from media where map_id = $1 and id = $2`,
+    [mapId, id],
   );
   const row = medium.rows[0] as Record<string, unknown> | undefined;
   if (!row) return undefined;
@@ -132,18 +144,26 @@ export async function getMedium(db: Queryable, id: string): Promise<MediumDetail
  * Every campaign the map publishes is keyed `<mediumId>-nota-N`, so a moving
  * id would silently renumber published references.
  */
-export async function createMedium(db: Pooled, input: MediumInput): Promise<string> {
+export async function createMedium(
+  db: Pooled,
+  mapId: string,
+  input: MediumInput,
+): Promise<string> {
+  // Los ids se reservan contra TODOS los mapas, no solo contra este: son la
+  // clave primaria global y el prefijo de cada id de nota publicada.
   const existing = await db.query('select id from media');
   const taken = new Set((existing.rows as { id: string }[]).map((row) => row.id));
   const id = uniqueSlug(input.name, taken);
 
   return withTransaction(db, async (tx) => {
     await tx.query(
-      `insert into media (id, name, active, state_id, notes, coverage_text, social_enabled, position)
-       values ($1, $2, $3, $4, $5, $6, $7,
-               (select coalesce(max(position), 0) + 1 from media))`,
+      `insert into media (id, map_id, name, active, state_id, notes, coverage_text,
+                          social_enabled, position)
+       values ($1, $2, $3, $4, $5, $6, $7, $8,
+               (select coalesce(max(position), 0) + 1 from media where map_id = $2))`,
       [
         id,
+        mapId,
         input.name.trim(),
         input.active,
         input.stateId,
@@ -160,15 +180,17 @@ export async function createMedium(db: Pooled, input: MediumInput): Promise<stri
 
 export async function updateMedium(
   db: Pooled,
+  mapId: string,
   id: string,
   input: MediumInput,
 ): Promise<boolean> {
   return withTransaction(db, async (tx) => {
     const updated = await tx.query(
-      `update media set name = $2, active = $3, state_id = $4, notes = $5,
-              coverage_text = $6, social_enabled = $7, updated_at = now()
-        where id = $1 returning id`,
+      `update media set name = $3, active = $4, state_id = $5, notes = $6,
+              coverage_text = $7, social_enabled = $8, updated_at = now()
+        where map_id = $1 and id = $2 returning id`,
       [
+        mapId,
         id,
         input.name.trim(),
         input.active,
@@ -186,22 +208,33 @@ export async function updateMedium(
   });
 }
 
-export async function deleteMedium(db: Queryable, id: string): Promise<boolean> {
+export async function deleteMedium(
+  db: Queryable,
+  mapId: string,
+  id: string,
+): Promise<boolean> {
   // Coverage, files and themes go with it by cascade. The blobs on disk do
   // not: unlinking a record must never be what deletes someone's video.
-  const result = await db.query('delete from media where id = $1 returning id', [id]);
+  const result = await db.query(
+    'delete from media where map_id = $1 and id = $2 returning id',
+    [mapId, id],
+  );
   return result.rows.length > 0;
 }
 
 /** Reorders the list. Positions are rewritten from 1 so no gaps accumulate. */
-export async function reorderMedia(db: Pooled, orderedIds: string[]): Promise<void> {
+export async function reorderMedia(
+  db: Pooled,
+  mapId: string,
+  orderedIds: string[],
+): Promise<void> {
   await withTransaction(db, async (tx) => {
     await tx.query(
       `update media set position = data.position
-         from (select unnest($1::text[]) as id, generate_subscripts($1::text[], 1) as position)
+         from (select unnest($2::text[]) as id, generate_subscripts($2::text[], 1) as position)
               as data
-        where media.id = data.id`,
-      [orderedIds],
+        where media.map_id = $1 and media.id = data.id`,
+      [mapId, orderedIds],
     );
   });
 }
@@ -286,24 +319,32 @@ async function writeThemes(
 
 /** Reuses the row mapping that `project-store` already owns, rather than
  * writing a second copy of it that can drift. */
-export async function getAppearance(db: Queryable): Promise<Appearance> {
+export async function getAppearance(db: Queryable, mapId: string): Promise<Appearance> {
   const result = await db.query(`
     select background_color, title_color, state_with_media_color, state_disabled_color,
            state_hover_color, state_selected_color, coverage_origin_color, coverage_area_color,
            glow_color, glow_intensity, glow_opacity, glow_core_size, glow_spread,
            glow_outline, accent_color
-      from appearance where singleton
-  `);
+      from appearance where map_id = $1
+  `, [mapId]);
   const row = result.rows[0] as AppearanceRow | undefined;
-  if (!row) throw new Error('The appearance row is missing: the catalogue was never initialised.');
+  if (!row) throw new Error(`El mapa ${mapId} no tiene fila de apariencia.`);
   return appearanceFromRow(row);
 }
 
-export async function updateAppearance(db: Queryable, appearance: Appearance): Promise<void> {
-  const row = appearanceToRow(appearance);
-  const columns = Object.keys(row) as (keyof AppearanceRow)[];
+export async function updateAppearance(
+  db: Queryable,
+  mapId: string,
+  appearance: Appearance,
+): Promise<void> {
+  const row = appearanceToRow(appearance, mapId);
+  // `map_id` identifica la fila, no se reescribe.
+  const columns = (Object.keys(row) as (keyof AppearanceRow)[])
+    .filter((column) => column !== 'map_id');
+
   await db.query(
-    `update appearance set ${columns.map((c, i) => `${c} = $${i + 1}`).join(', ')} where singleton`,
-    columns.map((column) => row[column]),
+    `update appearance set ${columns.map((c, i) => `${c} = $${i + 2}`).join(', ')}
+      where map_id = $1`,
+    [mapId, ...columns.map((column) => row[column])],
   );
 }

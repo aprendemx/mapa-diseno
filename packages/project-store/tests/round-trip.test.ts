@@ -8,6 +8,18 @@ import { generateMapData } from '@mapa-mexico/map-generator';
 import type { MapData, Project } from '@mapa-mexico/map-generator';
 
 import { toRows, fromRows } from '../src/index.ts';
+import type { MapRow } from '../src/index.ts';
+
+/** El mapa al que pertenecen estas filas. Uno solo basta para el round-trip. */
+const MAPA: MapRow = {
+  id: '00000000-0000-4000-8000-000000000001',
+  slug: 'redmexico',
+  name: 'Red México',
+  is_default: true,
+};
+
+/** Todas las filas de este archivo pertenecen al mismo mapa. */
+const filas = (proyecto: Project) => toRows(proyecto, MAPA);
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fixtures = join(here, '..', '..', 'map-generator', 'tests', 'fixtures', '2026-08');
@@ -25,7 +37,7 @@ const expected = read('expected-map-data.json') as MapData;
  * byte, the map production published.
  */
 describe('a full trip through the relational shape', () => {
-  const rows = toRows(project);
+  const rows = filas(project);
   const restored = fromRows(rows);
 
   test('still generates the published map, key order included', () => {
@@ -52,7 +64,7 @@ describe('a full trip through the relational shape', () => {
   });
 
   test('is idempotent: importing what it exported changes nothing', () => {
-    assert.deepEqual(toRows(fromRows(rows)), rows);
+    assert.deepEqual(filas(fromRows(rows)), rows);
   });
 });
 
@@ -82,7 +94,7 @@ describe('what the rows refuse to hold', () => {
   });
 
   test('a file with a blank path is dropped, not stored empty', () => {
-    const rows = toRows(
+    const rows = filas(
       wrap(
         medium({
           files: [
@@ -96,7 +108,7 @@ describe('what the rows refuse to hold', () => {
   });
 
   test('a theme with no links is kept — that is a draft, not corruption', () => {
-    const rows = toRows(
+    const rows = filas(
       wrap(
         medium({
           socialEnabled: true,
@@ -112,20 +124,20 @@ describe('what the rows refuse to hold', () => {
   });
 
   test('an unassigned state is null, not the empty string', () => {
-    const rows = toRows(wrap(medium({ stateId: '' })));
+    const rows = filas(wrap(medium({ stateId: '' })));
     assert.equal(rows.media[0]?.state_id, null);
     assert.equal(fromRows(rows).media[0]?.stateId, '');
   });
 
   test('a duplicated coverage state collapses to one row', () => {
-    const rows = toRows(wrap(medium({ coverageStates: ['col', 'col', 'col'] })));
+    const rows = filas(wrap(medium({ coverageStates: ['col', 'col', 'col'] })));
     assert.equal(rows.coverageStates.length, 1);
   });
 });
 
 describe('the shared ordering space', () => {
   test('files and themes are numbered against each other, not separately', () => {
-    const rows = toRows({
+    const rows = filas({
       version: 4,
       appearance: project.appearance,
       states: [{ id: 'jal', name: 'Jalisco' }],

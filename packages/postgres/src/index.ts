@@ -39,3 +39,15 @@ export {
   latestPublication,
 } from './publication-repository.ts';
 export type { PublicationSummary, PublicationRecord } from './publication-repository.ts';
+export {
+  listMaps,
+  getMap,
+  getMapBySlug,
+  getDefaultMap,
+  createMap,
+  renameMap,
+  setDefaultMap,
+  deleteMap,
+  RESERVED_SLUGS,
+  SLUG_SHAPE,
+} from './map-repository.ts';

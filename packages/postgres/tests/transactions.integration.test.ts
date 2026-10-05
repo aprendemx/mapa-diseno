@@ -21,6 +21,7 @@ const isTestDatabase = /_test(\?|$)/.test(DATABASE_URL);
 
 let pool: pg.Pool | undefined;
 let unavailable = 'TEST_DATABASE_URL must be a loopback database whose name ends in _test';
+let mapaId = '';
 
 before(async () => {
   if (!isLocal || !isTestDatabase) return;
@@ -31,6 +32,11 @@ before(async () => {
     await candidate.query(
       "insert into states (id, name, position) values ('jal', 'Jalisco', 1)",
     );
+    // Un mapa al que colgar los medios: map_id es obligatorio.
+    const mapa = await candidate.query(
+      "insert into maps (slug, name, is_default) values ('pruebas', 'Pruebas', true) returning id",
+    );
+    mapaId = (mapa.rows[0] as { id: string }).id;
     pool = candidate;
   } catch (error) {
     unavailable = error instanceof Error ? error.message : String(error);
@@ -50,9 +56,10 @@ const skip = (t: { skip: (reason: string) => void }): boolean => {
 
 const insert = (db: { query: pg.Pool['query'] }, id: string) =>
   db.query(
-    `insert into media (id, name, active, state_id, notes, coverage_text, social_enabled, position)
-     values ($1, $1, true, 'jal', '', '', false, 1)`,
-    [id],
+    `insert into media (id, map_id, name, active, state_id, notes, coverage_text,
+                        social_enabled, position)
+     values ($1, $2, $1, true, 'jal', '', '', false, 1)`,
+    [id, mapaId],
   );
 
 /**

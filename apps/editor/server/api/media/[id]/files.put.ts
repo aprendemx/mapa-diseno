@@ -36,7 +36,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const db = database()
-  if (!(await getMedium(db, mediumId))) {
+  const map = await currentMap(event)
+  if (!(await getMedium(db, map.id, mediumId))) {
     throw createError({ statusCode: 404, statusMessage: 'Ese medio no existe.' })
   }
 
@@ -45,7 +46,7 @@ export default defineEventHandler(async (event) => {
 
   let written
   try {
-    written = await writeStreamed(mediaRoot(), path, event.node.req, {
+    written = await writeStreamed(mapRoot(map), path, event.node.req, {
       maxBytes: maxUploadBytes(),
     })
   } catch (error) {
@@ -56,13 +57,15 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const record = await addFile(db, { id: fileId, mediumId, kind: kindOf(filename), path })
+    const record = await addFile(db, {
+      id: fileId, mapId: map.id, mediumId, kind: kindOf(filename), path,
+    })
     setResponseStatus(event, 201)
     return { file: { ...record, bytes: written.bytes } }
   } catch (error) {
     // The row is what makes the bytes findable. Without it the file is an
     // orphan from birth, so it goes back out rather than waiting for a sweep.
-    await removeStored(mediaRoot(), path).catch(() => {})
+    await removeStored(mapRoot(map), path).catch(() => {})
     throw error
   }
 })

@@ -1,6 +1,7 @@
 import type {
   AppearanceRow,
   CatalogRows,
+  MapRow,
   CoverageStateRow,
   MediaFileRow,
   MediumRow,
@@ -11,6 +12,7 @@ import type {
 import { placeholders, withTransaction, type Pooled, type Queryable } from './queryable.ts';
 
 const APPEARANCE_COLUMNS = [
+  'map_id',
   'background_color', 'title_color', 'state_with_media_color', 'state_disabled_color',
   'state_hover_color', 'state_selected_color', 'coverage_origin_color', 'coverage_area_color',
   'glow_color', 'glow_intensity', 'glow_opacity', 'glow_core_size', 'glow_spread',
@@ -18,7 +20,7 @@ const APPEARANCE_COLUMNS = [
 ] as const;
 
 const MEDIUM_COLUMNS = [
-  'id', 'name', 'folder_slug', 'active', 'state_id', 'notes', 'coverage_text',
+  'id', 'map_id', 'name', 'folder_slug', 'active', 'state_id', 'notes', 'coverage_text',
   'social_enabled', 'position',
 ] as const;
 
@@ -49,35 +51,56 @@ async function insertMany<T extends object>(
 }
 
 /**
- * Reads the whole catalogue.
+ * Lee un mapa completo.
  *
- * Ordered by the same keys `toRows` canonicalises on, so what comes back out
- * of the database compares equal to what went in — without the caller having
- * to sort it first.
+ * Las filas hijas se acotan por su medio y el medio por su mapa, no por una
+ * lista de ids que el llamante haya juntado: un `in (...)` construido afuera es
+ * exactamente donde se cuela una fila del mapa vecino.
+ *
+ * El orden es el mismo que canonicaliza `toRows`, asi que lo que sale de la
+ * base compara igual a lo que entro sin que nadie tenga que ordenarlo.
  */
-export async function readCatalog(db: Queryable): Promise<CatalogRows> {
+export async function readCatalog(db: Queryable, mapId: string): Promise<CatalogRows> {
+  const map = await db.query(
+    'select id, slug, name, is_default from maps where id = $1',
+    [mapId],
+  );
+  if (map.rows.length === 0) throw new Error(`No existe el mapa ${mapId}.`);
+
   const appearance = await db.query(
-    `select ${APPEARANCE_COLUMNS.join(', ')} from appearance where singleton`,
+    `select ${APPEARANCE_COLUMNS.join(', ')} from appearance where map_id = $1`,
+    [mapId],
   );
   if (appearance.rows.length === 0) {
-    throw new Error('The appearance row is missing: the catalogue was never initialised.');
+    throw new Error(`El mapa ${mapId} no tiene fila de apariencia: quedo a medio crear.`);
   }
 
   const states = await db.query('select id, name, position from states order by position');
   const media = await db.query(
-    `select ${MEDIUM_COLUMNS.join(', ')} from media order by position`,
+    `select ${MEDIUM_COLUMNS.join(', ')} from media where map_id = $1 order by position`,
+    [mapId],
   );
   const coverageStates = await db.query(
-    'select medium_id, state_id, position from media_coverage_states order by medium_id, position',
+    `select c.medium_id, c.state_id, c.position
+       from media_coverage_states c join media m on m.id = c.medium_id
+      where m.map_id = $1 order by c.medium_id, c.position`,
+    [mapId],
   );
   const files = await db.query(
-    `select ${FILE_COLUMNS.join(', ')} from media_files order by medium_id, witness_position`,
+    `select ${FILE_COLUMNS.map((c) => `f.${c}`).join(', ')}
+       from media_files f join media m on m.id = f.medium_id
+      where m.map_id = $1 order by f.medium_id, f.witness_position`,
+    [mapId],
   );
   const socialThemes = await db.query(
-    `select ${THEME_COLUMNS.join(', ')} from social_themes order by medium_id, witness_position`,
+    `select ${THEME_COLUMNS.map((c) => `t.${c}`).join(', ')}
+       from social_themes t join media m on m.id = t.medium_id
+      where m.map_id = $1 order by t.medium_id, t.witness_position`,
+    [mapId],
   );
 
   return {
+    map: map.rows[0] as MapRow,
     appearance: appearance.rows[0] as AppearanceRow,
     states: states.rows as StateRow[],
     media: media.rows as MediumRow[],
@@ -88,16 +111,21 @@ export async function readCatalog(db: Queryable): Promise<CatalogRows> {
 }
 
 /**
- * Replaces the whole catalogue in one transaction.
+ * Reemplaza el catalogo de UN mapa, en una transaccion.
  *
- * This is the import path — used to move the legacy document in, and to
- * restore a backup. Ordinary editing writes single rows; nothing in day-to-day
- * use should ever call this.
+ * Es el camino de importacion: trae el documento legacy y restaura un
+ * respaldo. La edicion diaria escribe filas sueltas; nada de uso corriente
+ * deberia llamar a esto.
+ *
+ * El borrado inicial va acotado al mapa. Sin ese `where`, importar un mapa
+ * vaciaria el catalogo de todos los demas.
  */
 export async function replaceCatalog(db: Pooled, rows: CatalogRows): Promise<void> {
+  const mapId = rows.map.id;
+
   await withTransaction(db, async (tx) => {
     // media cascades to coverage, files and themes.
-    await tx.query('delete from media');
+    await tx.query('delete from media where map_id = $1', [mapId]);
 
     await tx.query(
       `insert into states (id, name, position) values ${placeholders(rows.states.length, 3)}
@@ -105,11 +133,12 @@ export async function replaceCatalog(db: Pooled, rows: CatalogRows): Promise<voi
       rows.states.flatMap((state) => [state.id, state.name, state.position]),
     );
 
+    const appearanceUpdates = APPEARANCE_COLUMNS.filter((column) => column !== 'map_id');
     await tx.query(
-      `insert into appearance (singleton, ${APPEARANCE_COLUMNS.join(', ')})
-       values (true, ${APPEARANCE_COLUMNS.map((_, i) => `$${i + 1}`).join(', ')})
-       on conflict (singleton) do update set
-       ${APPEARANCE_COLUMNS.map((column) => `${column} = excluded.${column}`).join(', ')}`,
+      `insert into appearance (${APPEARANCE_COLUMNS.join(', ')})
+       values (${APPEARANCE_COLUMNS.map((_, i) => `$${i + 1}`).join(', ')})
+       on conflict (map_id) do update set
+       ${appearanceUpdates.map((column) => `${column} = excluded.${column}`).join(', ')}`,
       pick(rows.appearance, APPEARANCE_COLUMNS),
     );
 

@@ -1,9 +1,15 @@
-# Media canonica: 2.2 GB de video y audio. Se respalda aparte, nunca en git.
-/contenidos/
+# El arbol que sirve nginx: un directorio por mapa, con su multimedia y su
+# pagina publicada. Casi 1 GB, y reproducible desde la base mas los archivos.
+/sitio/
 
-# Artefactos generados por el pipeline legacy (HTML publicado, copia de
-# media y ZIP de entrega). Reproducibles a partir de datos/ + contenidos/.
+# Entregas de periodos que el mapa ya no publica. Ver archivo/README.md:
+# no es un respaldo, es la unica copia.
+/archivo/
+/respaldos/
+
+# Artefactos del pipeline anterior
 /entrega/
+/publicado/
 
 # Dependencias y build
 node_modules/
@@ -20,8 +26,3 @@ dist/
 
 # Cache de herramientas locales
 .atl/
-/publicado/
-/respaldos/
-/datos/contenidos/
-/datos/publicado/
-archivo/
