@@ -116,8 +116,17 @@ docker compose exec editor node scripts/create-user.ts \
   --email alguien@aprende.gob.mx --name "Nombre"
 ```
 
-La contraseña se imprime una sola vez. No se puede recuperar: solo se guarda su
-hash.
+La contraseña se imprime una sola vez. No se puede **recuperar** —solo se guarda
+su hash— pero sí reestablecer:
+
+```bash
+docker compose exec editor node scripts/reset-password.ts \
+  --email alguien@aprende.gob.mx
+```
+
+Cierra todas las sesiones de esa cuenta: quien reestablece una contraseña o la
+olvidó o sospecha que se filtró, y en los dos casos las sesiones abiertas
+sobran.
 
 ## Respaldos
 

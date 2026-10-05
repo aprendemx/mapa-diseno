@@ -104,6 +104,7 @@ npm run link-default        # raiz del sitio -> mapa predeterminado
 npm run verify-catalog      # regenera el mapa desde la base y lo resume
 npm run sweep               # archivos sin fila (informe; --delete)
 npm run create-user
+npm run reset-password      # --email <correo> [--password-stdin]
 ```
 
 Para ver el mapa publicado en local, igual que lo sirve nginx en producción:
