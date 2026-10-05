@@ -10,7 +10,7 @@ import type { MapData, Project } from '@mapa-mexico/map-generator';
 import { toRows, fromRows } from '../src/index.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const fixtures = join(here, '..', '..', 'map-generator', 'tests', 'fixtures');
+const fixtures = join(here, '..', '..', 'map-generator', 'tests', 'fixtures', '2026-08');
 const read = (name: string): unknown => JSON.parse(readFileSync(join(fixtures, name), 'utf8'));
 
 const project = read('project.json') as Project;

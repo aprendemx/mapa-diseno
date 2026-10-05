@@ -110,6 +110,30 @@ no pueden — cookies reales, subidas reales:
 ./scripts/smoke-publish.sh <correo> <contraseña>
 ```
 
+## Las referencias golden
+
+`packages/map-generator/tests/fixtures/<aaaa-mm>/` guarda cada entrega real del
+pipeline PowerShell: su `proyecto.json`, el `PROJECT_DATA` que quedó en la
+página y la página completa. No se escriben a mano — son lo que produjo
+producción, y son la definición de correcto.
+
+Hay más de una a propósito. `2026-08` es la entrega contra la que se construyó
+el port; `2026-10` llegó después y el generador la reprodujo exacta sin haberla
+visto nunca. La primera prueba que el trabajo se hizo; la segunda, que se hizo
+bien.
+
+Cuando llegue otra entrega:
+
+```bash
+cd packages/map-generator
+node scripts/extract-reference.mjs --entrega <carpeta> --nombre 2026-11
+# y agregarla en tests/fixtures.ts
+```
+
+Las entregas que el mapa ya no publica se archivan en `archivo/<aaaa-mm>/`,
+fuera de git por peso. **No es un respaldo: es la única copia**, porque publicar
+el corte siguiente con `rsync --delete` las elimina de producción.
+
 ## Las pruebas de integración usan su propia base
 
 Recrean el esquema en cada corrida. Apuntadas a la base de desarrollo la

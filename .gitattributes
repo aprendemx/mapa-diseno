@@ -1,0 +1,12 @@
+# Las referencias golden son bytes verificados en produccion. Git no debe
+# tocarles los saltos de linea: el generador escribe \r\n alrededor del bloque
+# de datos, y normalizarlos haria fallar la comparacion byte a byte en
+# cualquier maquina con core.autocrlf distinto a la de quien las congelo.
+packages/map-generator/tests/fixtures/**/published.html -text
+
+# La plantilla es la misma situacion: se compara contra lo publicado.
+mapa-base.html -text
+
+# Los .bat y .ps1 del sistema anterior viven en Windows.
+*.bat text eol=crlf
+*.ps1 text eol=crlf

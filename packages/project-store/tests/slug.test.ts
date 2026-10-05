@@ -9,7 +9,7 @@ import { slug, uniqueSlug } from '../src/index.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const project = JSON.parse(
-  readFileSync(join(here, '..', '..', 'map-generator', 'tests', 'fixtures', 'project.json'), 'utf8'),
+  readFileSync(join(here, '..', '..', 'map-generator', 'tests', 'fixtures', '2026-08', 'project.json'), 'utf8'),
 ) as Project;
 
 describe('slug', () => {

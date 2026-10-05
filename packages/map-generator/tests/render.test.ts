@@ -12,14 +12,16 @@ import {
   renderMap,
 } from '../src/index.ts';
 import type { MapData } from '../src/index.ts';
-import { project, expectedMapData } from './fixtures.ts';
+import { august, datasets } from './fixtures.ts';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..', '..', '..');
 
+// La plantilla si se lee del repositorio: esta versionada, y es identica en las
+// dos entregas. La pagina publicada viene del fixture, porque `entrega/` esta
+// en .gitignore por peso.
 const template = readFileSync(join(root, 'mapa-base.html'), 'utf8');
 const mediaStop = MEDIA_STOP_SCRIPT;
-const published = readFileSync(join(root, 'entrega', 'ABRIR MAPA.html'), 'utf8');
 
 const DATA_BLOCK =
   /\/\*__DATOS_GENERADOS_INICIO__\*\/[\s\S]*?\/\*__DATOS_GENERADOS_FIN__\*\//;
@@ -39,33 +41,38 @@ const split = (html: string) => {
  * stop script lands where it landed, and that nothing else in 117 KB of SVG
  * and behaviour shifted by a byte.
  */
-describe('renderMap reproduces the published page', () => {
-  const rendered = renderMap({ template, mediaStop, data: generateMapData(project) });
+for (const dataset of datasets) {
+  describe(`renderMap reproduces the page published for ${dataset.name}`, () => {
+    const rendered = renderMap({
+      template,
+      mediaStop,
+      data: generateMapData(dataset.project),
+    });
 
-  test('everything outside the data block is byte-identical', () => {
-    assert.equal(split(rendered).shell, split(published).shell);
-  });
+    test('everything outside the data block is byte-identical', () => {
+      assert.equal(split(rendered).shell, split(dataset.publishedHtml).shell);
+    });
 
-  test('the data block carries the published catalogue', () => {
-    // Byte equality is not available here and should not be: PowerShell wrote
-    // accented characters as \uXXXX escapes and JSON.stringify writes UTF-8.
-    // Both parse to the same strings, and the map cannot tell them apart.
-    assert.deepStrictEqual(split(rendered).data, expectedMapData);
-  });
+    test('the data block carries the published catalogue', () => {
+      // Byte equality is not available here and should not be: PowerShell wrote
+      // accented characters as \uXXXX escapes and JSON.stringify writes UTF-8.
+      // Both parse to the same strings, and the map cannot tell them apart.
+      assert.deepStrictEqual(split(rendered).data, dataset.expectedMapData);
+    });
 
-  test('the media stop script is present exactly once', () => {
-    const occurrences = rendered.split(`id="${MEDIA_STOP_ID}"`).length - 1;
-    assert.equal(occurrences, 1);
-    assert.equal(published.split(`id="${MEDIA_STOP_ID}"`).length - 1, 1);
+    test('the media stop script is present exactly once', () => {
+      assert.equal(rendered.split(`id="${MEDIA_STOP_ID}"`).length - 1, 1);
+      assert.equal(dataset.publishedHtml.split(`id="${MEDIA_STOP_ID}"`).length - 1, 1);
+    });
   });
-});
+}
 
 describe('injection hazards', () => {
   const minimal = (body = '<body>hola</body>'): string =>
     `<html>/*__DATOS_GENERADOS_INICIO__*/\nconst PROJECT_DATA={};\n/*__DATOS_GENERADOS_FIN__*/${body}</html>`;
 
   const data = (overrides: Partial<MapData>): MapData => ({
-    appearance: expectedMapData.appearance,
+    appearance: august.expectedMapData.appearance,
     states: [],
     media: [],
     coverage: [],

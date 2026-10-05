@@ -1,7 +1,10 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { project, expectedMapData as expected } from './fixtures.ts';
+// Las cifras de abajo son de esta entrega en concreto, asi que se nombra.
+import { august } from './fixtures.ts';
+
+const { project, expectedMapData: expected } = august;
 
 /**
  * Characterisation of the frozen reference.

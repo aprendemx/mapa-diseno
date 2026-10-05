@@ -18,8 +18,8 @@ const root = join(here, '..', '..', '..');
 const read = (...path: string[]): unknown =>
   JSON.parse(readFileSync(join(root, ...path), 'utf8'));
 
-const project = read('packages', 'map-generator', 'tests', 'fixtures', 'project.json') as Project;
-const expected = read('packages', 'map-generator', 'tests', 'fixtures', 'expected-map-data.json') as MapData;
+const project = read('packages', 'map-generator', 'tests', 'fixtures', '2026-08', 'project.json') as Project;
+const expected = read('packages', 'map-generator', 'tests', 'fixtures', '2026-08', 'expected-map-data.json') as MapData;
 const schema = readFileSync(join(root, 'packages', 'project-store', 'src', 'schema.sql'), 'utf8');
 
 /**

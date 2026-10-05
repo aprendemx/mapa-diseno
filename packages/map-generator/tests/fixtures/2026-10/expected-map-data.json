@@ -1,0 +1,1908 @@
+{
+  "appearance": {
+    "backgroundColor": "#2f302e",
+    "titleColor": "#e9e9dc",
+    "stateWithMediaColor": "#e9e9dc",
+    "stateDisabledColor": "#e9e9dc",
+    "stateHoverColor": "#43a56f",
+    "stateSelectedColor": "#08783f",
+    "coverageOriginColor": "#08783f",
+    "coverageAreaColor": "#c0978c",
+    "glowColor": "#595959",
+    "glowIntensity": 30,
+    "glowOpacity": 85,
+    "glowCoreSize": 2,
+    "glowSpread": 10,
+    "glowOutline": 0.4,
+    "accentColor": "#08783f"
+  },
+  "states": [
+    {
+      "id": "agu",
+      "name": "Aguascalientes",
+      "active": "0"
+    },
+    {
+      "id": "bcn",
+      "name": "Baja California",
+      "active": "0"
+    },
+    {
+      "id": "bcs",
+      "name": "Baja California Sur",
+      "active": "0"
+    },
+    {
+      "id": "cam",
+      "name": "Campeche",
+      "active": "1"
+    },
+    {
+      "id": "chp",
+      "name": "Chiapas",
+      "active": "1"
+    },
+    {
+      "id": "chh",
+      "name": "Chihuahua",
+      "active": "0"
+    },
+    {
+      "id": "coa",
+      "name": "Coahuila",
+      "active": "0"
+    },
+    {
+      "id": "col",
+      "name": "Colima",
+      "active": "1"
+    },
+    {
+      "id": "dur",
+      "name": "Durango",
+      "active": "0"
+    },
+    {
+      "id": "gua",
+      "name": "Guanajuato",
+      "active": "0"
+    },
+    {
+      "id": "gro",
+      "name": "Guerrero",
+      "active": "0"
+    },
+    {
+      "id": "hid",
+      "name": "Hidalgo",
+      "active": "0"
+    },
+    {
+      "id": "jal",
+      "name": "Jalisco",
+      "active": "0"
+    },
+    {
+      "id": "cmx",
+      "name": "Ciudad de M\u00e9xico",
+      "active": "1"
+    },
+    {
+      "id": "mex",
+      "name": "Estado de M\u00e9xico",
+      "active": "0"
+    },
+    {
+      "id": "mic",
+      "name": "Michoac\u00e1n",
+      "active": "1"
+    },
+    {
+      "id": "mor",
+      "name": "Morelos",
+      "active": "1"
+    },
+    {
+      "id": "nay",
+      "name": "Nayarit",
+      "active": "0"
+    },
+    {
+      "id": "nle",
+      "name": "Nuevo Le\u00f3n",
+      "active": "1"
+    },
+    {
+      "id": "oax",
+      "name": "Oaxaca",
+      "active": "1"
+    },
+    {
+      "id": "pue",
+      "name": "Puebla",
+      "active": "1"
+    },
+    {
+      "id": "que",
+      "name": "Quer\u00e9taro",
+      "active": "0"
+    },
+    {
+      "id": "roo",
+      "name": "Quintana Roo",
+      "active": "1"
+    },
+    {
+      "id": "slp",
+      "name": "San Luis Potos\u00ed",
+      "active": "0"
+    },
+    {
+      "id": "sin",
+      "name": "Sinaloa",
+      "active": "1"
+    },
+    {
+      "id": "son",
+      "name": "Sonora",
+      "active": "0"
+    },
+    {
+      "id": "tab",
+      "name": "Tabasco",
+      "active": "1"
+    },
+    {
+      "id": "tam",
+      "name": "Tamaulipas",
+      "active": "1"
+    },
+    {
+      "id": "tla",
+      "name": "Tlaxcala",
+      "active": "1"
+    },
+    {
+      "id": "ver",
+      "name": "Veracruz",
+      "active": "1"
+    },
+    {
+      "id": "yuc",
+      "name": "Yucat\u00e1n",
+      "active": "0"
+    },
+    {
+      "id": "zac",
+      "name": "Zacatecas",
+      "active": "1"
+    }
+  ],
+  "media": [
+    {
+      "id": "aprende",
+      "name": "aprende+, [[CDMX]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "sin",
+        "son",
+        "agu",
+        "zac",
+        "mic",
+        "col",
+        "chp",
+        "tab",
+        "cam"
+      ],
+      "coverageText": "Audiencia: 28,239,989\nCobertura: Ciudad de M\u00e9xico, Sinaloa, Sonora, Aguascalientes, Zacatecas, Michoac\u00e1n, Colima, Chiapas, Tabasco y Campeche",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Canal 53 de la Universidad Aut\u00f3noma de [[Nuevo Le\u00f3n]]",
+      "stateId": "nle",
+      "coverageStates": [],
+      "coverageText": "Audiencia: PENDIENTE\nCobertura: Nuevo Le\u00f3n",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "canal-once-ciudad-de-mexico",
+      "name": "Canal Once, [[Ciudad de M\u00e9xico]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "agu",
+        "bcn",
+        "bcs",
+        "cam",
+        "chp",
+        "chh",
+        "coa",
+        "col",
+        "dur",
+        "gua",
+        "jal",
+        "mex",
+        "mic",
+        "mor",
+        "nle",
+        "oax",
+        "pue",
+        "que",
+        "roo",
+        "slp",
+        "sin",
+        "son",
+        "tab",
+        "tam",
+        "tla",
+        "ver",
+        "yuc",
+        "zac"
+      ],
+      "coverageText": "Audiencia: 56,558,399 mensual\nCobertura: Todos los estados de la Rep\u00fablica excepto Nayarit, Guerrero e Hidalgo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco",
+      "name": "Comisi\u00f3n de Radio y Televisi\u00f3n de [[Tabasco]]",
+      "stateId": "tab",
+      "coverageStates": [
+        "ver",
+        "chp",
+        "cam"
+      ],
+      "coverageText": "Audiencia: 2,400,000 potenciales\nCobertura: Tabasco, Veracruz, Chiapas y Campeche",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Coordinaci\u00f3n de Radio, Cine y Televisi\u00f3n del Estado de [[Tlaxcala]]",
+      "stateId": "tla",
+      "coverageStates": [
+        "pue",
+        "mex",
+        "hid",
+        "ver"
+      ],
+      "coverageText": "Audiencia: 1,517,693 potenciales\nCobertura: Tlaxcala, Puebla, Estado de M\u00e9xico, Hidalgo y Veracruz",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Corporaci\u00f3n [[Oaxaque\u00f1a]] de Radio y Televisi\u00f3n",
+      "stateId": "oax",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 3,000,000\nCobertura: Oaxaca",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television",
+      "name": "Instituto [[Colimense]] de Radio y Televisi\u00f3n",
+      "stateId": "col",
+      "coverageStates": [
+        "mic",
+        "jal"
+      ],
+      "coverageText": "Audiencia: 730,000 potenciales\nCobertura: Colima, Michoac\u00e1n y Jalisco",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "name": "Instituto Estatal de Radio y Televisi\u00f3n de [[Baja California Sur]]",
+      "stateId": "bcs",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 1,400,000 potenciales\nCobertura: Baja California Sur",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 8
+    },
+    {
+      "id": "instituto-morelense-de-radio-y-television",
+      "name": "Instituto [[Morelense]] de Radio y Televisi\u00f3n",
+      "stateId": "mor",
+      "coverageStates": [
+        "pue",
+        "mex",
+        "gro",
+        "oax"
+      ],
+      "coverageText": "Audiencia: 1900000\nCobertura: Morelos, Puebla, Estado de M\u00e9xico, Guerrero y Oaxaca",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "radio-chapingo-estado-de-mexico",
+      "name": "Radio Chapingo, [[Estado de M\u00e9xico]]",
+      "stateId": "mex",
+      "coverageStates": [
+        "cmx",
+        "pue",
+        "tla",
+        "hid"
+      ],
+      "coverageText": "Audiencia: 5,400,000\nCobertura: Estado de M\u00e9xico, Ciudad de M\u00e9xico, Puebla, Tlaxcala e Hidalgo",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 10
+    },
+    {
+      "id": "radio-cultural-ayuntamiento-cancun",
+      "name": "Radio Cultural Ayuntamiento (Canc\u00fan)",
+      "stateId": "roo",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 100,000 estimadas\nCobertura: Quintana Roo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-de-sinaloa",
+      "name": "Radio de la Universidad Aut\u00f3noma de [[Sinaloa]]",
+      "stateId": "sin",
+      "coverageStates": [
+        "dur"
+      ],
+      "coverageText": "Audiencia: 3,000,000\nCobertura: Sinaloa y Durango",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 12
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "name": "Radio de la Universidad Aut\u00f3noma del Estado de [[Morelos]]",
+      "stateId": "mor",
+      "coverageStates": [
+        "gro",
+        "pue",
+        "mex"
+      ],
+      "coverageText": "Audiencia: 1,000,000 potenciales\nCobertura: Morelos, Guerrero, Puebla y Estado de M\u00e9xico",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 13
+    },
+    {
+      "id": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico",
+      "name": "Radio de la Universidad Aut\u00f3noma Metropolitana, [[Ciudad de M\u00e9xico]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "mex"
+      ],
+      "coverageText": "Audiencia: 22,000,000 estimadas\nCobertura: Ciudad de M\u00e9xico y Estado de M\u00e9xico",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 14
+    },
+    {
+      "id": "radio-educacion",
+      "name": "Radio Educaci\u00f3n, [[Ciudad de M\u00e9xico]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "mex",
+        "yuc",
+        "son",
+        "mic"
+      ],
+      "coverageText": "Audiencia: 80,108 mensuales\nCobertura: Ciudad de M\u00e9xico, Estado de M\u00e9xico, Yucat\u00e1n, Sonora y Michoac\u00e1n",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "name": "Radio Instituto Polit\u00e9cnico Nacional, [[Ciudad de M\u00e9xico]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "mex"
+      ],
+      "coverageText": "Audiencia: 788,000 promedio\nCobertura: Ciudad de M\u00e9xico y Estado de M\u00e9xico",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 16
+    },
+    {
+      "id": "radio-sonora",
+      "name": "Radio [[Sonora]]",
+      "stateId": "son",
+      "coverageStates": [],
+      "coverageText": "Audiencia: 2,550,000 potenciales\nCobertura: Sonora",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 17
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "Radio y Televisi\u00f3n Universidad Ju\u00e1rez Aut\u00f3noma de [[Tabasco]]",
+      "stateId": "tab",
+      "coverageStates": [
+        "chp"
+      ],
+      "coverageText": "Audiencia: 1,100,000 potenciales\nCobertura: Tabasco y Chiapas",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 18
+    },
+    {
+      "id": "radiotelevision-de-veracruz",
+      "name": "Radiotelevisi\u00f3n de [[Veracruz]]",
+      "stateId": "ver",
+      "coverageStates": [
+        "pue",
+        "oax",
+        "tla",
+        "hid"
+      ],
+      "coverageText": "Audiencia: 5,500,000\nCobertura: Veracruz, Puebla, Oaxaca, Tlaxcala e Hidalgo",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 19
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Sistema [[Chiapaneco]] de Radio, Televisi\u00f3n y Cinematograf\u00eda",
+      "stateId": "chp",
+      "coverageStates": [
+        "tab",
+        "oax"
+      ],
+      "coverageText": "Audiencia: 4,600,000 estimadas\nCobertura: Tabasco, Chiapas y Oaxaca",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 20
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Sistema de Informaci\u00f3n y Comunicaci\u00f3n del Estado de [[Puebla]]",
+      "stateId": "pue",
+      "coverageStates": [
+        "tla",
+        "gro",
+        "hid",
+        "mex"
+      ],
+      "coverageText": "Audiencia: 3,000,000 estimadas\nCobertura: Puebla, Tlaxcala, Guerrero, Hidalgo y Estado de M\u00e9xico",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 21
+    },
+    {
+      "id": "sistema-de-radio-y-television-de-nayarit",
+      "name": "Sistema de Radio y Televisi\u00f3n de [[Nayarit]]",
+      "stateId": "nay",
+      "coverageStates": [
+        "jal"
+      ],
+      "coverageText": "Audiencia: 840,000 estimadas\nCobertura: Nayarit y Jalisco",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 22
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Sistema Estatal de Radio y Televisi\u00f3n de [[Tamaulipas]]",
+      "stateId": "tam",
+      "coverageStates": [
+        "nle"
+      ],
+      "coverageText": "Audiencia: 3,256,375 potenciales\nCobertura: Tamaulipas y Nuevo Le\u00f3n",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 23
+    },
+    {
+      "id": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "name": "Sistema Mexiquense de Medios P\u00fablicos, [[Estado de M\u00e9xico]]",
+      "stateId": "mex",
+      "coverageStates": [
+        "cmx",
+        "gro",
+        "mic",
+        "hid",
+        "mor",
+        "pue",
+        "tla",
+        "oax",
+        "que"
+      ],
+      "coverageText": "Audiencia: 26,000,000 estimadas\nCobertura: Estado de M\u00e9xico, Ciudad de M\u00e9xico, Guerrero, Michoac\u00e1n, Hidalgo, Morelos, Puebla, Tlaxcala, Oaxaca y Quer\u00e9taro",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 24
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television",
+      "name": "Sistema [[Michoacano]] de Radio y Televisi\u00f3n",
+      "stateId": "mic",
+      "coverageStates": [
+        "jal"
+      ],
+      "coverageText": "Audiencia: 4,700,000 potenciales\nCobertura: Jalisco y Michoac\u00e1n",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 25
+    },
+    {
+      "id": "sistema-quintanarroense-de-comunicacion-social",
+      "name": "Sistema [[Quintanarroense]] de Comunicaci\u00f3n Social",
+      "stateId": "roo",
+      "coverageStates": [
+        "cam"
+      ],
+      "coverageText": "Audiencia: 1,857,985 TV + 1,116,549 radio potenciales\nCobertura: Quintana Roo y Campeche",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 26
+    },
+    {
+      "id": "sistema-sinaloense-de-radio-y-television",
+      "name": "Sistema [[Sinaloense]] de Radio y Televisi\u00f3n",
+      "stateId": "sin",
+      "coverageStates": [
+        "dur",
+        "chh"
+      ],
+      "coverageText": "Audiencia: 300,000\u2013600,000 diarios o recurrentes\nCobertura: Sinaloa, Durango y Chihuahua",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 27
+    },
+    {
+      "id": "sistema-tele-yucatan",
+      "name": "Sistema Tele [[Yucat\u00e1n]]",
+      "stateId": "yuc",
+      "coverageStates": [
+        "cam",
+        "roo"
+      ],
+      "coverageText": "Audiencia: 3,000,000 estimadas\nCobertura: Pen\u00ednsula de Yucat\u00e1n",
+      "socialEnabled": false,
+      "active": "0",
+      "order": 28
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television",
+      "name": "Sistema [[Zacatecano]] de Radio y Televisi\u00f3n",
+      "stateId": "zac",
+      "coverageStates": [
+        "agu",
+        "jal",
+        "slp"
+      ],
+      "coverageText": "Audiencia: 1,600,000 estimadas\nCobertura: Zacatecas, Aguascalientes, Jalisco y San Luis Potos\u00ed",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 29
+    },
+    {
+      "id": "telesecundaria",
+      "name": "Telesecundarias, [[CDMX]]",
+      "stateId": "cmx",
+      "coverageStates": [
+        "agu",
+        "chh",
+        "mic",
+        "gro",
+        "son",
+        "pue",
+        "yuc",
+        "bcn",
+        "coa",
+        "hid",
+        "mor",
+        "tab",
+        "que",
+        "zac",
+        "tam",
+        "roo",
+        "nay",
+        "jal",
+        "col",
+        "bcs",
+        "cam",
+        "dur",
+        "nle",
+        "slp",
+        "tla",
+        "ver",
+        "sin",
+        "oax",
+        "mex",
+        "gua",
+        "chp"
+      ],
+      "coverageText": "Audiencia: 1,395,862, comunidad escolar\nCobertura: Todos los estados de la Rep\u00fablica",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 30
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "Televisi\u00f3n de la Benem\u00e9rita Universidad Aut\u00f3noma de [[Puebla]]",
+      "stateId": "pue",
+      "coverageStates": [
+        "tla"
+      ],
+      "coverageText": "Audiencia: 95,000\nCobertura: Puebla y Tlaxcala",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 31
+    },
+    {
+      "id": "television-y-radio-de-campeche",
+      "name": "Televisi\u00f3n y Radio de [[Campeche]]",
+      "stateId": "cam",
+      "coverageStates": [
+        "yuc"
+      ],
+      "coverageText": "Audiencia: 286,778 estimadas\nCobertura: Campeche y Yucat\u00e1n ",
+      "socialEnabled": false,
+      "active": "1",
+      "order": 32
+    }
+  ],
+  "coverage": [
+    {
+      "stateId": "cmx",
+      "mediumId": "aprende",
+      "order": 1,
+      "active": "1"
+    },
+    {
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "order": 2,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "order": 3,
+      "active": "1"
+    },
+    {
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "order": 4,
+      "active": "1"
+    },
+    {
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "order": 5,
+      "active": "1"
+    },
+    {
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "order": 6,
+      "active": "1"
+    },
+    {
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "order": 7,
+      "active": "1"
+    },
+    {
+      "stateId": "bcs",
+      "mediumId": "instituto-estatal-de-radio-y-television-de-baja-california-sur",
+      "order": 8,
+      "active": "0"
+    },
+    {
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "order": 9,
+      "active": "1"
+    },
+    {
+      "stateId": "mex",
+      "mediumId": "radio-chapingo-estado-de-mexico",
+      "order": 10,
+      "active": "0"
+    },
+    {
+      "stateId": "roo",
+      "mediumId": "radio-cultural-ayuntamiento-cancun",
+      "order": 11,
+      "active": "1"
+    },
+    {
+      "stateId": "sin",
+      "mediumId": "radio-de-la-universidad-autonoma-de-sinaloa",
+      "order": 12,
+      "active": "0"
+    },
+    {
+      "stateId": "mor",
+      "mediumId": "radio-de-la-universidad-autonoma-del-estado-de-morelos",
+      "order": 13,
+      "active": "0"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "radio-de-la-universidad-autonoma-metropolitana-ciudad-de-mexico",
+      "order": 14,
+      "active": "0"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "order": 15,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "radio-instituto-politecnico-nacional-ciudad-de-mexico",
+      "order": 16,
+      "active": "0"
+    },
+    {
+      "stateId": "son",
+      "mediumId": "radio-sonora",
+      "order": 17,
+      "active": "0"
+    },
+    {
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "order": 18,
+      "active": "1"
+    },
+    {
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "order": 19,
+      "active": "1"
+    },
+    {
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "order": 20,
+      "active": "1"
+    },
+    {
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "order": 21,
+      "active": "1"
+    },
+    {
+      "stateId": "nay",
+      "mediumId": "sistema-de-radio-y-television-de-nayarit",
+      "order": 22,
+      "active": "0"
+    },
+    {
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "order": 23,
+      "active": "1"
+    },
+    {
+      "stateId": "mex",
+      "mediumId": "sistema-mexiquense-de-medios-publicos-estado-de-mexico",
+      "order": 24,
+      "active": "0"
+    },
+    {
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "order": 25,
+      "active": "1"
+    },
+    {
+      "stateId": "roo",
+      "mediumId": "sistema-quintanarroense-de-comunicacion-social",
+      "order": 26,
+      "active": "0"
+    },
+    {
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "order": 27,
+      "active": "1"
+    },
+    {
+      "stateId": "yuc",
+      "mediumId": "sistema-tele-yucatan",
+      "order": 28,
+      "active": "0"
+    },
+    {
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "order": 29,
+      "active": "1"
+    },
+    {
+      "stateId": "cmx",
+      "mediumId": "telesecundaria",
+      "order": 30,
+      "active": "1"
+    },
+    {
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "order": 31,
+      "active": "1"
+    },
+    {
+      "stateId": "cam",
+      "mediumId": "television-y-radio-de-campeche",
+      "order": 32,
+      "active": "1"
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "aprende-nota-1",
+      "stateId": "cmx",
+      "mediumId": "aprende",
+      "name": "Higiene del sue\u00f1o - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-1",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-2",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Revalorizaci\u00f3n del Magisterio - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-3",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Salud Casa por Casa Tlaxcala - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "canal-53-de-la-universidad-autonoma-de-nuevo-leon-nota-4",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "canal-once-ciudad-de-mexico-nota-1",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "name": "Becas - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "canal-once-ciudad-de-mexico-nota-2",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "name": "Salud Digital: controles parentales - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-1",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-2",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "comision-de-radio-y-television-de-tabasco-nota-3",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "name": "Revalorizaci\u00f3n del Magisterio - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-1",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-2",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Revalorizaci\u00f3n del Magisterio - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-3",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Salud Casa por Casa Tlaxcala - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-4",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-5",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Nueva escuela mexicana: Radio 226",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala-nota-6",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-1",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "corporacion-oaxaquena-de-radio-y-television-nota-2",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "name": "Nueva escuela mexicana: Radio 226",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-1",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "Salud Casa por Casa Tlaxcala - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-2",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "Revalorizaci\u00f3n del Magisterio - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "instituto-colimense-de-radio-y-television-nota-3",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "instituto-morelense-de-radio-y-television-nota-1",
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-cultural-ayuntamiento-cancun-nota-1",
+      "stateId": "roo",
+      "mediumId": "radio-cultural-ayuntamiento-cancun",
+      "name": "La Campanada IMSS CMN La Raza - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-educacion-nota-1",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "name": "Limitar tiempo de pantalla - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco-nota-1",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "Nueva escuela mexicana: Radio 226",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco-nota-2",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "radio-y-television-universidad-juarez-autonoma-de-tabasco-nota-3",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "radiotelevision-de-veracruz-nota-1",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "name": "La Campanada IMSS CMN La Raza - TV y Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-1",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-chiapaneco-de-radio-television-y-cinematografia-nota-2",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-1",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-2",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-3",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Salud Digital - TV",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-4",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-5",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-6",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-7",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-8",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Ciberacoso - TV",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla-nota-9",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "name": "Limitar tiempo de pantalla - TV",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "sistema-estatal-de-radio-y-television-de-tamaulipas-nota-1",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-1",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-michoacano-de-radio-y-television-nota-2",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "sistema-sinaloense-de-radio-y-television-nota-1",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "name": "Nueva escuela mexicana: Radio 226 - Radio",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "sistema-zacatecano-de-radio-y-television-nota-1",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "telesecundaria-nota-1",
+      "stateId": "cmx",
+      "mediumId": "telesecundaria",
+      "name": "Bienestar Digitial - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "telesecundaria-nota-2",
+      "stateId": "cmx",
+      "mediumId": "telesecundaria",
+      "name": "Higiene del sue\u00f1o - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla-nota-1",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "Nueva escuela mexicana: Radio 226 - TV",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "television-de-la-benemerita-universidad-autonoma-de-puebla-nota-2",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "television-y-radio-de-campeche-nota-1",
+      "stateId": "cam",
+      "mediumId": "television-y-radio-de-campeche",
+      "name": "La Campanada IMSS CMN La Raza - TV",
+      "active": "1",
+      "order": 1
+    }
+  ],
+  "contents": [
+    {
+      "id": "archivo-1790308125041-8tp74",
+      "stateId": "cmx",
+      "mediumId": "aprende",
+      "type": "video",
+      "file": "contenidos/cmx/aprende-cdmx/testigo-aprende-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790725471783-qsuv7",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-podcast-noti-tarde-22-sep-26-nem-radio-226.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790725471816-zih95",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-capsula-gobierno2-noti-noche-22-sep-26-magisterio.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790725471850-2m1jv",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-capsula-gobierno1-noti-noche-22-sep-26-imss-la-campanada.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790725471894-5y62c",
+      "stateId": "nle",
+      "mediumId": "canal-53-de-la-universidad-autonoma-de-nuevo-leon",
+      "type": "video",
+      "file": "contenidos/nle/canal-53-de-la-universidad-autonoma-de-nuevo-leon/mencion-adultos-noti-tarde-22-sep-26-salud-casa-por-casa-tlaxcala.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1790037505000-m2wfm",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "type": "video",
+      "file": "contenidos/cmx/canal-once-ciudad-de-mexico/capsula-rita-cetina-bj.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790037505030-1ad16",
+      "stateId": "cmx",
+      "mediumId": "canal-once-ciudad-de-mexico",
+      "type": "video",
+      "file": "contenidos/cmx/canal-once-ciudad-de-mexico/testigo-control-parental-bj.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790265279767-wdaol",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/tabasco-la-campanada.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790265279821-l79mr",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/tabasco-radio-223.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790265279853-1s08q",
+      "stateId": "tab",
+      "mediumId": "comision-de-radio-y-television-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/comision-de-radio-y-television-de-tabasco/tabasco-revaloracion-del-magisterio.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790036276177-bef8w",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/salud-casa-por-casa.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790036276204-nvwyz",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/testigo-tlaxcala-sep9.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790036276226-g3ab1",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/testigo-videojuegos-09-09-2026.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790036281158-menm3",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-limitar-tiempo-de-pantalla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1790116781783-0huid",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-nota-imss.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1790265126986-l1jtm",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-testigo-radio-226-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1790265127013-bi4gf",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-testigo-radio-226.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1790265844853-g02zq",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/vid-tlaxcala.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1790725455367-vgzqi",
+      "stateId": "tla",
+      "mediumId": "coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala",
+      "type": "video",
+      "file": "contenidos/tla/coordinacion-de-radio-cine-y-television-del-estado-de-tlaxcala/tlaxcala-testigo-radio-226-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "archivo-1790116675741-o7q0a",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/salud-la-campana-imss-cmn-la-raza-testigo-cortv-noticias-oaxaca.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790265201994-biz6l",
+      "stateId": "oax",
+      "mediumId": "corporacion-oaxaquena-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/oax/corporacion-oaxaquena-de-radio-y-television/capsula-nueva-escuela-mexicana-testigo-cortv-noticias-oaxaca.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790265243149-vslk1",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/video-de-oscar-g-campos.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790265243172-khtn8",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/video-de-oscar-g-campos-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790307847534-cand3",
+      "stateId": "col",
+      "mediumId": "instituto-colimense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/col/instituto-colimense-de-radio-y-television/testigo-colima-nota-imss-la-campanada.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790116752599-xzfg2",
+      "stateId": "mor",
+      "mediumId": "instituto-morelense-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mor/instituto-morelense-de-radio-y-television/nota-imss-rtvnoticiasmorelos-22-09-2026-edicionvespertina-clip.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790307824257-ss90l",
+      "stateId": "roo",
+      "mediumId": "radio-cultural-ayuntamiento-cancun",
+      "type": "video",
+      "file": "contenidos/roo/radio-cultural-ayuntamiento-cancun/testigo-radio-nota-la-campanada-imss-mp3.mpeg",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790037242396-24fki",
+      "stateId": "cmx",
+      "mediumId": "radio-educacion",
+      "type": "audio",
+      "file": "contenidos/cmx/radio-educacion-ciudad-de-mexico/radio-educacion-limitar-tiempo-de-pantalla.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790116717481-ga2ob",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/radio-y-television-universidad-juarez-autonoma-de-tabasco/testigo-imss-tv-ujat.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790116717519-6ob50",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "type": "audio",
+      "file": "contenidos/tab/radio-y-television-universidad-juarez-autonoma-de-tabasco/testigo-imss-radio-ujat.wav",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790725537653-75whb",
+      "stateId": "tab",
+      "mediumId": "radio-y-television-universidad-juarez-autonoma-de-tabasco",
+      "type": "video",
+      "file": "contenidos/tab/radio-y-television-universidad-juarez-autonoma-de-tabasco/testigo-tv-ujat-nem-radio-226.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790116648711-jtfdq",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "video",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/radio-imss-campanada-rtv.mov",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790116648719-sfdb6",
+      "stateId": "ver",
+      "mediumId": "radiotelevision-de-veracruz",
+      "type": "audio",
+      "file": "contenidos/ver/radiotelevision-de-veracruz/testigo-radio.mp3",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790307870548-wbznu",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/chiapas-testigo-imss-campanada.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790725427059-ykw02",
+      "stateId": "chp",
+      "mediumId": "sistema-chiapaneco-de-radio-television-y-cinematografia",
+      "type": "video",
+      "file": "contenidos/chp/sistema-chiapaneco-de-radio-television-y-cinematografia/chiapas-nem-radio-226.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790037272693-h0tok",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-noche.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790037272731-fhv3t",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/corte-13-salud-digital-puebla.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790037272769-bdi5m",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/salud-digital-ciberacoso-corte-informativo.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790037272804-nsult",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/salud-digital-ciberacoso-noti.mp4",
+      "description": "",
+      "active": "1",
+      "order": 4
+    },
+    {
+      "id": "archivo-1790037272851-0uscl",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-4-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 5
+    },
+    {
+      "id": "archivo-1790037272883-klywz",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/salud-digital-corte-10.mp4",
+      "description": "",
+      "active": "1",
+      "order": 6
+    },
+    {
+      "id": "archivo-1790037272909-jvjjv",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/salud-digital-corte-12.mp4",
+      "description": "",
+      "active": "1",
+      "order": 7
+    },
+    {
+      "id": "archivo-1790037272943-5hjry",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 8
+    },
+    {
+      "id": "archivo-1790037272980-b595m",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-4.mp4",
+      "description": "",
+      "active": "1",
+      "order": 9
+    },
+    {
+      "id": "archivo-1790037273010-4j4hh",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/salud-digital-corte-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 10
+    },
+    {
+      "id": "archivo-1790037273040-bsdpy",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/salud-digital-7-sept-corte-4.mp4",
+      "description": "",
+      "active": "1",
+      "order": 11
+    },
+    {
+      "id": "archivo-1790037273062-d8bg5",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-ft-salud-digital-parte-3.mp4",
+      "description": "",
+      "active": "1",
+      "order": 12
+    },
+    {
+      "id": "archivo-1790037273096-4vhl1",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-ft-salud-digital-parte-4.mp4",
+      "description": "",
+      "active": "1",
+      "order": 13
+    },
+    {
+      "id": "archivo-1790265161629-b88xd",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-ft-ciberacoso-sicom.mp4",
+      "description": "",
+      "active": "1",
+      "order": 14
+    },
+    {
+      "id": "archivo-1790265161667-drxmk",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-ciberacoso-sicom.mov",
+      "description": "",
+      "active": "1",
+      "order": 15
+    },
+    {
+      "id": "archivo-1790265161699-xff29",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-ft-ciberacoso-sicom-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 16
+    },
+    {
+      "id": "archivo-1790265161728-azwoo",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-limitar-tiempo-de-pantalla-sicom.mp4",
+      "description": "",
+      "active": "1",
+      "order": 17
+    },
+    {
+      "id": "archivo-1790307781418-09rss",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital.mp4",
+      "description": "",
+      "active": "1",
+      "order": 18
+    },
+    {
+      "id": "archivo-1790378652523-zl6ps",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-corte-salud-digital-24-sep-tarde.mp4",
+      "description": "",
+      "active": "1",
+      "order": 19
+    },
+    {
+      "id": "archivo-1790378652559-b1j7i",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/ft-salud-digital-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 20
+    },
+    {
+      "id": "archivo-1790378652601-472qv",
+      "stateId": "pue",
+      "mediumId": "sistema-de-informacion-y-comunicacion-del-estado-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/sistema-de-informacion-y-comunicacion-del-estado-de-puebla/testigo-ft-salud-digital-parte-4-2.mp4",
+      "description": "",
+      "active": "1",
+      "order": 21
+    },
+    {
+      "id": "archivo-1790265298068-znem8",
+      "stateId": "tam",
+      "mediumId": "sistema-estatal-de-radio-y-television-de-tamaulipas",
+      "type": "video",
+      "file": "contenidos/tam/sistema-estatal-de-radio-y-television-de-tamaulipas/tamps-nota-radio226.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790265624102-oxwa7",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/sistema-michoacano-de-radio-y-tv.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790378609493-0m71y",
+      "stateId": "mic",
+      "mediumId": "sistema-michoacano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/mic/sistema-michoacano-de-radio-y-television/testigo-nem-radio-226.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790725215373-66q5x",
+      "stateId": "sin",
+      "mediumId": "sistema-sinaloense-de-radio-y-television",
+      "type": "audio",
+      "file": "contenidos/sin/sistema-sinaloense-de-radio-y-television/sistema-sinaloense-testigo-radio-226.mp3",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790725183692-w3pms",
+      "stateId": "zac",
+      "mediumId": "sistema-zacatecano-de-radio-y-television",
+      "type": "video",
+      "file": "contenidos/zac/sistema-zacatecano-de-radio-y-television/sizart-imss-campanada-testigo.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790308291796-b4n3r",
+      "stateId": "cmx",
+      "mediumId": "telesecundaria",
+      "type": "video",
+      "file": "contenidos/cmx/telesecundarias-cdmx/testigo-telesecundaria1-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790308291851-pkbqf",
+      "stateId": "cmx",
+      "mediumId": "telesecundaria",
+      "type": "video",
+      "file": "contenidos/cmx/telesecundarias-cdmx/testigo-telesecundaria2-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790308291894-arpsw",
+      "stateId": "cmx",
+      "mediumId": "telesecundaria",
+      "type": "video",
+      "file": "contenidos/cmx/telesecundarias-cdmx/testigo-telesecundaria3-1.mp4",
+      "description": "",
+      "active": "1",
+      "order": 3
+    },
+    {
+      "id": "archivo-1790625346489-jg5pr",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/television-de-la-benemerita-universidad-autonoma-de-puebla/la-nueva-escuela.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    },
+    {
+      "id": "archivo-1790625346579-dvxtn",
+      "stateId": "pue",
+      "mediumId": "television-de-la-benemerita-universidad-autonoma-de-puebla",
+      "type": "video",
+      "file": "contenidos/pue/television-de-la-benemerita-universidad-autonoma-de-puebla/la-campanada.mp4",
+      "description": "",
+      "active": "1",
+      "order": 2
+    },
+    {
+      "id": "archivo-1790725308835-36pc7",
+      "stateId": "cam",
+      "mediumId": "television-y-radio-de-campeche",
+      "type": "video",
+      "file": "contenidos/cam/television-y-radio-de-campeche/campeche-nota-imss-la-campanada.mp4",
+      "description": "",
+      "active": "1",
+      "order": 1
+    }
+  ]
+}
