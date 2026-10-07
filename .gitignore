@@ -26,3 +26,6 @@ dist/
 
 # Cache de herramientas locales
 .atl/
+
+# El .docx se versiona; sus dependencias no.
+/docs/node_modules/
