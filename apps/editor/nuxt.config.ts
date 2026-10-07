@@ -29,5 +29,17 @@ export default defineNuxtConfig({
     // nginx already serves publicly, so nothing new is exposed by it.
   },
 
+  // Nuxt precarga la carga util de cada enlace en cuanto entra en pantalla.
+  // Detras de Cloudflare esas peticiones no pueden resolver el desafio de bots
+  // --igual que curl, que recibe 403-- asi que fallan siempre y aparecen como
+  // 503 en el inspector. No rompen nada, porque al hacer clic la navegacion si
+  // lleva la cookie del desafio; son trafico que nunca sirve de nada.
+  //
+  // Con 3 personas y un catalogo de 32 medios, lo que ahorraria la precarga no
+  // se nota. El ruido al depurar, si.
+  experimental: {
+    defaults: { nuxtLink: { prefetch: false } },
+  },
+
   typescript: { strict: true, typeCheck: false },
 })
