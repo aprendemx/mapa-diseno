@@ -74,6 +74,9 @@ services:
       - traefik.http.middlewares.mapa-editor-headers.headers.STSIncludeSubdomains=true
       - traefik.http.middlewares.mapa-editor-headers.headers.contentTypeNosniff=true
       - traefik.http.middlewares.mapa-editor-headers.headers.frameDeny=true
+      # La pantalla de login es alcanzable sin sesion, asi que tambien se pide
+      # que no se indexe.
+      - traefik.http.middlewares.mapa-editor-headers.headers.customresponseheaders.X-Robots-Tag=noindex, nofollow, noarchive
       - traefik.http.routers.mapa-editor.middlewares=mapa-editor-headers@docker
     networks:
       - traefik_network

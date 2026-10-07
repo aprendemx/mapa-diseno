@@ -270,6 +270,32 @@ subido cuya fila todavía no llegó. Y se niega a seguir si el catálogo no
 referencia ningún archivo habiendo archivos en disco: eso es una consulta mal
 acotada, no un disco lleno de huérfanos.
 
+## Que no aparezca en los buscadores
+
+nginx manda `X-Robots-Tag: noindex, nofollow, noarchive` en todo —páginas y
+multimedia— y sirve un `robots.txt` con `Disallow: /`.
+
+Como cabecera y no como `<meta>` en la página: cubre también los videos y el
+audio, que un meta no alcanza, y evita tocar `mapa-base.html`, que se compara
+byte a byte contra lo que publicó el pipeline anterior.
+
+```bash
+curl -sI -A 'Mozilla/5.0' https://mapa.aprende.gob.mx/ | grep -i x-robots
+curl -s  -A 'Mozilla/5.0' https://mapa.aprende.gob.mx/robots.txt
+```
+
+⚠️ **Esto no hace el sitio privado.** Le pide a los buscadores que se porten
+bien, y los que importan lo respetan. Pero cualquiera con la dirección sigue
+viendo todo, y un enlace compartido en WhatsApp o un correo reenviado alcanza.
+
+Si lo que hace falta es que de verdad no sea público, son dos caminos:
+
+- **Contraseña en el sitio entero**, con un middleware `basicauth` de Traefik. Una
+  sola credencial compartida, y hay que dársela a cualquiera que lo vea.
+- **Lista de IP permitidas**, si quienes lo consultan están en una red conocida.
+
+Cualquiera de los dos se agrega al `docker-compose.yml` sin tocar la aplicación.
+
 ## Cuando algo no responde
 
 **El sitio da `404 page not found`.** Ese texto plano es de Traefik, no de nginx:
