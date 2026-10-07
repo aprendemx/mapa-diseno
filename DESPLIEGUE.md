@@ -106,11 +106,14 @@ curl -sI -A 'Mozilla/5.0' https://mapa.aprende.gob.mx/ | head -1
 Si el paso 2 no da `200`, parar y revisar los enlaces. El resto puede esperar.
 
 ```bash
-# 3. Traer el código y levantar la base
-#    Si /opt/mapa-mexico no es un clon todavía, clonar aparte y mover el .env y
-#    sitio/ al nuevo directorio: el repo no debe sobrescribirlos.
-git clone git@github.com:aprendemx/mapa-diseno.git /tmp/mapa-repo
-rsync -a --exclude .git --exclude sitio --exclude .env /tmp/mapa-repo/ ./
+# 3. Traer el código, dejando el directorio como un clon de verdad
+#    `sitio/` y `.env` están en .gitignore, así que git nunca los toca.
+git init -b main
+git remote add origin git@github.com:aprendemx/mapa-diseno.git
+git fetch origin main
+git reset origin/main          # sin --hard: apunta HEAD sin tocar archivos
+git status --short              # revisar qué difiere antes de alinear
+git reset --hard origin/main
 cp .env.example .env
 $EDITOR .env                            # MAPA_HOST y POSTGRES_PASSWORD
 V=$(date +%Y-%m-%d)
@@ -165,7 +168,7 @@ pull` en el servidor nunca los toca.
 
 ```bash
 cd /opt/mapa-mexico
-git pull
+git pull     # requiere que el directorio sea un clon; ver el paso 3 del corte
 V=$(date +%Y-%m-%d)
 docker build -f apps/editor/Dockerfile -t mapa-editor:$V .
 docker build -f apps/editor/Dockerfile --target tools -t mapa-tools:$V .
