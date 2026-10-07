@@ -4,7 +4,7 @@ import type { Problem } from '@mapa-mexico/project-store'
 
 const route = useRoute()
 const id = route.params['id'] as string
-const { api, link } = useMap()
+const { api, asset, link } = useMap()
 
 const { data, refresh } = await useFetch<{ medium: MediumDetail }>(() => api(`/media/${id}`))
 const { data: catalogue } = await useFetch<{ states: StateOption[] }>('/api/states')
@@ -156,6 +156,7 @@ async function save() {
 
         <WitnessList
           :api="api"
+          :asset="asset"
           :files="form.files"
           :themes="form.socialThemes"
           :social-enabled="form.socialEnabled"

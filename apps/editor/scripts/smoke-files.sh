@@ -5,6 +5,8 @@
 set -euo pipefail
 
 BASE="${BASE:-http://localhost:3000/admin}"
+# La raiz del dominio, para probar URL absolutas como las de los <video src>.
+BASE_RAIZ="${BASE_RAIZ:-${BASE%/admin}}"
 # El slug del mapa de la raiz, no uno fijo: renombrarlo rompia estas pruebas.
 MAPA="${MAPA:-}"
 API=
@@ -68,7 +70,17 @@ python3 -c 'import json,sys; assert json.loads(sys.argv[1])["file"]["kind"]=="vi
 echo "6. los bytes estan en disco, completos"
 [ "$(stat -c%s "$ROOT/$FPATH")" = "300000" ] || fail "el archivo en disco no coincide"
 
-echo "7. aparece en el detalle del medio"
+echo "7. aparece en el detalle, y su preview carga con el prefijo de la app"
+# El <video src> es una peticion cruda del navegador: no pasa por $fetch y nadie
+# le agrega el prefijo. Sin el, se va a la raiz del dominio y da 404.
+PAGINA=$(api "$BASE/$MAPA/medios/$MID")
+SRC=$(grep -oE 'src="[^"]*files/contenidos[^"]*"' <<<"$PAGINA" | head -1 | sed 's/src="//;s/"$//')
+[ -n "$SRC" ] || fail "la pagina no rindio el preview (redirigio?)"
+case "$SRC" in
+  /admin/api/*) ;;
+  *) fail "el src del preview no lleva el prefijo de la app: $SRC" ;;
+esac
+[ "$(code "$BASE_RAIZ$SRC")" = "200" ] || fail "el preview no carga: $SRC"
 api "$API/media/$MID" | grep -q "$FID" || fail "no aparece en el detalle"
 
 echo "8. la descripcion se guarda"

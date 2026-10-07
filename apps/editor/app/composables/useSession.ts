@@ -10,8 +10,18 @@ import type { SessionUser } from '@mapa-mexico/postgres'
 export function useSession() {
   const user = useState<SessionUser | null>('session-user', () => null)
 
+  /**
+   * Resuelve quién está en sesión.
+   *
+   * `useRequestFetch` y no `$fetch`: durante el render del servidor, `$fetch` no
+   * reenvía la cookie de la petición entrante, así que el servidor no veía
+   * sesión y el middleware mandaba al login. En el navegador se recuperaba al
+   * hidratar, pero cualquiera que refrescara una página o abriera un enlace
+   * directo veía ese salto.
+   */
   async function refresh(): Promise<void> {
-    const { user: current } = await $fetch<{ user: SessionUser | null }>('/api/auth/me')
+    const pedir = useRequestFetch()
+    const { user: current } = await pedir<{ user: SessionUser | null }>('/api/auth/me')
     user.value = current
   }
 

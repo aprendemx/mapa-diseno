@@ -12,6 +12,8 @@ const props = defineProps<{
   socialEnabled: boolean
   /** Construye URL del API acotadas al mapa. Viene de `useMap()`. */
   api: (path?: string) => string
+  /** Igual, pero absoluta y con el prefijo de la app, para los `src`. */
+  asset: (path?: string) => string
 }>()
 
 const emit = defineEmits<{
@@ -55,12 +57,14 @@ const themeIndex = (id: string | undefined) =>
   props.themes.findIndex((theme) => theme.id === id)
 
 /**
- * El preview sale por el editor, no por el sitio público.
+ * El preview sale por el editor, no por el sitio público: una sola URL en
+ * desarrollo y en producción, y la misma para el mapa de la raíz que para los
+ * demás.
  *
- * Una sola URL en desarrollo y en producción, y la misma para el mapa de la
- * raíz que para los demás.
+ * `asset` y no `api` porque esto termina en un atributo `src`, que el navegador
+ * pide tal cual sin el prefijo de la app.
  */
-const previewUrl = (path: string) => props.api(`/files/${path}`)
+const previewUrl = (path: string) => props.asset(`/files/${path}`)
 </script>
 
 <template>
