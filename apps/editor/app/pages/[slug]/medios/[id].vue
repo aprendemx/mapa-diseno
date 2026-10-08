@@ -20,10 +20,51 @@ const saved = ref(false)
 const problemFor = (field: string) => problems.value.find((p) => p.field === field)?.message
 const noteCount = computed(() => form.notes.split(/\r?\n/).filter((line) => line.trim()).length)
 
-/** Pulls server state back in after an operation that writes on its own. */
+/**
+ * Trae el medio entero del servidor. Solo después de guardar.
+ *
+ * Ahí sí corresponde pisar el formulario: lo que tiene la base es exactamente
+ * lo que se acaba de escribir, más lo que el servidor normalizó y los ids que
+ * les dio a los temas nuevos.
+ */
 async function reload() {
   await refresh()
   Object.assign(form, structuredClone(toRaw(data.value!.medium)))
+}
+
+/**
+ * Trae únicamente lo que el servidor cambió por su cuenta.
+ *
+ * Subir, quitar y reordenar testigos escriben en la base sin pasar por Guardar,
+ * así que la lista de archivos del formulario queda vieja y hay que refrescarla.
+ * Pero hacerlo con `reload()` se llevaba puesto todo lo que la persona estaba
+ * editando y todavía no había guardado: cambiabas el nombre de un medio, subías
+ * un video, y al guardar el nombre volvía al anterior.
+ *
+ * Lo que confunde al reportarlo es que parece un fallo de Guardar, y no lo es:
+ * los cambios se perdían **al subir**, y Guardar escribía fielmente lo que para
+ * entonces quedaba en el formulario. Por eso volver a aplicarlos sin subir nada
+ * funcionaba.
+ *
+ * Los archivos se pueden reemplazar enteros porque el guardado ni los mira
+ * —`readMediumInput` no lee `files`—, así que en el formulario son solo para
+ * mostrar.
+ */
+async function reloadWitnesses() {
+  await refresh()
+  const fresh = data.value!.medium
+
+  form.files = structuredClone(toRaw(fresh.files))
+
+  // Reordenar reescribe las posiciones de los archivos *y* de los temas, asi
+  // que las de los temas tambien hay que traerlas. Por id y sin reemplazar la
+  // lista: un tema recien agregado no tiene fila todavia, y reemplazarla lo
+  // borraria antes de que llegue a guardarse.
+  for (const theme of form.socialThemes) {
+    if (!theme.id) continue
+    const saved = fresh.socialThemes.find((other) => other.id === theme.id)
+    if (saved) theme.position = saved.position
+  }
 }
 
 function toggleCoverage(stateId: string, on: boolean) {
@@ -42,13 +83,13 @@ function addTheme() {
 
 async function reorder(ids: string[]) {
   await $fetch(api(`/media/${id}/witness-order`), { method: 'PUT', body: { ids } })
-  await reload()
+  await reloadWitnesses()
 }
 
 async function removeFile(fileId: string) {
   if (!confirm('¿Quitar este archivo del medio?\n\nEl archivo NO se borra del disco.')) return
   await $fetch(api(`/media/${id}/files/${fileId}`), { method: 'DELETE' })
-  await reload()
+  await reloadWitnesses()
 }
 
 async function describeFile(fileId: string, description: string) {
@@ -143,7 +184,7 @@ async function save() {
         <FileUploader
           :medium-id="id"
           :asset="asset"
-          @uploaded="reload"
+          @uploaded="reloadWitnesses"
           @error="(message) => (problems = [{ field: '', message }])"
         />
 
