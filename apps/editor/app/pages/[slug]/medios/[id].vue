@@ -49,7 +49,6 @@ async function removeFile(fileId: string) {
   if (!confirm('¿Quitar este archivo del medio?\n\nEl archivo NO se borra del disco.')) return
   await $fetch(api(`/media/${id}/files/${fileId}`), { method: 'DELETE' })
   await reload()
-  notice.value = 'Archivo quitado del medio. Los bytes siguen en disco hasta el barrido.'
 }
 
 async function describeFile(fileId: string, description: string) {
@@ -68,7 +67,7 @@ async function save() {
   } catch (cause) {
     const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
     problems.value = payload?.problems ?? [
-      { field: '', message: 'No se pudo guardar. Intentá de nuevo.' },
+      { field: '', message: 'No se pudo guardar. Intenta de nuevo.' },
     ]
   } finally {
     saving.value = false
@@ -152,7 +151,7 @@ async function save() {
           <input v-model="form.socialEnabled" type="checkbox">
           Publicar los temas de redes en el mapa
         </label>
-        <p class="hint">Con esto apagado los temas se conservan acá, pero no se publican.</p>
+        <p class="hint">Con esto apagado los temas se conservan aquí, pero no se publican.</p>
 
         <WitnessList
           :api="api"

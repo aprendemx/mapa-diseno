@@ -61,7 +61,7 @@ try {
   if (current > 0 && !argv.includes('--force')) {
     console.error(
       `El mapa /${map.slug} ya tiene ${current} medio(s). ` +
-      'Volvé a correr con --force para reemplazarlo.',
+      'Vuelve a ejecutarlo con --force para reemplazarlo.',
     )
     exit(1)
   }
@@ -87,7 +87,7 @@ try {
   // sin decir que la causa fue este comando.
   if (legacyPaths.length > 0) {
     console.log(`\n  AVISO: ${legacyPaths.length} ruta(s) quedaron con el esquema legacy.`)
-    console.log('  Corré ahora:  npm run migrate-paths -- --apply')
+    console.log('  Ejecuta ahora:  npm run migrate-paths -- --apply')
   }
   console.log()
 } finally {

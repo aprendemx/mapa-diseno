@@ -43,7 +43,7 @@ async function save() {
   } catch (cause) {
     const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
     problems.value = payload?.problems ?? [
-      { field: '', message: 'No se pudo guardar. Intentá de nuevo.' },
+      { field: '', message: 'No se pudo guardar. Intenta de nuevo.' },
     ]
   } finally {
     saving.value = false
@@ -56,7 +56,7 @@ async function save() {
     <NuxtLink :to="link()" class="back">&larr; Medios</NuxtLink>
     <h1>Apariencia del mapa</h1>
     <p class="hint">
-      Estos valores se aplican cuando se publica el mapa, no al guardarlos acá.
+      Estos valores se aplican cuando se publica el mapa, no al guardarlos aquí.
     </p>
 
     <form @submit.prevent="save">

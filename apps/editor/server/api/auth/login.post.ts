@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   if (isLockedOut(email)) {
     throw createError({
       statusCode: 429,
-      statusMessage: 'Demasiados intentos fallidos. Esperá unos minutos.',
+      statusMessage: 'Demasiados intentos fallidos. Espera unos minutos.',
     })
   }
 

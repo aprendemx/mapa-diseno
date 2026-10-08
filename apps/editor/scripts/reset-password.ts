@@ -72,7 +72,7 @@ try {
   console.log(`\nContraseña reestablecida: ${user.name} <${user.email}>`)
   if (!piped) {
     console.log(`Contraseña nueva        : ${password}`)
-    console.log('\nAnotala ahora. No se puede recuperar: solo se guarda su hash.')
+    console.log('\nAnótala ahora. No se puede recuperar: solo se guarda su hash.')
   }
   console.log('Las sesiones abiertas de esa cuenta quedaron cerradas.\n')
 } finally {

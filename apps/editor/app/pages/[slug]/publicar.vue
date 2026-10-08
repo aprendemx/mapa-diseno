@@ -51,7 +51,7 @@ async function publish() {
   } catch (cause) {
     const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
     problems.value = payload?.problems ?? [
-      { field: '', message: 'No se pudo publicar. Intentá de nuevo.' },
+      { field: '', message: 'No se pudo publicar. Intenta de nuevo.' },
     ]
     checked.value = true
   } finally {

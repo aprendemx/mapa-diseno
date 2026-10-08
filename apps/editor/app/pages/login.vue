@@ -17,7 +17,7 @@ async function submit() {
     // wrong password. Do not try to be more helpful here than it was there.
     error.value =
       (cause as { statusMessage?: string })?.statusMessage ??
-      'No se pudo iniciar sesión. Intentá de nuevo.'
+      'No se pudo iniciar sesión. Intenta de nuevo.'
   } finally {
     busy.value = false
   }

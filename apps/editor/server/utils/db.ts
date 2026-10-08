@@ -15,7 +15,7 @@ export function database(): pg.Pool {
   if (!url) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'NUXT_DATABASE_URL is not set: the editor has no database to talk to.',
+      statusMessage: 'Falta NUXT_DATABASE_URL: el editor no tiene base de datos a la que conectarse.',
     })
   }
 

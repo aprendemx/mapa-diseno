@@ -12,7 +12,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ uploaded: [], error: [message: string] }>()
 
-const { limits, loadLimits, humanBytes, humanDuration, run, cancel } = useChunkedUpload({
+const { loadLimits, humanBytes, humanDuration, run, cancel } = useChunkedUpload({
   asset: props.asset,
   mediumId: props.mediumId,
 })
@@ -38,8 +38,9 @@ const etaOf = (job: UploadJob) =>
   job.speed > 0 ? humanDuration((job.bytes - job.sent - job.inflight) / job.speed) : ''
 
 onMounted(() => {
-  // Los topes se piden al entrar, no al elegir un archivo: la interfaz tiene
-  // que poder decir qué acepta antes de que alguien lo averigüe fallando.
+  // Los topes se piden al entrar y no al elegir un archivo, para que el
+  // rechazo por tamaño o por extensión sea inmediato en lugar de esperar una
+  // consulta al servidor con el archivo ya elegido.
   loadLimits().catch(() => {})
 })
 
@@ -143,7 +144,7 @@ function clearFinished() {
   <div class="uploader">
     <div
       class="drop"
-      :class="{ over: dragging, busy }"
+      :class="{ over: dragging }"
       @dragover.prevent="dragging = true"
       @dragleave.prevent="dragging = false"
       @drop.prevent="drop"
@@ -155,14 +156,7 @@ function clearFinished() {
           accept="video/*,audio/*,image/*"
           @change="pick"
         >
-        <span class="hint">
-          Arrastrá archivos acá, o elegilos.
-          <template v-if="limits">
-            Hasta {{ humanBytes(limits.maxUploadBytes) }} cada uno.
-          </template>
-        </span>
       </label>
-      <p v-if="limits" class="formats">{{ limits.extensions.join('  ') }}</p>
     </div>
 
     <p v-if="jobs.length > 1" class="summary" role="status">
@@ -236,11 +230,6 @@ function clearFinished() {
 .drop.over { border-color: var(--accent); background: #f4f6f1; }
 .picker { display: block; margin: 0; }
 .picker input { padding: 0.25rem 0; border: 0; width: auto; }
-.hint { display: block; margin-top: 0.4rem; font-size: 0.82rem; color: var(--muted); }
-.formats {
-  margin: 0.45rem 0 0; font-size: 0.72rem; color: var(--muted);
-  font-variant-numeric: tabular-nums; opacity: 0.75; word-spacing: 0.1rem;
-}
 
 .summary {
   margin: 0.7rem 0 0; font-size: 0.82rem; color: var(--muted);

@@ -44,7 +44,7 @@ export default defineEventHandler(async (event) => {
     if (error instanceof OffsetMismatchError) {
       throw createError({
         statusCode: 409,
-        statusMessage: `La subida tiene ${error.received} bytes. Continuá desde ahí.`,
+        statusMessage: `La subida tiene ${error.received} bytes. Continúa desde ahí.`,
         data: { received: error.received },
       })
     }

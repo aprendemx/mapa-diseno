@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   if (map.is_default) {
     throw createError({
       statusCode: 409,
-      statusMessage: 'Es el mapa de la raíz. Pasá otro a la raíz antes de borrarlo.',
+      statusMessage: 'Es el mapa de la raíz. Pasa otro a la raíz antes de borrarlo.',
     })
   }
   if ((await listMaps(database())).length <= 1) {

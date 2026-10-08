@@ -105,9 +105,9 @@ function describeFailure(status: number, text: string): string {
 
   switch (status) {
     case 0:
-      return 'Se cortó la conexión. Podés reintentar: continúa desde donde quedó.'
+      return 'Se cortó la conexión. Al reintentar, la subida continúa desde donde quedó.'
     case 401:
-      return 'Se cerró la sesión. Volvé a entrar y reintentá.'
+      return 'Se cerró la sesión. Vuelve a iniciar sesión e intenta de nuevo.'
     case 413:
       return 'El archivo es más grande de lo que el servidor acepta.'
     case 415:
@@ -115,7 +115,7 @@ function describeFailure(status: number, text: string): string {
     case 502:
     case 503:
     case 504:
-      return 'El servidor no respondió a tiempo. Podés reintentar.'
+      return 'El servidor no respondió a tiempo. Puedes reintentar.'
     default:
       return `El servidor respondió ${status}.`
   }
@@ -217,7 +217,7 @@ export function useChunkedUpload(options: {
 
     if (!allowed.extensions.includes(extension)) {
       return extension
-        ? `No se admiten archivos ${extension}. Sí: ${allowed.extensions.join(' ')}`
+        ? `No se admiten archivos ${extension}. Solo imágenes, video y audio.`
         : 'El archivo no tiene extensión, así que no se puede saber qué es.'
     }
     if (file.size === 0) {
@@ -353,7 +353,7 @@ export function useChunkedUpload(options: {
       job.state = 'error'
       job.message = error instanceof Error
         ? error.message
-        : 'No se pudo subir. Podés reintentar.'
+        : 'No se pudo subir. Puedes reintentar.'
       throw error
     }
   }

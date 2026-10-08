@@ -77,7 +77,7 @@ try {
   console.log(`\nCuenta creada: ${user.name} <${user.email}>`)
   if (!piped) {
     console.log(`Contraseña    : ${password}`)
-    console.log('\nAnotala ahora. No se puede recuperar: solo se guarda su hash.\n')
+    console.log('\nAnótala ahora. No se puede recuperar: solo se guarda su hash.\n')
   }
 } finally {
   await pool.end()
