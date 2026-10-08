@@ -144,9 +144,11 @@ export async function statStored(
 /**
  * Every file under the media root, as paths relative to it.
  *
- * Used by the sweeper to find blobs no row points at. `.part` leftovers are
- * included deliberately: an interrupted upload is exactly the kind of orphan
- * worth reporting.
+ * Used by the sweeper to find blobs no row points at. Interrupted uploads are
+ * included deliberately — they are exactly the kind of orphan worth reporting —
+ * and they come in two shapes: `.part-<hex>` from a single-shot upload whose
+ * connection died, and `.parcial` from a chunked upload nobody finished. The
+ * second kind may still be in progress, so the sweeper weighs its age.
  */
 export async function listStored(mediaRoot: string): Promise<string[]> {
   const base = resolve(mediaRoot, ROOT);
