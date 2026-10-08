@@ -108,6 +108,7 @@ npm run migrate-paths       # rutas legacy -> rutas por id (informe; --apply)
 npm run link-default        # raiz del sitio -> mapa predeterminado
 npm run rename-slug         # --from <slug> --to <slug>: cambia la URL publica
 npm run verify-catalog      # regenera el mapa desde la base y lo resume
+npm run export-catalog      # el catalogo como proyecto.json (--out, --sin-rutas)
 npm run sweep               # archivos sin fila (informe; --delete)
                             # --all-maps para todos; retiene 90 dias
 npm run create-user
@@ -176,6 +177,46 @@ un cambio de firma: perdió el argumento del mapa, dejó de ver referencias y
 empezó a reportar los 66 archivos vivos como huérfanos —ofreciendo borrarlos—
 mientras la prueba de humo pasaba, porque solo comprobaba que el archivo
 *apareciera* en la lista.
+
+## Comparar el catálogo contra un `proyecto.json` de la herramienta anterior
+
+Quien venía editando en Windows tiene su último `proyecto.json` en local y
+necesita confirmar que no quedó ningún dato afuera. `export-catalog` devuelve el
+catálogo **en ese mismo formato**: `fromRows` ya produce un `Project`, que es lo
+que ese archivo es. No hay traducción en el medio, y exportar un catálogo recién
+importado devuelve un documento idéntico al original.
+
+```bash
+cd apps/editor
+npm run export-catalog -- --map redmexico --out /tmp/servidor.json
+```
+
+Dos cosas hay que normalizar antes de comparar, o el diff es ruido:
+
+```bash
+# El orden de las claves --el proyecto.json de PowerShell trae otro-- y el
+# orden de los medios, que no es significativo para esta comparación.
+jq -S '.media |= sort_by(.id)' proyecto.json   > /tmp/a.json
+jq -S '.media |= sort_by(.id)' /tmp/servidor.json > /tmp/b.json
+diff /tmp/a.json /tmp/b.json
+```
+
+**Las rutas de archivo van a diferir, y eso es correcto.** El documento legacy
+las derivaba del nombre del medio y en la base están bajo el esquema por id,
+porque `migrate-paths` las reescribió a propósito. Un diff sin más muestra las
+66 rutas como distintas y parece que falta todo:
+
+```bash
+npm run export-catalog -- --map redmexico --sin-rutas --out /tmp/servidor.json
+```
+
+Eso vacía `files[].file` y deja la comparación hablando de los datos: nombres,
+notas, cobertura, temas de redes y el orden de los testigos.
+
+El documento exportado también sirve como copia restaurable, pero **solo sobre
+su propio mapa** (`import-legacy --map <el mismo> --force`). En otro mapa falla
+con `media_pkey` duplicado, y está bien que falle: los ids de medio son únicos
+en todo el sistema y no por mapa.
 
 ## Las subidas van por trozos
 
