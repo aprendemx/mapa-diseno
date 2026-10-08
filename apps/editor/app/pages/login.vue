@@ -15,9 +15,7 @@ async function submit() {
   } catch (cause) {
     // The server deliberately says the same thing for an unknown email and a
     // wrong password. Do not try to be more helpful here than it was there.
-    error.value =
-      (cause as { statusMessage?: string })?.statusMessage ??
-      'No se pudo iniciar sesión. Intenta de nuevo.'
+    error.value = apiMessage(cause, 'No se pudo iniciar sesión. Intenta de nuevo.')
   } finally {
     busy.value = false
   }

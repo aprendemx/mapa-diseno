@@ -36,8 +36,7 @@ async function crear() {
     })
     await navigateTo(`/${map.slug}`)
   } catch (cause) {
-    error.value = (cause as { statusMessage?: string })?.statusMessage
-      ?? 'No se pudo crear el mapa.'
+    error.value = apiMessage(cause, 'No se pudo crear el mapa.')
   } finally {
     busy.value = false
   }
@@ -69,8 +68,7 @@ async function guardarNombre(map: MapRow) {
     renombrando.value = ''
     await refresh()
   } catch (cause) {
-    error.value = (cause as { statusMessage?: string })?.statusMessage
-      ?? 'No se pudo renombrar.'
+    error.value = apiMessage(cause, 'No se pudo renombrar.')
   } finally {
     busy.value = false
   }
@@ -95,7 +93,7 @@ async function borrar(map: MapRow) {
     await $fetch(`/api/maps/${map.slug}`, { method: 'DELETE' })
     await refresh()
   } catch (cause) {
-    error.value = (cause as { statusMessage?: string })?.statusMessage ?? 'No se pudo eliminar.'
+    error.value = apiMessage(cause, 'No se pudo eliminar.')
   } finally {
     busy.value = false
   }

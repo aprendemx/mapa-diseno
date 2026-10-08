@@ -67,7 +67,7 @@ async function save() {
   } catch (cause) {
     const payload = (cause as { data?: { data?: { problems?: Problem[] } } })?.data?.data
     problems.value = payload?.problems ?? [
-      { field: '', message: 'No se pudo guardar. Intenta de nuevo.' },
+      { field: '', message: apiMessage(cause, 'No se pudo guardar. Intenta de nuevo.') },
     ]
   } finally {
     saving.value = false
