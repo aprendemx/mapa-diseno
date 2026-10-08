@@ -336,6 +336,39 @@ docker restart traefik
 
 Es un parche. La solución de fondo está en los timeouts del proxy.
 
+**Una subida se congela en un porcentaje y después da 502.** Es
+`respondingTimeouts.readTimeout` de Traefik. En v3 vale **60 segundos por
+omisión** —en v2 era `0`, sin límite— y cubre la lectura del **cuerpo completo**,
+no solo las cabeceras. Toda subida que tarde más de un minuto muere, sin importar
+el tamaño del archivo: a 1 Mbps de subida, 60 segundos son 7,5 MB.
+
+Se ve en la línea de comandos del contenedor. Si no aparece ningún
+`respondingTimeouts`, está en el default:
+
+```bash
+docker inspect traefik --format '{{json .Config.Cmd}}' | python3 -m json.tool
+```
+
+```
+--entrypoints.websecure.transport.respondingTimeouts.readTimeout=1800s
+```
+
+Finito y no `0`: `0` saca el límite pero también la protección contra un cliente
+que manda un cuerpo de a un byte por minuto, que para un cuerpo en curso **es
+justamente ese timeout**. Y aplica a todo el entrypoint `websecure`, no solo a
+`/admin`, así que lo comparte con lo demás que haya detrás del mismo Traefik.
+
+Las subidas del editor van por trozos de 4 MiB para no depender de esto —un
+trozo tarda unos 34 segundos incluso a 1 Mbps— pero el `PUT .../files` de una
+sola petición sí depende, y cualquier otro servicio del entrypoint también.
+
+**Una subida da 413 y el editor no la había rechazado antes.** Entonces el 413
+no es del editor: es de Cloudflare, cuyo tope por cuerpo de petición es de 100 MB
+en los planes Free y Pro. El editor rechaza por adelantado lo que supera su
+propio tope (`MAX_UPLOAD_BYTES`), y si ese tope es mayor que el de Cloudflare hay
+una franja de tamaños que el editor acepta y el proxy no. Con subidas por trozos
+no se llega nunca; con `PUT .../files` desde un guion, sí.
+
 **`curl` recibe 403 pero el navegador entra bien.** Es Cloudflare bloqueando el
 User-Agent por omisión de curl. No dice nada del origen.
 

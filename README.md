@@ -177,6 +177,74 @@ empezó a reportar los 66 archivos vivos como huérfanos —ofreciendo borrarlos
 mientras la prueba de humo pasaba, porque solo comprobaba que el archivo
 *apareciera* en la lista.
 
+## Las subidas van por trozos
+
+Un archivo no viaja en una sola petición. Va en trozos de 4 MiB, cada uno una
+petición corta, y el servidor confirma cuántos bytes tiene después de cada una.
+
+No es por el tamaño de los archivos. Es porque **una sola petición grande no
+depende del archivo: depende de la conexión de quien sube**. Traefik v3 deja de
+leer el cuerpo de una petición a los 60 segundos por omisión
+—`respondingTimeouts.readTimeout`, y la documentación aclara que cubre el cuerpo
+completo— así que el tamaño máximo real no era un tamaño, era *un tamaño por
+cada velocidad de subida*:
+
+| Subida de quien edita | Lo que entra en 60 s |
+| --- | --- |
+| 1 Mbps | 7,5 MB |
+| 5 Mbps | 37 MB |
+| 10 Mbps | 75 MB |
+| 20 Mbps | 150 MB |
+
+El mismo archivo entraba desde la oficina y fallaba desde una casa, y los
+reportes llegaban sin ningún patrón porque el patrón estaba en la conexión de
+cada persona. Encima, si el dominio pasa por Cloudflare, su tope por petición es
+de 100 MB en los planes Free y Pro y responde 413 — y eso no está al alcance de
+quien despliega esto.
+
+Con trozos ningún pedido se acerca a ninguno de los dos límites, así que el
+editor deja de depender de una infraestructura que no controla. Y de paso:
+
+- Un corte de conexión se reintenta solo, desde donde quedó. Para quien sube, no
+  pasó nada.
+- Un reintento manual tampoco empieza de cero: le pregunta al servidor cuántos
+  bytes tiene y sigue.
+- Un archivo que el servidor no va a aceptar se rechaza **antes** de subir un
+  kilobyte. Abrir la subida es una petición sin cuerpo, y ahí se contestan el
+  415 y el 413 que antes llegaban a mitad de la transferencia.
+
+**El estado de la subida es el archivo `.parcial`, y su tamaño es cuántos bytes
+llegaron.** No hay fila, ni tabla, ni sesión en memoria. Eso descarta de entrada
+la falla que vendría con cualquiera de las tres: que el contador y el disco digan
+cosas distintas y el archivo se complete a un tamaño que nunca tuvo. El barrido
+ya los recoge, porque no tienen fila que los referencie.
+
+Y el invariante que sostiene todo: un trozo tiene que empezar **exactamente**
+donde termina lo que hay. Si no, `409` con el número real y el cliente reanuda
+desde ahí. Un `append` que aceptara el trozo igual duplicaría bytes ante
+cualquier reintento, y el resultado es un video corrupto que en un listado de
+directorio se ve perfectamente normal.
+
+```
+POST   /admin/api/maps/<slug>/media/<id>/uploads            abre; valida y no lleva bytes
+PATCH  /admin/api/maps/<slug>/media/<id>/uploads/<up>       agrega un trozo en ?offset=
+GET    /admin/api/maps/<slug>/media/<id>/uploads/<up>       cuántos bytes hay (reanudar)
+POST   /admin/api/maps/<slug>/media/<id>/uploads/<up>/finish completa y da la fila
+DELETE /admin/api/maps/<slug>/media/<id>/uploads/<up>       cancela y borra el .parcial
+```
+
+`PUT .../files` sigue existiendo para subir un archivo en una sola petición
+desde un guion o con `curl`. El navegador no la usa, y la razón es sencilla: el
+navegador es el que está detrás de los proxies.
+
+Las URL de las subidas se construyen con `asset()` y no con `api()`. Son
+peticiones de `XMLHttpRequest` —tráfico crudo, igual que un `src` de `<video>`—
+así que nadie les agrega el prefijo `/admin`. Sin él no dan 404: dan un `302` a
+la URL correcta, y el navegador manda el cuerpo entero a la URL que responde la
+redirección **sin leerlo** para después mandarlo otra vez al destino real. El
+archivo se subía dos veces y la barra de progreso seguía al primer intento, el
+que el navegador abandona: se congelaba a mitad y no volvía a moverse.
+
 ## Los archivos borrados no desaparecen de inmediato
 
 Quitar un archivo de un medio borra la fila y deja los bytes. Lo que eso protege
