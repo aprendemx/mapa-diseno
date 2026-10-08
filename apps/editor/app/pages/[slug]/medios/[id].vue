@@ -143,7 +143,7 @@ async function save() {
 
         <FileUploader
           :medium-id="id"
-          :api="api"
+          :asset="asset"
           @uploaded="reload"
           @error="(message) => (problems = [{ field: '', message }])"
         />
