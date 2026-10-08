@@ -10,7 +10,11 @@ BASE_RAIZ="${BASE_RAIZ:-${BASE%/admin}}"
 # El slug del mapa de la raiz, no uno fijo: renombrarlo rompia estas pruebas.
 MAPA="${MAPA:-}"
 API=
-ROOT="${ROOT:-../../sitio/$MAPA}"
+# Se completa abajo, despues de resolver MAPA. Aqui solo se respeta un valor
+# dado desde el entorno: el arbol de multimedia es `sitio/<slug>`, y con el
+# valor por omision puesto en esta linea quedaba `sitio/` --el slug todavia
+# estaba vacio-- asi que el guion solo funcionaba pasandole MAPA a mano.
+ROOT="${ROOT:-}"
 EMAIL="${1:?uso: smoke-files.sh <correo> <contrasena>}"
 PASSWORD="${2:?uso: smoke-files.sh <correo> <contrasena>}"
 JAR="$(mktemp)"
@@ -20,6 +24,10 @@ trap 'rm -rf "$JAR" "$TMP"' EXIT
 fail() { echo "  FALLO: $1" >&2; exit 1; }
 api()  { curl -s -b "$JAR" "$@"; }
 code() { curl -s -o /dev/null -w '%{http_code}' -b "$JAR" "$@"; }
+# `stat -c` es de GNU y `stat -f` de BSD. Sin esto el guion solo corre en Linux,
+# y quien desarrolla en una Mac no puede verificar su propio cambio antes de
+# desplegarlo -- que es justo cuando sirve.
+bytes() { stat -c%s "$1" 2>/dev/null || stat -f%z "$1"; }
 
 curl -s -o /dev/null -c "$JAR" -X POST "$BASE/api/auth/login" \
   -H 'content-type: application/json' \
@@ -33,6 +41,7 @@ raiz = [m for m in maps if m["is_default"]] or maps
 print(raiz[0]["slug"])')
 fi
 API="$BASE/api/maps/$MAPA"
+: "${ROOT:=../../sitio/$MAPA}"
 
 MID=$(api "$API/media" | python3 -c 'import json,sys; print(json.load(sys.stdin)["media"][0]["id"])')
 echo "medio de prueba: $MID"
@@ -68,14 +77,19 @@ python3 -c 'import json,sys; assert json.loads(sys.argv[1])["file"]["kind"]=="vi
   || fail "no lo clasifico como video"
 
 echo "6. los bytes estan en disco, completos"
-[ "$(stat -c%s "$ROOT/$FPATH")" = "300000" ] || fail "el archivo en disco no coincide"
+[ "$(bytes "$ROOT/$FPATH")" = "300000" ] || fail "el archivo en disco no coincide"
 
 echo "7. aparece en el detalle, y su preview carga con el prefijo de la app"
 # El <video src> es una peticion cruda del navegador: no pasa por $fetch y nadie
 # le agrega el prefijo. Sin el, se va a la raiz del dominio y da 404.
 PAGINA=$(api "$BASE/$MAPA/medios/$MID")
-SRC=$(grep -oE 'src="[^"]*files/contenidos[^"]*"' <<<"$PAGINA" | head -1 | sed 's/src="//;s/"$//')
-[ -n "$SRC" ] || fail "la pagina no rindio el preview (redirigio?)"
+# El preview DE ESTE archivo, no el primero de la pagina. Con `head -1` la
+# prueba hablaba de un testigo cualquiera que el medio ya tenia: pasaba o
+# fallaba por razones ajenas a la subida que se acaba de hacer, y en un arbol
+# sin la multimedia real fallaba siempre.
+SRC=$(grep -oE "src=\"[^\"]*files/contenidos[^\"]*$FID[^\"]*\"" <<<"$PAGINA" \
+  | head -1 | sed 's/src="//;s/"$//')
+[ -n "$SRC" ] || fail "la pagina no rindio el preview del archivo subido (redirigio?)"
 case "$SRC" in
   /admin/api/*) ;;
   *) fail "el src del preview no lleva el prefijo de la app: $SRC" ;;
@@ -212,7 +226,7 @@ UBYTES=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["file"]["byt
 [ "$UPATH" = "contenidos/$MID/$UID_-entrega-grande.mp4" ] || fail "ruta inesperada: $UPATH"
 
 echo "24. los bytes en disco son los del original, byte a byte"
-[ "$(stat -c%s "$ROOT/$UPATH" 2>/dev/null || stat -f%z "$ROOT/$UPATH")" = "300000" ] \
+[ "$(bytes "$ROOT/$UPATH")" = "300000" ] \
   || fail "el archivo en disco no coincide"
 cmp -s "$TMP/testigo de prueba.mp4" "$ROOT/$UPATH" \
   || fail "EL CONTENIDO NO COINCIDE: los trozos se armaron mal"
