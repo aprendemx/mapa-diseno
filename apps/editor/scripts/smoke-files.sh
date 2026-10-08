@@ -120,5 +120,118 @@ grep -qE '^1 huerfano' <<<"$BARRIDO" \
   || fail "esperaba exactamente 1 huerfano: $(grep huerfano <<<"$BARRIDO")"
 
 rm -f "$ROOT/$FPATH"
+
+# ---------------------------------------------------------------------------
+# Subida por trozos
+#
+# La de una sola peticion de arriba sigue existiendo para los guiones, pero el
+# navegador usa esta: Traefik deja de leer un cuerpo a los 60 s por omision y
+# Cloudflare rechaza cualquiera de mas de 100 MB, asi que un archivo entero en
+# una peticion no es una apuesta sobre su tamano sino sobre la velocidad de
+# subida de cada persona.
+#
+# Lo que se verifica aca son los numeros, no que las peticiones devuelvan algo.
+# El modo en que esto falla de verdad es aceptando bytes que no corresponden, y
+# un video con un trozo duplicado se ve perfecto en un listado de directorio.
+# ---------------------------------------------------------------------------
+echo
+echo "--- subida por trozos ---"
+
+UP="$API/media/$MID/uploads"
+jq_field() { python3 -c 'import json,sys; print(json.loads(sys.argv[1])[sys.argv[2]])' "$1" "$2"; }
+jq_data()  { python3 -c 'import json,sys; print(json.loads(sys.argv[1])["data"][sys.argv[2]])' "$1" "$2"; }
+
+echo "12. sin sesion no se puede abrir una subida"
+[ "$(curl -s -o /dev/null -w '%{http_code}' -X POST "$UP?filename=a.mp4&bytes=10")" = "401" ] \
+  || fail "permitio abrir una subida sin sesion"
+
+# Las tres negativas que siguen son el punto de que abrir la subida sea una
+# peticion aparte: se rechaza ANTES de gastarle la subida a nadie. Antes el
+# .exe y el archivo demasiado grande se descubrian a mitad de la transferencia.
+echo "13. extension no admitida -> 415, sin mandar un byte"
+[ "$(code -X POST "$UP?filename=virus.exe&bytes=10")" = "415" ] || fail "acepto un .exe"
+
+echo "14. tamano por encima del tope -> 413"
+[ "$(code -X POST "$UP?filename=a.mp4&bytes=99999999999999")" = "413" ] \
+  || fail "acepto un tamano por encima del tope"
+
+echo "15. sin tamano declarado -> 400"
+[ "$(code -X POST "$UP?filename=a.mp4")" = "400" ] || fail "acepto una subida sin tamano"
+
+# El id vuelve desde el cliente en cada trozo, y de el sale la ruta en disco.
+echo "16. identificador de subida invalido -> 400"
+[ "$(code "$UP/no-es-un-id?filename=a.mp4")" = "400" ] \
+  || fail "acepto un identificador de subida arbitrario"
+
+echo "17. abrir una subida -> 201 con uploadId y chunkBytes"
+ABRE=$(api -X POST "$UP?filename=entrega%20grande.mp4&bytes=300000")
+UID_=$(jq_field "$ABRE" uploadId)
+CHUNK=$(jq_field "$ABRE" chunkBytes)
+[ -n "$UID_" ] || fail "no devolvio uploadId"
+[ "$CHUNK" -gt 0 ] 2>/dev/null || fail "chunkBytes no es un numero positivo: $CHUNK"
+echo "    uploadId=$UID_ chunkBytes=$CHUNK"
+
+Q="filename=entrega%20grande.mp4"
+head -c 100000 "$TMP/testigo de prueba.mp4" > "$TMP/c1"
+tail -c +100001 "$TMP/testigo de prueba.mp4" > "$TMP/c2"
+
+echo "18. una subida que no empezo reporta 0 bytes"
+[ "$(jq_field "$(api "$UP/$UID_?$Q")" received)" = "0" ] || fail "no reporto 0 bytes"
+
+echo "19. primer trozo -> el servidor confirma 100000"
+R1=$(api -X PATCH "$UP/$UID_?$Q&offset=0" --data-binary @"$TMP/c1")
+[ "$(jq_field "$R1" received)" = "100000" ] || fail "confirmo mal el primer trozo: $R1"
+
+# El corazon del diseño. Sin esta negativa un reintento de red duplica bytes y
+# el archivo queda corrupto con un tamaño que ya no corresponde a su contenido.
+echo "20. repetir el trozo -> 409 con los bytes reales, y NO duplica"
+R2=$(api -X PATCH "$UP/$UID_?$Q&offset=0" --data-binary @"$TMP/c1")
+[ "$(jq_data "$R2" received)" = "100000" ] || fail "el 409 no dijo cuantos bytes hay: $R2"
+[ "$(jq_field "$(api "$UP/$UID_?$Q")" received)" = "100000" ] \
+  || fail "DUPLICO BYTES al repetir un trozo"
+
+echo "21. un trozo que deja un hueco -> 409"
+[ "$(code -X PATCH "$UP/$UID_?$Q&offset=999999" --data-binary @"$TMP/c2")" = "409" ] \
+  || fail "acepto un trozo con hueco"
+
+# Sin esta negativa, una subida sin su ultimo trozo se completa igual: el
+# archivo existe, tiene su fila, y el mapa publica un video truncado que el
+# navegador corta a mitad sin un error en ninguna parte.
+echo "22. completar incompleta -> 409, y el archivo NO se crea"
+R3=$(api -X POST "$UP/$UID_/finish?$Q&bytes=300000")
+[ "$(jq_data "$R3" received)" = "100000" ] || fail "el 409 de completar no dijo cuanto hay: $R3"
+[ ! -f "$ROOT/contenidos/$MID/$UID_-entrega-grande.mp4" ] \
+  || fail "CREO EL ARCHIVO con una subida incompleta"
+
+echo "23. segundo trozo y completar -> 201 con los bytes exactos"
+api -X PATCH "$UP/$UID_?$Q&offset=100000" --data-binary @"$TMP/c2" >/dev/null
+FIN=$(api -X POST "$UP/$UID_/finish?$Q&bytes=300000")
+UPATH=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["file"]["path"])' "$FIN")
+UBYTES=$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["file"]["bytes"])' "$FIN")
+[ "$UBYTES" = "300000" ] || fail "tamano reportado incorrecto: $UBYTES"
+[ "$UPATH" = "contenidos/$MID/$UID_-entrega-grande.mp4" ] || fail "ruta inesperada: $UPATH"
+
+echo "24. los bytes en disco son los del original, byte a byte"
+[ "$(stat -c%s "$ROOT/$UPATH" 2>/dev/null || stat -f%z "$ROOT/$UPATH")" = "300000" ] \
+  || fail "el archivo en disco no coincide"
+cmp -s "$TMP/testigo de prueba.mp4" "$ROOT/$UPATH" \
+  || fail "EL CONTENIDO NO COINCIDE: los trozos se armaron mal"
+
+echo "25. ya no queda ningun .parcial"
+[ ! -f "$ROOT/$UPATH.parcial" ] || fail "quedo un .parcial despues de completar"
+
+echo "26. cancelar se lleva los bytes a medias"
+CANCELA=$(api -X POST "$UP?filename=cancelada.mp4&bytes=300000")
+CID=$(jq_field "$CANCELA" uploadId)
+api -X PATCH "$UP/$CID?filename=cancelada.mp4&offset=0" --data-binary @"$TMP/c1" >/dev/null
+[ -f "$ROOT/contenidos/$MID/$CID-cancelada.mp4.parcial" ] || fail "no escribio el .parcial"
+[ "$(code -X DELETE "$UP/$CID?filename=cancelada.mp4")" = "204" ] || fail "cancelar no devolvio 204"
+[ ! -f "$ROOT/contenidos/$MID/$CID-cancelada.mp4.parcial" ] \
+  || fail "cancelar dejo los bytes en disco"
+
+echo "27. limpieza: quitar el archivo subido por trozos"
+api -X DELETE "$API/media/$MID/files/$UID_" >/dev/null
+rm -f "$ROOT/$UPATH"
+
 echo
 echo "Ciclo de archivos correcto."

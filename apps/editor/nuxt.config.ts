@@ -18,6 +18,13 @@ export default defineNuxtConfig({
     // en la raiz dos enlaces simbolicos al mapa predeterminado.
     siteRoot: '../../sitio',
     maxUploadBytes: String(2 * 1024 * 1024 * 1024),
+    // Tamaño del trozo en una subida. Lo decide el servidor porque el límite
+    // que esquiva es del camino de red y no del archivo: Traefik deja de leer
+    // un cuerpo a los 60 s por omisión y Cloudflare rechaza cualquiera de más
+    // de 100 MB. Con 4 MiB un trozo tarda unos 34 s incluso a 1 Mbps de
+    // subida, así que el editor funciona sin depender de la configuración de
+    // una infraestructura que no está a su alcance.
+    uploadChunkBytes: String(4 * 1024 * 1024),
     // La plantilla desde la que se construye la pagina publicada.
     templatePath: '../../mapa-base.html',
   },
